@@ -1,0 +1,64 @@
+{
+    "name": "OpenSondage",
+    "id": "opensondage",
+    "description": {
+        "en": "OpenSondage is used to poll people invite for a meeting.",
+        "fr": "OpenSondage sert à  faire des sondages sans authentification pour trouver une date de réunion qui convienne à  toutes les personnes concernées."
+    },
+    "license": "CeCILL-B",
+    "developer": {
+        "name": "zamentur",
+        "email": "valentin@grimaud.me",
+        "url": "https://github.com/leblanc-simon/OpenSondage/"
+    },
+    "multi_instance": "true",
+    "arguments": {
+        "install" : [
+            {
+                "name": "domain",
+                "ask": {
+                    "en": "Choose a domain for OpenSondage",
+                    "fr": "Choisissez un nom de domaine pour OpenSondage"
+                },
+                "example": "domain.org"
+            },
+            {
+                "name": "path",
+                "ask": {
+                    "en": "Choose a path for OpenSondage",
+                    "fr": "Choisissez l'adresse pour OpenSondage"
+                },
+                "example": "/date",
+                "default": "/date"
+            },
+            {
+                "name": "admin",
+                "ask": {
+                    "en": "Choose the OpenSondage administrator (must be an existing YunoHost user)",
+                    "fr": "Choisissez l'administrateur d'OpenSondage (doit être un utilisateur YunoHost)"
+                },
+                "example": "homer"
+            },
+            {
+                "name": "language",
+                "ask": {
+                    "en": "Choose the default language of this OpenSondage",
+                    "fr": "Choisissez la langue par défault d'OpenSondage"
+                },
+                "choices": ["en_GB", "fr_FR","es_ES", "de_DE"],
+                "default": "en_GB"
+            },
+            {
+                "name": "public_site",
+                "ask": {
+                    "en": "Is it a public OpenSondage ?",
+                    "en": "Est ce qu'OpenSondage est accessible publiquement?"
+                },
+                "choices": ["Yes", "No"],
+                "default": "Yes"
+            }
+
+
+        ]
+    }
+}
