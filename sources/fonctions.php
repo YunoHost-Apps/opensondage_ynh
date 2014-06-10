@@ -56,7 +56,7 @@ function connexion_base()
 function get_server_name()
 {
     $scheme = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == 'on') ? 'https' : 'http';
-    return $scheme . '://' .  $_SERVER['SERVER_NAME'] . '/';
+    return $scheme . '://' .  STUDS_URL . '/';
 }
 
 
@@ -117,8 +117,8 @@ function print_header($js = false, $nom_sondage = '')
     <title>'.NOMAPPLICATION.'</title>';
   }
   echo '
-    <link rel="stylesheet" type="text/css" href="/style.css">
-    <link rel="stylesheet" type="text/css" href="/print.css" media="print">';
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="print.css" media="print">';
 
   echo '</head>';
 }
