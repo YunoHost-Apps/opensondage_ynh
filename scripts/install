@@ -49,8 +49,8 @@ sudo sed -i "s@yunourl@$domain$path@g" $final_path/variables.php
 sudo sed -i "s@yunodomain@$domain@g" $final_path/variables.php
 
 # Create log file
-touch admin/logs_studs.txt
-chmod 700 admin/logs_studs.txt
+touch $final_path/admin/logs_studs.txt
+chmod 700 $final_path/admin/logs_studs.txt
 
 # Set permissions to roundcube directory
 sudo chown -R www-data: $final_path
