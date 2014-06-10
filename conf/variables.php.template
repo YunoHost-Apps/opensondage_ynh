@@ -41,7 +41,7 @@
 const STUDS_URL = 'yunourl';
 
 // Nom de l'application
-const NOMAPPLICATION = "yunotitle";
+const NOMAPPLICATION = "OpenSondage";
 
 // adresse mail de l'administrateur de la base
 const ADRESSEMAILADMIN = 'yunoadmin';

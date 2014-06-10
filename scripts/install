@@ -68,13 +68,29 @@ sudo yunohost app ssowatconf
 # Db installation
 mysql -u $db_user -p$db_pwd $db_user < $final_path/install.mysql.sql
 
+
+sed -i "s@NAMETOCHANGE@opensondage@g" ../conf/php-fpm.conf
+finalphpconf=/etc/php5/fpm/pool.d/opensondage.conf
+sudo cp ../conf/php-fpm.conf $finalphpconf
+sudo chown root: $finalphpconf
+sudo chmod 644 $finalphpconf
+
+finalphpini=/etc/php5/fpm/conf.d/20-opensondage.ini
+sudo cp ../conf/php-fpm.ini $finalphpini
+sudo chown root: $finalphpini
+sudo chmod 644 $finalphpini
+
+# Reload Nginx and regenerate SSOwat conf
+sudo service php5-fpm restart
+
+
 if [ $is_public = "No" ];
 then
 	sudo yunohost app setting opensondage skipped_uris -d
-	sudo yunohost app ssowatconf
 else
 	mysql -u $db_user -p$db_pwd $db_user < ../conf/public.sql
 	sudo cp ../conf/nginx.conf-public /etc/nginx/conf.d/$domain.d/opensondage.conf
 	sudo service nginx reload
 	echo "define('FORCE_SSL_ADMIN', true);" | sudo tee -a $final_path/variables.php
 fi
+sudo yunohost app ssowatconf
