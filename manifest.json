@@ -52,7 +52,7 @@
                 "name": "public_site",
                 "ask": {
                     "en": "Is it a public OpenSondage ?",
-                    "en": "Est ce qu'OpenSondage est accessible publiquement?"
+                    "fr": "Est ce qu'OpenSondage est accessible publiquement?"
                 },
                 "choices": ["Yes", "No"],
                 "default": "Yes"
