@@ -4,7 +4,7 @@
 domain=$(sudo yunohost app setting opensondage domain)
 path=$(sudo yunohost app setting opensondage path)
 admin=$(sudo yunohost app setting opensondage admin)
-legal_info=$(sudo yunohost app setting opensondage legal_info)
+legal=$(sudo yunohost app setting opensondage legal)
 language=$(sudo yunohost app setting opensondage language)
 
 root_pwd=$(sudo cat /etc/yunohost/mysql)
@@ -21,7 +21,7 @@ sudo sed -i "s/yunoadmin/$admin/g" $final_path/variables.php
 sudo sed -i "s/I18NTOCHANGE/$language/g" $final_path/variables.php
 sudo sed -i "s@yunourl@$domain$path@g" $final_path/variables.php
 sudo sed -i "s@yunodomain@$domain@g" $final_path/variables.php
-sudo sed -i "s/yunoinfolegal/$legal_info/g" $final_path/variables.php
+sudo sed -i "s/yunoinfolegal/$legal/g" $final_path/variables.php
 
 
 
@@ -59,7 +59,7 @@ sudo sed -i "s/yunoadmin/$admin/g" $final_path/variables.php
 sudo sed -i "s/I18NTOCHANGE/$language/g" $final_path/variables.php
 sudo sed -i "s@yunourl@$domain$path@g" $final_path/variables.php
 sudo sed -i "s@yunodomain@$domain@g" $final_path/variables.php
-sudo sed -i "s/yunoinfolegal/$legal_info/g" $final_path/variables.php
+sudo sed -i "s/yunoinfolegal/$legal/g" $final_path/variables.php
 
 # Create log file
 touch admin/logs_studs.txt

@@ -40,7 +40,7 @@
                 "example": "homer"
             },
             {
-                "name": "legal_info",
+                "name": "legal",
                 "ask": {
                     "en": "Indicate a web page with legal information",
                     "fr": "Indiquez la page où figure les mentions légales"
