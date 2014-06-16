@@ -159,7 +159,7 @@ mentions;
 if (!empty(URL_INFO_LEGAL))
 	echo '<p>Voir la page des <a href="'.URL_INFO_LEGAL.'">Informations légales</a></p>';
 else
-	echo <<<mentions
+	echo <<<mentions2
 <p>Vous pouvez rentrer en contact avec l'Editeur et le
 Responsable de la publication en passant par la page "<a href="contacts.php">contact</a>".</p>
 <p>Les propos tenus sur ce site ne représentent que et uniquement
@@ -219,11 +219,11 @@ BY-SA. Cela signifie que si l'adresse de votre sondage est connue d'un
 individu, vous autorisez cette personne à utiliser, partager, modifier
 votre sondage.</p>
 <hr style="width: 100%; height: 2px;">
-mentions;
+mentions2;
 
 
 
-echo <<<mentions
+echo <<<mentions3
 <h2><a name="credits"></a>Crédits</h2>
 <b>Application d'origine</b><br>
 <br>
@@ -264,72 +264,7 @@ Framadate est placé, comme <b><a
 sous la licence logicielle libre <a
  href="http://www.cecill.info/licences.fr.html">CeCILL-B</a>.<br>
 <br>
-mentions;
-
-
-
-
-
-
-
-if (NOMAPPLICATION!="STUdS !") {
-  echo '<b>Application d\'origine</b><br><br>'."\n";
-  echo 'L\'application '.NOMAPPLICATION.' est une instance du logiciel <b><a href ="http://studs.u-strasbg.fr">STUdS !</a></b> d&eacute;velopp&eacute; &agrave; l\'Universit&eacute; de Strasbourg depuis 2008.<br><br>'."\n";
-}
-
-echo '<b>Licence Logicielle de '.NOMAPPLICATION.'</b><br><br>'."\n";
-echo NOMAPPLICATION.' est plac&eacute; sous la licence logicielle libre <a href="http://www.cecill.info/licences.fr.html">CeCILL-B</a>.<br><br>'."\n";
-
-echo '<b>Technologies utilis&eacute;es</b><br><br>'."\n";
-echo '- <a href="http://www.php.net/">PHP</a><br>'."\n";
-echo '- <a href="http://www.postgresql.org/">PostgreSQL</a><br>'."\n";
-echo '- <a href="http://www.apache.org/">Apache</a><br>'."\n";
-echo '- <a href="http://subversion.tigris.org/">Subversion</a><br>'."\n";
-echo '- <a href="http://www.kigkonsult.se/iCalcreator/">iCalcreator</a><br>'."\n";
-echo '- <a href="http://www.fpdf.org/">FPDF</a><br>'."\n";
-echo '- Ic&ocirc;nes : <a href="http://deleket.deviantart.com/">Deleket</a>, <a href ="http://pixel-mixer.com">PixelMixer</a> et <a href="http://dryicons.com">DryIcons</a><br><br>'."\n";
-
-echo '<b>Compatibilit&eacute;s des navigateurs</b><br><br>'."\n";
-echo '- <a href="http://www.mozilla.com/firefox/">Firefox</a><br>'."\n";
-echo '- <a href="http://www.opera.com/">Op&eacute;ra</a><br>'."\n";
-echo '- <a href="http://www.konqueror.org/">Konqueror</a><br>'."\n";
-echo '- <a href="http://www.jikos.cz/~mikulas/links/">Links</a><br>'."\n";
-echo '- <a href="http://www.apple.com/fr/safari/">Safari</a><br>'."\n";
-echo '- <a href="http://www.mozilla.com/firefox/">IE</a><br><br>'."\n";
-
-echo '<b>Validations des pages</b><br><br>'."\n";
-echo '- Toutes les pages disposent de la validation HTML 4.01 Strict du W3C. <br>- La CSS dispose de la validation CSS 2.1 du W3C.'."\n";
-echo '<p>'."\n";
-echo '<img src="http://www.w3.org/Icons/valid-html401-blue" alt="Valid HTML 4.01 Strict" height="31" width="88"><img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="CSS Valide !">'."\n";
-echo'</p>'."\n";
-
-echo '<b>Propositions am&eacute;liorations de '.NOMAPPLICATION.'</b><br><br>'."\n";
-echo 'Si quelquechose venait &agrave; vous manquer, vous pouvez nous en faire part via le <a href="contacts.php">formulaire en ligne</a>. <br>'."\n";
-echo 'Les derni&egrave;res am&eacute;liorations de '.NOMAPPLICATION.' sont visibles dans le fichier <a href="CHANGELOG">CHANGELOG</a>.<br><br>'."\n";
-
-echo '<b>Remerciements</b><br><br>'."\n";
-echo 'Pour leurs contributions techniques ou ergonomiques : Guy, Christophe, Julien, Pierre, Romaric, Matthieu, Catherine, Christine, Olivier, Emmanuel et Florence <br><br>'."\n";
-
-echo '</div>'."\n";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+mentions3;
 
 
 
