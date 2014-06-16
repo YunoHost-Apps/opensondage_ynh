@@ -5,7 +5,6 @@ domain=$(sudo yunohost app setting opensondage domain)
 path=$(sudo yunohost app setting opensondage path)
 admin=$(sudo yunohost app setting opensondage admin)
 language=$(sudo yunohost app setting opensondage language)
-is_public=$(sudo yunohost app setting opensondage is_public)
 
 root_pwd=$(sudo cat /etc/yunohost/mysql)
 
@@ -70,12 +69,8 @@ sudo chown -R www-data: $final_path
 sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf*
 sed -i "s@ALIASTOCHANGE@$final_path/@g" ../conf/nginx.conf*
 
-if [ $is_public = "Yes" ];
-then
-    sudo cp ../conf/nginx.conf-public /etc/nginx/conf.d/$domain.d/opensondage.conf
-else
-    sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/opensondage.conf
-fi
+sudo yunohost app addaccess opensondage -u $admin
+sudo cp ../conf/nginx.conf-public /etc/nginx/conf.d/$domain.d/opensondage.conf
 
 sed -i "s@NAMETOCHANGE@opensondage@g" ../conf/php-fpm.conf
 finalphpconf=/etc/php5/fpm/pool.d/opensondage.conf

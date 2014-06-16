@@ -15,6 +15,11 @@ location PATHTOCHANGE {
        }
 }
 
+location ~ ^PATHTOCHANGE/admin {
+	# Include SSOWAT user panel.
+	include conf.d/yunohost_panel.conf.inc;
+}
+
 location ~ ^PATHTOCHANGE/(data|config|\.ht|db_structure\.xml|README) {
        deny all;
 }

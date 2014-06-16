@@ -5,7 +5,6 @@ domain=$1
 path=$2
 admin=$3
 language=$4
-is_public=$5
 
 # Check if admin exists
 sudo yunohost user list --json | grep -q "\"username\": \"$admin\""
@@ -84,13 +83,8 @@ sudo chmod 644 $finalphpini
 sudo service php5-fpm restart
 
 
-if [ $is_public = "No" ];
-then
-	sudo yunohost app setting opensondage skipped_uris -d
-else
-	mysql -u $db_user -p$db_pwd $db_user < ../conf/public.sql
-	sudo cp ../conf/nginx.conf-public /etc/nginx/conf.d/$domain.d/opensondage.conf
-	sudo service nginx reload
-	echo "define('FORCE_SSL_ADMIN', true);" | sudo tee -a $final_path/variables.php
-fi
+sudo yunohost app addaccess opensondage -u $admin
+sudo cp ../conf/nginx.conf-public /etc/nginx/conf.d/$domain.d/opensondage.conf
+sudo service nginx reload
+echo "define('FORCE_SSL_ADMIN', true);" | sudo tee -a $final_path/variables.php
 sudo yunohost app ssowatconf
