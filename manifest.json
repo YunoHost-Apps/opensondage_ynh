@@ -40,6 +40,15 @@
                 "example": "homer"
             },
             {
+                "name": "legal_info",
+                "ask": {
+                    "en": "Indicate a web page with legal information",
+                    "fr": "Indiquez la page où figure les mentions légales"
+                },
+                "example": "http://example.com",
+                "default": ""
+            },
+            {
                 "name": "language",
                 "ask": {
                     "en": "Choose the default language of this OpenSondage",
@@ -47,15 +56,6 @@
                 },
                 "choices": ["en_GB", "fr_FR","es_ES", "de_DE"],
                 "default": "en_GB"
-            },
-            {
-                "name": "public_site",
-                "ask": {
-                    "en": "Is it a public OpenSondage ?",
-                    "fr": "Est ce qu'OpenSondage est accessible publiquement?"
-                },
-                "choices": ["Yes", "No"],
-                "default": "Yes"
             }
 
 

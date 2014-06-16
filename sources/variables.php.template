@@ -40,6 +40,9 @@
 // Nom du serveur
 const STUDS_URL = 'www.mon_domaine.coop';
 
+// Adresse où se trouvent les infos légales
+const URL_INFO_LEGAL = 'http://example.com';
+
 // Nom de l'application
 const NOMAPPLICATION = "<nom de l'application>";
 

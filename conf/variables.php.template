@@ -40,6 +40,9 @@
 // Nom du serveur
 const STUDS_URL = 'yunourl';
 
+// Adresse où se trouvent les infos légales
+const URL_INFO_LEGAL = 'yunoinfolegal';
+
 // Nom de l'application
 const NOMAPPLICATION = "OpenSondage";
 

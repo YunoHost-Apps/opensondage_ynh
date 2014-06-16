@@ -4,7 +4,8 @@
 domain=$1
 path=$2
 admin=$3
-language=$4
+legal_info=$4
+language=$5
 
 # Check if admin exists
 sudo yunohost user list --json | grep -q "\"username\": \"$admin\""
@@ -14,7 +15,7 @@ if [[ ! $? -eq 0 ]]; then
 fi
 sudo yunohost app setting opensondage admin -v $admin
 sudo yunohost app setting opensondage language -v $language
-sudo yunohost app setting opensondage is_public -v $is_public
+sudo yunohost app setting opensondage legal_info -v $legal_info
 
 # Check domain/path availability
 sudo yunohost app checkurl $domain$path -a opensondage
@@ -46,6 +47,7 @@ sudo sed -i "s/yunoadmin/$admin/g" $final_path/variables.php
 sudo sed -i "s/I18NTOCHANGE/$language/g" $final_path/variables.php
 sudo sed -i "s@yunourl@$domain$path@g" $final_path/variables.php
 sudo sed -i "s@yunodomain@$domain@g" $final_path/variables.php
+sudo sed -i "s/yunoinfolegal/$legal_info/g" $final_path/variables.php
 
 # Create log file
 touch $final_path/admin/logs_studs.txt

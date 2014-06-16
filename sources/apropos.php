@@ -80,8 +80,6 @@ echo <<<mentions
 OpenSondage et STUdS ?</a></li>
     <li><a href="#doodle">Quelles différences entre
 OpenSondage et Doodle ?</a></li>
-    <li><a href="#longevite">Mon sondage
-restera-t-il longtemps en ligne ?</a></li>
   </ul>
   <li><a href="#mentions">Mentions légales</a></li>
   <li><a href="#credits">Crédits</a></li>
@@ -151,8 +149,190 @@ l'utilisateur final qui va sur doodle.com. OpenSondage essaie de
 répondre, modestement, à cette problématique en montrant que des
 alternatives libres existent et qu'on peut les installer "chez soi".<br>
 <hr style="width: 100%; height: 2px;">
+
+
+
+
+<h1><a name="faq"></a>Mentions légales</h1>
+<h2>Éditeur et Responsable de la publication</h2>
 mentions;
+if (!empty(URL_INFO_LEGAL))
+	echo '<p>Voir la page des <a href="'.URL_INFO_LEGAL.'">Informations légales</a></p>';
+else
+	echo <<<mentions
+<p>Vous pouvez rentrer en contact avec l'Editeur et le
+Responsable de la publication en passant par la page "<a href="contacts.php">contact</a>".</p>
+<p>Les propos tenus sur ce site ne représentent que et uniquement
+l’opinion de leur auteur, et n’engagent ni l'administrateur de l'application, ni l'hébergeur, ni les personnes ayant contribuer à la création de l'application.</p>
+
+<h2>Données personnelles</h2>
+<p>Les données personnelles collectées par OpenSondage sont
+uniquement destinées à un usage interne. En aucun cas ces données ne
+seront cédées ou vendues à des tiers.
+Conformément à l’article 39 de la loi du 6 janvier 1978 relative à
+l’informatique, aux fichiers et aux libertés, vous avez un droit
+d’accès, de modification et d’opposition sur vos données personnelles
+enregistrées par le blog.
+Dans ce cas, utilisez le formulaire de contact.</p>
+<h2>Conditions de modération/suppression de sondages</h2>
+<p>Les sondages de OpenSondage bénéficient d'une URL aléatoire,
+mais publique. Si vous souhaitez supprimer un sondage, utilisez
+l'adresse d'aministration fournie à la création. Vous pouvez
+exceptionnellement demander la suppression d'un sondage en utilisant la
+page de contact.</p>
+<h2>Notification des contenus litigieux</h2>
+<p>Conformément à l’article 6 I 5° LCEN, la connaissance des
+contenus litigieux est présumée acquise par L’Éditeur lorsqu’il lui est
+notifié, par lettre recommandée avec accusé de réception adressée au
+siège social de L’Éditeur, la totalité des éléments suivants (i) la
+date de la notification&nbsp;; (ii) si le notifiant est une
+personne physique&nbsp;: ses nom, prénoms, profession, domicile,
+nationalité, date et lieu de naissance&nbsp;; si le notifiant est
+une personne morale&nbsp;: sa forme, sa dénomination, son siège
+social et l’organe qui la représente légalement&nbsp;; (iii) les
+nom et domicile du destinataire ou, s’il s’agit d’une personne morale,
+sa dénomination et son siège social&nbsp;; (iv) la description des
+faits litigieux et leur localisation précise&nbsp;; (v) les motifs
+pour lesquels le contenu doit être retiré, comprenant la mention des
+dispositions légales et des justifications de faits&nbsp;; (vi) la
+copie de la correspondance adressée à l’auteur ou à l’éditeur des
+informations ou activités litigieuses demandant leur interruption, leur
+retrait ou leur modification, ou la justification de ce que l’auteur ou
+l’éditeur n’a pu être contacté.</p>
+<p>A défaut d’envoi de la totalité de ces éléments, la
+notification ne sera pas prise en compte par L’Éditeur et ce dernier ne
+pourra en conséquence être présumé informé d’un contenu litigieux.</p>
+<p>L’Éditeur se réserve le droit d’engager des poursuites à
+l’encontre de toute personne ayant usé abusivement du droit réservé par
+l’article 6 I 4° LCEN. L’Éditeur vous rappelle que toute personne qui
+aurait présenté un contenu ou une activité comme étant illicite dans le
+but d’en obtenir le retrait ou d’en faire cesser la diffusion alors
+qu’elle a connaissance du caractère inexact de cette information, est
+susceptible d’encourir une peine d’un an d’emprisonnement et de 15.000
+€uros d’amende.</p>
+<h2>Licences, droits de reproduction</h2>
+<p>Cette instance du logiciel OpenSondage,
+basé sur STUdS, est publiée sous licence libre <a
+href="http://www.cecill.info/licences.fr.html">CeCILL-B</a>.
+Les contenus (sondages) sont publiés sous licence Creative Commons
+BY-SA. Cela signifie que si l'adresse de votre sondage est connue d'un
+individu, vous autorisez cette personne à utiliser, partager, modifier
+votre sondage.</p>
+<hr style="width: 100%; height: 2px;">
+mentions;
+
+
+
+echo <<<mentions
+<h2><a name="credits"></a>Crédits</h2>
+<b>Application d'origine</b><br>
+<br>
+L'application OpenSondage est une instance du logiciel <b><a
+ href="http://studs.u-strasbg.fr">STUdS !</a></b>
+développé à l'Université de Strasbourg depuis 2008.<br>
+<br>
+Pour les besoins du paquet d'installation YunoHost, STUdS a fait l'objet d'un fork par
+le mainteneur du paquet. Les sources sont disponibles sur le Github <a
+ href="https://github.com/zamentur/opensondage_ynh">OpenSondage</a>.<br>
+<br>
+
+<b>Propositions am&eacute;liorations</b><br><br>
+Si quelquechose venait &agrave; vous manquer, vous pouvez nous en faire part via le <a href="contacts.php">formulaire en ligne</a>. <br>
+Les derni&egrave;res am&eacute;liorations sont visibles dans le fichier <a href="CHANGELOG">CHANGELOG</a>.<br><br>
+
+<b>Remerciements</b><br>
+<br>
+<b><a href="http://studs.u-strasbg.fr">STUdS !</a></b>&nbsp;:
+Pour leurs contributions techniques ou ergonomiques : Guy, Christophe,
+Julien, Pierre, Romaric, Matthieu, Catherine, Christine, Olivier,
+Emmanuel et Florence <br>
+<a style="font-weight: bold;"
+ href="https://github.com/leblanc-simon/OpenSondage">Framadate</a>
+: &nbsp;Simon Leblanc (développement principal), Pierre-Yves Gosset
+(développement, graphisme), la communauté Framasoft.<br>
+<a style="font-weight: bold;"
+ href="https://github.com/zamentur/OpenSondage">YunoHost</a>: Valentin Grimaud (développement du paquet YunoHost)
+<br>
+
+
+
+
+
+<h2><b><a name="licence"></a>Licence</b></h2>
+Framadate est placé, comme <b><a
+ href="http://studs.u-strasbg.fr">STUdS !</a>,</b>
+sous la licence logicielle libre <a
+ href="http://www.cecill.info/licences.fr.html">CeCILL-B</a>.<br>
+<br>
+mentions;
+
+
+
+
+
+
+
+if (NOMAPPLICATION!="STUdS !") {
+  echo '<b>Application d\'origine</b><br><br>'."\n";
+  echo 'L\'application '.NOMAPPLICATION.' est une instance du logiciel <b><a href ="http://studs.u-strasbg.fr">STUdS !</a></b> d&eacute;velopp&eacute; &agrave; l\'Universit&eacute; de Strasbourg depuis 2008.<br><br>'."\n";
+}
+
+echo '<b>Licence Logicielle de '.NOMAPPLICATION.'</b><br><br>'."\n";
+echo NOMAPPLICATION.' est plac&eacute; sous la licence logicielle libre <a href="http://www.cecill.info/licences.fr.html">CeCILL-B</a>.<br><br>'."\n";
+
+echo '<b>Technologies utilis&eacute;es</b><br><br>'."\n";
+echo '- <a href="http://www.php.net/">PHP</a><br>'."\n";
+echo '- <a href="http://www.postgresql.org/">PostgreSQL</a><br>'."\n";
+echo '- <a href="http://www.apache.org/">Apache</a><br>'."\n";
+echo '- <a href="http://subversion.tigris.org/">Subversion</a><br>'."\n";
+echo '- <a href="http://www.kigkonsult.se/iCalcreator/">iCalcreator</a><br>'."\n";
+echo '- <a href="http://www.fpdf.org/">FPDF</a><br>'."\n";
+echo '- Ic&ocirc;nes : <a href="http://deleket.deviantart.com/">Deleket</a>, <a href ="http://pixel-mixer.com">PixelMixer</a> et <a href="http://dryicons.com">DryIcons</a><br><br>'."\n";
+
+echo '<b>Compatibilit&eacute;s des navigateurs</b><br><br>'."\n";
+echo '- <a href="http://www.mozilla.com/firefox/">Firefox</a><br>'."\n";
+echo '- <a href="http://www.opera.com/">Op&eacute;ra</a><br>'."\n";
+echo '- <a href="http://www.konqueror.org/">Konqueror</a><br>'."\n";
+echo '- <a href="http://www.jikos.cz/~mikulas/links/">Links</a><br>'."\n";
+echo '- <a href="http://www.apple.com/fr/safari/">Safari</a><br>'."\n";
+echo '- <a href="http://www.mozilla.com/firefox/">IE</a><br><br>'."\n";
+
+echo '<b>Validations des pages</b><br><br>'."\n";
+echo '- Toutes les pages disposent de la validation HTML 4.01 Strict du W3C. <br>- La CSS dispose de la validation CSS 2.1 du W3C.'."\n";
+echo '<p>'."\n";
+echo '<img src="http://www.w3.org/Icons/valid-html401-blue" alt="Valid HTML 4.01 Strict" height="31" width="88"><img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="CSS Valide !">'."\n";
+echo'</p>'."\n";
+
+echo '<b>Propositions am&eacute;liorations de '.NOMAPPLICATION.'</b><br><br>'."\n";
+echo 'Si quelquechose venait &agrave; vous manquer, vous pouvez nous en faire part via le <a href="contacts.php">formulaire en ligne</a>. <br>'."\n";
+echo 'Les derni&egrave;res am&eacute;liorations de '.NOMAPPLICATION.' sont visibles dans le fichier <a href="CHANGELOG">CHANGELOG</a>.<br><br>'."\n";
+
+echo '<b>Remerciements</b><br><br>'."\n";
+echo 'Pour leurs contributions techniques ou ergonomiques : Guy, Christophe, Julien, Pierre, Romaric, Matthieu, Catherine, Christine, Olivier, Emmanuel et Florence <br><br>'."\n";
+
 echo '</div>'."\n";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 bandeau_pied_mobile();
 echo '</form>'."\n";
