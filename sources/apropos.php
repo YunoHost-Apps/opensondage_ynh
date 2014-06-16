@@ -157,8 +157,11 @@ alternatives libres existent et qu'on peut les installer "chez soi".<br>
 <h2>Éditeur et Responsable de la publication</h2>
 mentions;
 if (!empty(URL_INFO_LEGAL))
+{
 	echo '<p>Voir la page des <a href="'.URL_INFO_LEGAL.'">Informations légales</a></p>';
+}
 else
+{
 	echo <<<mentions2
 <p>Vous pouvez rentrer en contact avec l'Editeur et le
 Responsable de la publication en passant par la page "<a href="contacts.php">contact</a>".</p>
@@ -220,7 +223,7 @@ individu, vous autorisez cette personne à utiliser, partager, modifier
 votre sondage.</p>
 <hr style="width: 100%; height: 2px;">
 mentions2;
-
+}
 
 
 echo <<<mentions3
