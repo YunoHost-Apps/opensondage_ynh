@@ -47,7 +47,7 @@ sudo sed -i "s/yunoadmin/$admin/g" $final_path/variables.php
 sudo sed -i "s/I18NTOCHANGE/$language/g" $final_path/variables.php
 sudo sed -i "s@yunourl@$domain$path@g" $final_path/variables.php
 sudo sed -i "s@yunodomain@$domain@g" $final_path/variables.php
-sudo sed -i "s/yunoinfolegal/$legal/g" $final_path/variables.php
+sudo sed -i "s°yunoinfolegal°$legal°g" $final_path/variables.php
 
 # Create log file
 touch $final_path/admin/logs_studs.txt
@@ -84,7 +84,7 @@ sudo chmod 644 $finalphpini
 # Reload Nginx and regenerate SSOwat conf
 sudo service php5-fpm restart
 
-
+sudo apt-get install php-fpdf
 sudo yunohost app addaccess opensondage -u $admin
 sudo cp ../conf/nginx.conf-public /etc/nginx/conf.d/$domain.d/opensondage.conf
 sudo service nginx reload

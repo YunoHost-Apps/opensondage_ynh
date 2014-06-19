@@ -798,71 +798,71 @@ msgstr "Voir le sondage"
 msgid "Change the poll"
 msgstr "Modifier le sondage"
 
-#~ msgid "Enter a name!"
-#~ msgstr "Vous n'avez pas saisi de nom !"
+~ msgid "Enter a name!"
+~ msgstr "Vous n'avez pas saisi de nom !"
 
-#~ msgid "monday"
-#~ msgstr "lundi"
+~ msgid "monday"
+~ msgstr "lundi"
 
-#~ msgid "tuesday"
-#~ msgstr "mardi"
+~ msgid "tuesday"
+~ msgstr "mardi"
 
-#~ msgid "wednesday"
-#~ msgstr "mercredi"
+~ msgid "wednesday"
+~ msgstr "mercredi"
 
-#~ msgid "thursday"
-#~ msgstr "jeudi"
+~ msgid "thursday"
+~ msgstr "jeudi"
 
-#~ msgid "friday"
-#~ msgstr "vendredi"
+~ msgid "friday"
+~ msgstr "vendredi"
 
-#~ msgid "saturday"
-#~ msgstr "samedi"
+~ msgid "saturday"
+~ msgstr "samedi"
 
-#~ msgid "sunday"
-#~ msgstr "dimanche"
+~ msgid "sunday"
+~ msgstr "dimanche"
 
-#~ msgid "january"
-#~ msgstr "janvier"
+~ msgid "january"
+~ msgstr "janvier"
 
-#~ msgid "february"
-#~ msgstr "f&eacute;vrier"
+~ msgid "february"
+~ msgstr "f&eacute;vrier"
 
-#~ msgid "march"
-#~ msgstr "mars"
+~ msgid "march"
+~ msgstr "mars"
 
-#~ msgid "april"
-#~ msgstr "avril"
+~ msgid "april"
+~ msgstr "avril"
 
-#~ msgid "may"
-#~ msgstr "mai"
+~ msgid "may"
+~ msgstr "mai"
 
-#~ msgid "june"
-#~ msgstr "juin"
+~ msgid "june"
+~ msgstr "juin"
 
-#~ msgid "july"
-#~ msgstr "juillet"
+~ msgid "july"
+~ msgstr "juillet"
 
-#~ msgid "august"
-#~ msgstr "ao&ucirc;t"
+~ msgid "august"
+~ msgstr "ao&ucirc;t"
 
-#~ msgid "september"
-#~ msgstr "septembre"
+~ msgid "september"
+~ msgstr "septembre"
 
-#~ msgid "october"
-#~ msgstr "octobre"
+~ msgid "october"
+~ msgstr "octobre"
 
-#~ msgid "november"
-#~ msgstr "novembre"
+~ msgid "november"
+~ msgstr "novembre"
 
-#~ msgid "december"
-#~ msgstr "d&eacute;cembre"
+~ msgid "december"
+~ msgstr "d&eacute;cembre"
 
-#~ msgid "Sources"
-#~ msgstr "Sources"
+~ msgid "Sources"
+~ msgstr "Sources"
 
-#~ msgid "Back"
-#~ msgstr "Retour"
+~ msgid "Back"
+~ msgstr "Retour"
 
 #~ msgid ""
 #~ "Here are the <a href=\"http://sourcesup.cru.fr/frs/?"

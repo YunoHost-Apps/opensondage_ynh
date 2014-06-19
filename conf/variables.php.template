@@ -79,7 +79,7 @@ const LOGOLETTRE = '<chemin relatif suivi du nom du fichier du logo pour la lett
 
 // Nom et emplacement du fichier image contenant le titre
 //const IMAGE_TITRE', '<chemin relatif suivi du nom du fichier image du titre>';
-const IMAGE_TITRE = 'images/logo.png';
+const IMAGE_TITRE = './images/logo.png';
 
 // Activation des URL propre (true pour activer, false sinon)
 const URL_PROPRE = false;

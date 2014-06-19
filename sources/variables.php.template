@@ -72,14 +72,14 @@ const BASE_TYPE = '<type de BDD>';
 const LANGUE = 'fr_FR';
 
 // Nom et emplacement du logo
-const LOGOBANDEAU = 'images/logo.png';
+const LOGOBANDEAU = './images/logo.png';
 
 // Nom et emplacement du logo de la lettre générée en PDF
 const LOGOLETTRE = '<chemin relatif suivi du nom du fichier du logo pour la lettre>';
 
 // Nom et emplacement du fichier image contenant le titre
 //const IMAGE_TITRE', '<chemin relatif suivi du nom du fichier image du titre>';
-const IMAGE_TITRE = 'images/logo.png';
+const IMAGE_TITRE = './images/logo.png';
 
 // Activation des URL propre (true pour activer, false sinon)
 const URL_PROPRE = false;

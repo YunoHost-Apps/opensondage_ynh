@@ -83,11 +83,11 @@ function bandeau_tete()
 {
   if ( IMAGE_TITRE ) {
 
-    echo '<div class="bandeau"><a href="/" title="Accueil '.NOMAPPLICATION.'"><img src="' . IMAGE_TITRE. '" title="Accueil '.NOMAPPLICATION.'" alt="'.NOMAPPLICATION.'"></a></div>'."\n";
+    echo '<div class="bandeau"><a href="./" title="Accueil '.NOMAPPLICATION.'"><img src="' . IMAGE_TITRE. '" title="Accueil '.NOMAPPLICATION.'" alt="'.NOMAPPLICATION.'"></a></div>'."\n";
 
   } else {
 
-    echo '<div class="bandeau"><a href="/" title="Accueil '.NOMAPPLICATION.'">'.NOMAPPLICATION.'</a></div>'."\n";
+    echo '<div class="bandeau"><a href="./" title="Accueil '.NOMAPPLICATION.'">'.NOMAPPLICATION.'</a></div>'."\n";
 
   } ;
 
@@ -168,11 +168,11 @@ function bandeau_pied()
   //echo '<div class="bandeaupied">'. _("Universit&eacute; de Strasbourg. Creation: Guilhem BORGHESI. 2008-2009") .'</div>'."\n";
   echo '<div class="separateur">&nbsp;</div>';
   echo '<div class="sousbandeau">' .
-       '<a class="button small gray" href="/">'. _("Home") .'</a>' .
+       '<a class="button small gray" href="./">'. _("Home") .'</a>' .
        '<a class="button small gray" href="' . getUrlSondage('aqg259dth55iuhwm').'">'. _("Example") .'</a>' .
-       '<a class="button small gray" href="/contacts.php" target="_new">'. _("Contact") .'</a>' .
+       '<a class="button small gray" href="./contacts.php" target="_new">'. _("Contact") .'</a>' .
        //'<a href="/sources/sources.php">'. _("Sources") .'</a>' . //not implemented
-       '<a class="button small gray" href="/apropos.php">'. _("About") .'</a>' .
+       '<a class="button small gray" href="./apropos.php">'. _("About") .'</a>' .
        //'<a class="button small gray" href="/admin/index.php">'. _("Admin") .'</a>' .
        '<span class="sousbandeau sousbandeaulangue">' .
        liste_lang() . '</span>'.
@@ -187,11 +187,11 @@ function bandeau_pied_mobile()
        '<div class="bandeaupiedmobile">'. _("Universit&eacute; de Strasbourg. Creation: Guilhem BORGHESI. 2008-2009") .'</div>'."\n";*/
        echo '<div class="separateur">&nbsp;</div>';
   echo '<div class="sousbandeau">' .
-       '<a class="button small gray" href="/">'. _("Home") .'</a>' .
+       '<a class="button small gray" href="./">'. _("Home") .'</a>' .
        '<a class="button small gray" href="' . getUrlSondage('aqg259dth55iuhwm').'">'. _("Example") .'</a>' .
-       '<a class="button small gray" href="/contacts.php" target="_new">'. _("Contact") .'</a>' .
+       '<a class="button small gray" href="./contacts.php" target="_new">'. _("Contact") .'</a>' .
        //'<a href="/sources/sources.php">'. _("Sources") .'</a>' . //not implemented
-       '<a class="button small gray" href="/apropos.php">'. _("About") .'</a>' . 
+       '<a class="button small gray" href="./apropos.php">'. _("About") .'</a>' . 
        //'<a class="button small gray" href="/admin/index.php">'. _("Admin") .'</a>' .
        '<span class="sousbandeau sousbandeaulangue">' .
        liste_lang() . '</span>'.

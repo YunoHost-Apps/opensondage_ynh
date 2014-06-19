@@ -9,14 +9,13 @@ if (isset($_GET['lang']) && is_string($_GET['lang']) && in_array($_GET['lang'], 
   $mlocale = LANGUE ;
 }
 
-$locale = $mlocale . '.utf8';
-putenv('LANGUAGE=');
-setlocale(LC_ALL, $locale);
+$locale = $mlocale . '.UTF-8';
+putenv('LANGUAGE='.'C.UTF-8');
+setlocale(LC_ALL, 'C.UTF-8');
 setlocale(LC_TIME, $locale);
-setlocale(LC_MESSAGES, $locale);
-
+setlocale(LC_MESSAGES, 'C.UTF-8');
 $domain = 'Studs';
-bindtextdomain($domain, 'locale');
+bindtextdomain($domain, 'locale/'.$mlocale);
 bind_textdomain_codeset($domain, 'UTF-8');
 textdomain($domain);
 
