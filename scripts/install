@@ -63,7 +63,8 @@ sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/opensondage.conf
 
 # Reload Nginx and regenerate SSOwat conf
 sudo service nginx reload
-sudo yunohost app setting opensondage skipped_uris -v "/"
+sudo yunohost app setting opensondage skipped_uris -v "/"                
+sudo yunohost app setting opensondage protected_uris -v "/admin"
 sudo yunohost app ssowatconf
 
 # Db installation
@@ -88,5 +89,4 @@ sudo apt-get install php-fpdf
 sudo yunohost app addaccess opensondage -u $admin
 sudo cp ../conf/nginx.conf-public /etc/nginx/conf.d/$domain.d/opensondage.conf
 sudo service nginx reload
-echo "define('FORCE_SSL_ADMIN', true);" | sudo tee -a $final_path/variables.php
 sudo yunohost app ssowatconf
