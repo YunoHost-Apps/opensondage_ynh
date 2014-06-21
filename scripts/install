@@ -6,6 +6,7 @@ path=$2
 admin=$3
 legal=$4
 language=$5
+public_site=$6
 
 # Check if admin exists
 sudo yunohost user list --json | grep -q "\"username\": \"$admin\""
@@ -16,6 +17,7 @@ fi
 sudo yunohost app setting opensondage admin -v $admin
 sudo yunohost app setting opensondage language -v $language
 sudo yunohost app setting opensondage legal -v $legal
+sudo yunohost app setting opensondage public_site -v $public_site
 
 # Check domain/path availability
 sudo yunohost app checkurl $domain$path -a opensondage
@@ -63,8 +65,13 @@ sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/opensondage.conf
 
 # Reload Nginx and regenerate SSOwat conf
 sudo service nginx reload
-sudo yunohost app setting opensondage skipped_uris -v "/"                
-sudo yunohost app setting opensondage protected_uris -v "/admin"
+sudo yunohost app setting opensondage skipped_uris -v "/"  
+if [ $public_site = "No" ];
+then              
+	sudo yunohost app setting opensondage protected_uris -v "/admin,/index.php,/choix_sondage.php,/info_sondage.php" 
+else              
+	sudo yunohost app setting opensondage protected_uris -v "/admin"
+fi
 sudo yunohost app ssowatconf
 
 # Db installation

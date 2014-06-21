@@ -56,6 +56,15 @@
                 },
                 "choices": ["en_GB", "fr_FR","es_ES", "de_DE"],
                 "default": "en_GB"
+            },
+            {
+                "name": "public_site",
+                "ask": {
+                    "en": "Could non member create poll ?",
+                    "fr": "Une personne non membre peut elle créer un sondage ?"
+                },
+                "choices": ["Yes", "No"],
+                "default": "Yes"
             }
 
 
