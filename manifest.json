@@ -46,7 +46,7 @@
                     "fr": "Indiquez la page où figure les mentions légales"
                 },
                 "example": "http://example.com",
-                "default": ""
+                "default": "./apropos.php"
             },
             {
                 "name": "language",

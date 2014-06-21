@@ -47,7 +47,7 @@ sudo sed -i "s/yunoadmin/$admin/g" $final_path/variables.php
 sudo sed -i "s/I18NTOCHANGE/$language/g" $final_path/variables.php
 sudo sed -i "s@yunourl@$domain$path@g" $final_path/variables.php
 sudo sed -i "s@yunodomain@$domain@g" $final_path/variables.php
-sudo sed -i "s°yunoinfolegal°$legal°g" $final_path/variables.php
+sudo sed -i "s@yunoinfolegal@$legal@g" $final_path/variables.php
 
 # Create log file
 touch $final_path/admin/logs_studs.txt
