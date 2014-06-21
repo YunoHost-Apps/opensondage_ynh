@@ -54,7 +54,6 @@ sudo sed -i "s@yunoinfolegal@$legal@g" $final_path/variables.php
 # Create log file
 touch $final_path/admin/logs_studs.txt
 chmod 700 $final_path/admin/logs_studs.txt
-
 # Set permissions to roundcube directory
 sudo chown -R www-data: $final_path
 

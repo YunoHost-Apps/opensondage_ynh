@@ -132,13 +132,13 @@ function sous_bandeau()
 function sous_bandeau_admin()
 {
   echo '<div class="sousbandeau">' .
-       '<a class="button small gray" href="/">'. _("Home") .'</a>';
+       '<a class="button small gray" href="./">'. _("Home") .'</a>';
 
   if(is_readable('logs_studs.txt')) {
-    echo '<a class="button small gray" href="/admin/logs_studs.txt">'. _("Logs") .'</a>';
+    echo '<a class="button small gray" href="./admin/logs_studs.txt">'. _("Logs") .'</a>';
   }
 
-  echo '<a class="button small gray" href="/../scripts/nettoyage_sondage.php">'. _("Cleaning") .'</a>' .
+  echo '<a class="button small gray" href="./scripts/nettoyage_sondage.php">'. _("Cleaning") .'</a>' .
        '<span class="sousbandeau sousbandeaulangue">' .
        liste_lang() . '</span>'.
        '</div>'."\n";
