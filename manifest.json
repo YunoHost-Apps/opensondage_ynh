@@ -3,7 +3,7 @@
     "id": "opensondage",
     "description": {
         "en": "OpenSondage is used to poll people invite for a meeting.",
-        "fr": "OpenSondage sert à faire des sondages sans authentification pour trouver une date de réunion qui convienne à  toutes les personnes concernées."
+        "fr": "OpenSondage sert à faire des sondages sans authentification pour trouver une date de réunion qui convienne à toutes les personnes concernées."
     },
     "license": "CeCILL-B",
     "developer": {
