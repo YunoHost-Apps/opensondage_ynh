@@ -43,7 +43,13 @@ session_start();
 
 include_once('../variables.php');
 include_once('../fonctions.php');
-include_once('../bandeaux.php');
+if (is_readable('../bandeaux_local.php')) {
+  include_once('../bandeaux_local.php');
+} else {
+  include_once('../bandeaux.php');
+}
+
+
 
 // Ce fichier index.php se trouve dans le sous-repertoire ADMIN de Studs. Il sert à afficher l'intranet de studs 
 // pour modifier les sondages directement sans avoir reçu les mails. C'est l'interface d'aministration
