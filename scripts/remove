@@ -8,3 +8,4 @@ domain=$(sudo yunohost app setting opensondage domain)
 mysql -u root -p$root_pwd -e "DROP DATABASE $db_name ; DROP USER $db_user@localhost ;"
 sudo rm -rf /var/www/opensondage
 sudo rm -f /etc/nginx/conf.d/$domain.d/opensondage.conf
+sudo rm -f /etc/php5/fpm/pool.d/opensondage.conf
