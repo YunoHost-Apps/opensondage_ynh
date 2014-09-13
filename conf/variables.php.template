@@ -88,7 +88,7 @@ const URL_PROPRE = false;
 const GOOGLE_ANALYTICS_ID =  false;
 
 // Utilisation de l'identité (REMOTE_USER) fournie par le serveur web
-const USE_REMOTE_USER =  true;
+const USE_REMOTE_USER =  false;
 
 if (@file_exists('variables.local.php')) {
     include('variables.local.php');
