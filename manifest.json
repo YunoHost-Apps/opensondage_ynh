@@ -54,7 +54,7 @@
                     "en": "Choose the default language for OpenSondage",
                     "fr": "Choisissez la langue par défault d'OpenSondage"
                 },
-                "choices": ["en_GB", "fr_FR","es_ES", "de_DE"],
+                "choices": ["en_GB", "en_US", "fr_FR","es_ES", "de_DE"],
                 "default": "en_GB"
             },
             {
