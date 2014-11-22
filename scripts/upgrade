@@ -12,23 +12,10 @@ root_pwd=$(sudo cat /etc/yunohost/mysql)
 
 db_name=opensondage
 
-sudo cp ../conf/variables.php.template $final_path/variables.php
-
-# Change variables in OpenSondage configuration
-sudo sed -i "s/yunouser/$db_user/g" $final_path/variables.php
-sudo sed -i "s/yunopass/$db_pwd/g" $final_path/variables.php
-sudo sed -i "s/yunobase/$db_user/g" $final_path/variables.php
-sudo sed -i "s/yunoadmin/$admin/g" $final_path/variables.php
-sudo sed -i "s/I18NTOCHANGE/$language/g" $final_path/variables.php
-sudo sed -i "s@yunourl@$domain$path@g" $final_path/variables.php
-sudo sed -i "s@yunodomain@$domain@g" $final_path/variables.php
-sudo sed -i "s@yunoinfolegal@$legal@g" $final_path/variables.php
-
-
 
 if [[ "$language" = "" ]];
 then
-    language=$(sudo grep LANGUE /var/www/opensondage/variables.php | cut -d"'" -f4)
+    language=$(sudo grep LANGUE /var/www/opensondage/variables.php | grep -Po "'.*?'" | cut -d"'" -f2)
 fi
 
 
@@ -45,26 +32,27 @@ db_pwd=$(sudo yunohost app setting opensondage mysqlpwd)
 db_user=opensondage
 
 ### Execute potential SQL statements here
-
 # Copy files to the right place
 final_path=/var/www/opensondage
+sudo cp $final_path/admin/logs_studs.txt ../conf/
+sudo rm -Rf $final_path
 sudo mkdir -p $final_path
 sudo cp -a ../sources/* $final_path
-sudo cp ../conf/variables.php.template $final_path/variables.php
+sudo cp ../conf/constants.php.template $final_path/app/inc/constants.php
 
 # Change variables in OpenSondage configuration
-sudo sed -i "s/yunouser/$db_user/g" $final_path/variables.php
-sudo sed -i "s/yunopass/$db_pwd/g" $final_path/variables.php
-sudo sed -i "s/yunobase/$db_user/g" $final_path/variables.php
-sudo sed -i "s/yunoadmin/$admin/g" $final_path/variables.php
-sudo sed -i "s/I18NTOCHANGE/$language/g" $final_path/variables.php
-sudo sed -i "s@yunourl@$domain$path@g" $final_path/variables.php
-sudo sed -i "s@yunodomain@$domain@g" $final_path/variables.php
-sudo sed -i "s°yunoinfolegal°$legal°g" $final_path/variables.php
+sudo sed -i "s/yunouser/$db_user/g" $final_path/app/inc/constants.php
+sudo sed -i "s/yunopass/$db_pwd/g" $final_path/app/inc/constants.php
+sudo sed -i "s/yunobase/$db_user/g" $final_path/app/inc/constants.php
+sudo sed -i "s/yunoadmin/$admin/g" $final_path/app/inc/constants.php
+sudo sed -i "s/I18NTOCHANGE/$language/g" $final_path/app/inc/constants.php
+sudo sed -i "s@yunourl@$domain$path@g" $final_path/app/inc/constants.php
+sudo sed -i "s@yunodomain@$domain@g" $final_path/app/inc/constants.php
+sudo sed -i "s@yunoinfolegal@$legal@g" $final_path/app/inc/constants.php
 
 # Create log file
-touch admin/logs_studs.txt
-chmod 700 admin/logs_studs.txt
+sudo cp ../conf/logs_studs.txt $final_path/admin/
+chmod 700 $final_path/admin/logs_studs.txt
 
 # Set permissions to roundcube directory
 sudo chown -R www-data: $final_path

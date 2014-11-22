@@ -1,0 +1,10 @@
+.htaccess
+admin/.htaccess
+admin/.htpasswd
+admin/logs_studs.txt
+composer.lock
+composer.phar
+framanav
+nav
+app/inc/constants.php
+vendor

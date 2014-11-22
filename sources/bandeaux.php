@@ -1,200 +1,72 @@
 <?php
-//==========================================================================
-//
-//Université de Strasbourg - Direction Informatique
-//Auteur : Guilhem BORGHESI
-//Création : Février 2008
-//
-//borghesi@unistra.fr
-//
-//Ce logiciel est régi par la licence CeCILL-B soumise au droit français et
-//respectant les principes de diffusion des logiciels libres. Vous pouvez
-//utiliser, modifier et/ou redistribuer ce programme sous les conditions
-//de la licence CeCILL-B telle que diffusée par le CEA, le CNRS et l'INRIA
-//sur le site "http://www.cecill.info".
-//
-//Le fait que vous puissiez accéder à cet en-tête signifie que vous avez
-//pris connaissance de la licence CeCILL-B, et que vous en avez accepté les
-//termes. Vous pouvez trouver une copie de la licence dans le fichier LICENCE.
-//
-//==========================================================================
-//
-//Université de Strasbourg - Direction Informatique
-//Author : Guilhem BORGHESI
-//Creation : Feb 2008
-//
-//borghesi@unistra.fr
-//
-//This software is governed by the CeCILL-B license under French law and
-//abiding by the rules of distribution of free software. You can  use,
-//modify and/ or redistribute the software under the terms of the CeCILL-B
-//license as circulated by CEA, CNRS and INRIA at the following URL
-//"http://www.cecill.info".
-//
-//The fact that you are presently reading this means that you have had
-//knowledge of the CeCILL-B license and that you accept its terms. You can
-//find a copy of this license in the file LICENSE.
-//
-//==========================================================================
+/**
+ * This software is governed by the CeCILL-B license. If a copy of this license
+ * is not distributed with this file, you can obtain one at
+ * http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
+ *
+ * Authors of STUdS (initial project): Guilhem BORGHESI (borghesi@unistra.fr) and Raphaël DROZ
+ * Authors of Framadate/OpenSondate: Framasoft (https://github.com/framasoft)
+ *
+ * =============================
+ *
+ * Ce logiciel est régi par la licence CeCILL-B. Si une copie de cette licence
+ * ne se trouve pas avec ce fichier vous pouvez l'obtenir sur
+ * http://www.cecill.info/licences/Licence_CeCILL-B_V1-fr.txt
+ *
+ * Auteurs de STUdS (projet initial) : Guilhem BORGHESI (borghesi@unistra.fr) et Raphaël DROZ
+ * Auteurs de Framadate/OpenSondage : Framasoft (https://github.com/framasoft)
+ */
+namespace Framadate;
 
-include_once('fonctions.php');
-
-function framanav()
-{
-/*    if (file_exists($_SERVER['DOCUMENT_ROOT']."/framanav/nav.php")) {
-    //echo "\n".'<!-- Framanav --> '."\n";;
-    //echo '<script src="/framanav/scripts/jquery.min.js" type="text/javascript"></script>'."\n";
-    include_once($_SERVER['DOCUMENT_ROOT']."/framanav/nav.php");
-    //echo '<!-- /Framanav --> '."\n";
-    }*/
-    echo '<script src="nav/nav.js" id="nav_js" type="text/javascript" charset="utf-8"></script>'."\n";
-}
-
-function gAnalytics() {
-  if (GOOGLE_ANALYTICS_ID !== false) {
-    echo '
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push([\'_setAccount\', \''.GOOGLE_ANALYTICS_ID.'\']);
-  _gaq.push([\'_trackPageview\']);
-
-  (function() {
-    var ga = document.createElement(\'script\'); ga.type = \'text/javascript\'; ga.async = true;
-    ga.src = (\'https:\' == document.location.protocol ? \'https://ssl\' : \'http://www\') + \'.google-analytics.com/ga.js\';
-    var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>';
-  }
-}
-
-
-//le logo
-function logo ()
-{
-/*  if(defined('LOGOBANDEAU')) {
-    echo '<div class="logo"><img src="' . LOGOBANDEAU . '" height="74" alt="logo"></div>'."\n";
-  }*/
-}
-
-
-#le bandeau principal
-function bandeau_tete()
-{
-  if ( IMAGE_TITRE ) {
-
-    echo '<div class="bandeau"><a href="./" title="Accueil '.NOMAPPLICATION.'"><img src="' . IMAGE_TITRE. '" title="Accueil '.NOMAPPLICATION.'" alt="'.NOMAPPLICATION.'"></a></div>'."\n";
-
-  } else {
-
-    echo '<div class="bandeau"><a href="./" title="Accueil '.NOMAPPLICATION.'">'.NOMAPPLICATION.'</a></div>'."\n";
-
-  } ;
-
-}
-
+include_once __DIR__ . '/app/inc/init.php';
 
 // bandeaux de titre
 function bandeau_titre($titre)
 {
-  echo '<div class="bandeautitre">'. $titre .'</div>'."\n";
+    global $ALLOWED_LANGUAGES;
+    $img = ( IMAGE_TITRE ) ? '<img src="'. Utils::get_server_name(). IMAGE_TITRE. '" alt="'.NOMAPPLICATION.'">' : '';
+    echo '
+    <header role="banner">';
+    if(count($ALLOWED_LANGUAGES)>1){
+        echo '<form method="post" action="#">
+            <div class="input-group input-group-sm pull-right col-md-2 col-xs-4">
+                <select name="lang" class="form-control" title="'. _("Select the language") .'" >' . liste_lang() . '</select>
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-default btn-sm" title="'. _("Change the language") .'">OK</button>
+                </span>
+            </div>
+        </form>';
+    }
+    echo '
+        <h1><a href="'.str_replace('/admin','', Utils::get_server_name()).'" title="'._("Home").' - '.NOMAPPLICATION.'">'.$img.'</a></h1>
+        <h2 class="lead"><i>'. $titre .'</i></h2>
+        <hr class="trait" role="presentation" />
+    </header>
+    <main role="main">';
 }
-
 
 function liste_lang()
 {
-  global $ALLOWED_LANGUAGES;
+    global $ALLOWED_LANGUAGES; global $lang;
 
-  $str = '';
-  foreach ($ALLOWED_LANGUAGES as $k => $v ) {
-    $str .= '<a class="button small gray" href="' . $_SERVER['PHP_SELF'] . '?lang=' . $k . '">' . $v . '</a>' . "\n" ;
-  }
+    $str = '';
+
+    foreach ($ALLOWED_LANGUAGES as $k => $v ) {
+        if (substr($k,0,2)==$lang) {
+            $str .= '<option lang="'.substr($k,0,2).'" selected value="' . $k . '">' . $v . '</option>' . "\n" ;
+        } else {
+            $str .= '<option lang="'.substr($k,0,2).'" value="' . $k . '">' . $v . '</option>' . "\n" ;
+        }
+    }
 
   return $str;
 }
 
-
-#Les sous-bandeaux contenant les boutons de navigation
-function sous_bandeau()
+function bandeau_pied($admin=false)
 {
-  /*echo '<div class="sousbandeau">' .
-       '<a href="/">'. _("Home") .'</a>' .
-       '<a href="' . getUrlSondage('aqg259dth55iuhwm').'">'. _("Example") .'</a>' .
-       '<a href="http://contact.framasoft.org" target="_new">'. _("Contact") .'</a>' .
-       //'<a href="/sources/sources.php">'. _("Sources") .'</a>' . //not implemented
-       '<a href="/apropos.php">'. _("About") .'</a>' .
-       '<a href="/admin/index.php">'. _("Admin") .'</a>' .
-       '<span class="sousbandeau sousbandeaulangue">' .
-       liste_lang() . '</span>'.
-       '</div>' . "\n";*/
-}
-
-
-function sous_bandeau_admin()
-{
-  echo '<div class="sousbandeau">' .
-       '<a class="button small gray" href="/">'. _("Home") .'</a>';
-
-  if(is_readable('logs_studs.txt')) {
-    echo '<a class="button small gray" href="/admin/logs_studs.txt">'. _("Logs") .'</a>';
-  }
-
-  echo '<a class="button small gray" href="/../scripts/nettoyage_sondage.php">'. _("Cleaning") .'</a>' .
-       '<span class="sousbandeau sousbandeaulangue">' .
-       liste_lang() . '</span>'.
-       '</div>'."\n";
-
-    gAnalytics();
-}
-
-
-function sous_bandeau_choix()
-{
-  /*echo '<div class="sousbandeau">' .
-       '<a href="/">'. _("Home") .'</a>' .
-       '</div>'."\n";*/
-}
-
-
-#les bandeaux de pied
-function sur_bandeau_pied()
-{
-  echo '<div class="surbandeaupied"></div>'."\n";
-}
-
-
-function bandeau_pied()
-{
-  //echo '<div class="bandeaupied">'. _("Universit&eacute; de Strasbourg. Creation: Guilhem BORGHESI. 2008-2009") .'</div>'."\n";
-  echo '<div class="separateur">&nbsp;</div>';
-  echo '<div class="sousbandeau">' .
-       '<a class="button small gray" href="./">'. _("Home") .'</a>' .
-       '<a class="button small gray" href="' . getUrlSondage('aqg259dth55iuhwm').'">'. _("Example") .'</a>' .
-       '<a class="button small gray" href="./contacts.php" target="_new">'. _("Contact") .'</a>' .
-       //'<a href="/sources/sources.php">'. _("Sources") .'</a>' . //not implemented
-       '<a class="button small gray" href="./apropos.php">'. _("About") .'</a>' .
-       //'<a class="button small gray" href="/admin/index.php">'. _("Admin") .'</a>' .
-       '<span class="sousbandeau sousbandeaulangue">' .
-       liste_lang() . '</span>'.
-       '</div>' . "\n";
-    gAnalytics();
-}
-
-
-function bandeau_pied_mobile()
-{
-  /*echo '<div class="surbandeaupiedmobile"></div>'."\n" .
-       '<div class="bandeaupiedmobile">'. _("Universit&eacute; de Strasbourg. Creation: Guilhem BORGHESI. 2008-2009") .'</div>'."\n";*/
-       echo '<div class="separateur">&nbsp;</div>';
-  echo '<div class="sousbandeau">' .
-       '<a class="button small gray" href="./">'. _("Home") .'</a>' .
-       '<a class="button small gray" href="' . getUrlSondage('aqg259dth55iuhwm').'">'. _("Example") .'</a>' .
-       '<a class="button small gray" href="./contacts.php" target="_new">'. _("Contact") .'</a>' .
-       //'<a href="/sources/sources.php">'. _("Sources") .'</a>' . //not implemented
-       '<a class="button small gray" href="./apropos.php">'. _("About") .'</a>' . 
-       //'<a class="button small gray" href="/admin/index.php">'. _("Admin") .'</a>' .
-       '<span class="sousbandeau sousbandeaulangue">' .
-       liste_lang() . '</span>'.
-       '</div>' . "\n";
-    gAnalytics();
+    echo '
+    </main>
+    </div> <!-- .container -->
+</body>
+</html>'."\n";
 }

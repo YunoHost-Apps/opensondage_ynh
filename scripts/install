@@ -39,25 +39,23 @@ sudo yunohost app setting opensondage mysqlpwd -v $db_pwd
 final_path=/var/www/opensondage
 sudo mkdir -p $final_path
 sudo cp -a ../sources/* $final_path
-sudo cp ../conf/variables.php.template $final_path/variables.php
+sudo cp ../conf/constants.php.template $final_path/app/inc/constants.php
 
 # Change variables in OpenSondage configuration
-sudo sed -i "s/yunouser/$db_user/g" $final_path/variables.php
-sudo sed -i "s/yunopass/$db_pwd/g" $final_path/variables.php
-sudo sed -i "s/yunobase/$db_user/g" $final_path/variables.php
-sudo sed -i "s/yunoadmin/$admin/g" $final_path/variables.php
-sudo sed -i "s/I18NTOCHANGE/$language/g" $final_path/variables.php
-sudo sed -i "s@yunourl@$domain$path@g" $final_path/variables.php
-sudo sed -i "s@yunodomain@$domain@g" $final_path/variables.php
-sudo sed -i "s@yunoinfolegal@$legal@g" $final_path/variables.php
+sudo sed -i "s/yunouser/$db_user/g" $final_path/app/inc/constants.php
+sudo sed -i "s/yunopass/$db_pwd/g" $final_path/app/inc/constants.php
+sudo sed -i "s/yunobase/$db_user/g" $final_path/app/inc/constants.php
+sudo sed -i "s/yunoadmin/$admin/g" $final_path/app/inc/constants.php
+sudo sed -i "s/I18NTOCHANGE/$language/g" $final_path/app/inc/constants.php
+sudo sed -i "s@yunourl@$domain$path@g" $final_path/app/inc/constants.php
+sudo sed -i "s@yunodomain@$domain@g" $final_path/app/inc/constants.php
+sudo sed -i "s@yunoinfolegal@$legal@g" $final_path/app/inc/constants.php
 
 # Create log file
 touch $final_path/admin/logs_studs.txt
 chmod 700 $final_path/admin/logs_studs.txt
-# Set permissions to roundcube directory
+# Set permissions
 sudo chown -R www-data: $final_path
-
-
 
 # Db installation
 mysql -u $db_user -p$db_pwd $db_user < $final_path/install.mysql.sql

@@ -1,98 +1,105 @@
 <?php
-//==========================================================================
-//
-//Université de Strasbourg - Direction Informatique
-//Auteur : Guilhem BORGHESI
-//Création : Février 2008
-//
-//borghesi@unistra.fr
-//
-//Ce logiciel est régi par la licence CeCILL-B soumise au droit français et
-//respectant les principes de diffusion des logiciels libres. Vous pouvez
-//utiliser, modifier et/ou redistribuer ce programme sous les conditions
-//de la licence CeCILL-B telle que diffusée par le CEA, le CNRS et l'INRIA
-//sur le site "http://www.cecill.info".
-//
-//Le fait que vous puissiez accéder à cet en-tête signifie que vous avez
-//pris connaissance de la licence CeCILL-B, et que vous en avez accepté les
-//termes. Vous pouvez trouver une copie de la licence dans le fichier LICENCE.
-//
-//==========================================================================
-//
-//Université de Strasbourg - Direction Informatique
-//Author : Guilhem BORGHESI
-//Creation : Feb 2008
-//
-//borghesi@unistra.fr
-//
-//This software is governed by the CeCILL-B license under French law and
-//abiding by the rules of distribution of free software. You can  use,
-//modify and/ or redistribute the software under the terms of the CeCILL-B
-//license as circulated by CEA, CNRS and INRIA at the following URL
-//"http://www.cecill.info".
-//
-//The fact that you are presently reading this means that you have had
-//knowledge of the CeCILL-B license and that you accept its terms. You can
-//find a copy of this license in the file LICENSE.
-//
-//==========================================================================
+/**
+ * This software is governed by the CeCILL-B license. If a copy of this license
+ * is not distributed with this file, you can obtain one at
+ * http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
+ *
+ * Authors of STUdS (initial project): Guilhem BORGHESI (borghesi@unistra.fr) and Raphaël DROZ
+ * Authors of Framadate/OpenSondate: Framasoft (https://github.com/framasoft)
+ *
+ * =============================
+ *
+ * Ce logiciel est régi par la licence CeCILL-B. Si une copie de cette licence
+ * ne se trouve pas avec ce fichier vous pouvez l'obtenir sur
+ * http://www.cecill.info/licences/Licence_CeCILL-B_V1-fr.txt
+ *
+ * Auteurs de STUdS (projet initial) : Guilhem BORGHESI (borghesi@unistra.fr) et Raphaël DROZ
+ * Auteurs de Framadate/OpenSondage : Framasoft (https://github.com/framasoft)
+ */
+namespace Framadate;
 
-include_once('fonctions.php');
+use Framadate\Utils;
+
+include_once __DIR__ . '/app/inc/init.php';
+
 if (is_readable('bandeaux_local.php')) {
-  include_once('bandeaux_local.php');
+    include_once('bandeaux_local.php');
 } else {
-  include_once('bandeaux.php');
+    include_once('bandeaux.php');
 }
 
 session_start();
 
-//affichage de la page
-echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">'."\n";
-echo '<html>'."\n";
-echo '<head>'."\n";
-echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'."\n";
-echo '<title>'.NOMAPPLICATION.'</title>'."\n";
-echo '<link rel="stylesheet" type="text/css" href="style.css">'."\n";
-echo '</head>'."\n";
-echo '<body>'."\n";
+// affichage de la page
+Utils::print_header( _("Home") );
+bandeau_titre(_("Make your polls"));
 
-framanav();
+echo '
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <p class="home-choice"><a href="'.Utils::get_server_name().'infos_sondage.php?choix_sondage=date" class="opacity" role="button">
+                    <img class="img-responsive center-block" src="'.Utils::get_server_name().'images/date.png" alt="" />
+                    <br /><span class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-calendar"></span>
+                    '. _('Schedule an event') . '</span>
+                </a></p>
+            </div>
+            <div class="col-md-6 text-center">
+                <p class="home-choice"><a href="'.Utils::get_server_name().'infos_sondage.php?choix_sondage=autre" class="opacity" role="button">
+                    <img alt="" class="img-responsive center-block" src="'.Utils::get_server_name().'images/classic.png" />
+                    <br /><span class="btn btn-info btn-lg"><span class="glyphicon glyphicon-stats"></span>
+                    '. _('Make a classic poll') . '</span>
+                </a></p>
+            </div>
+        </div>
+        <hr  role="presentation" />
+        <div class="row">';
+        $nbcol = $config['show_what_is_that'] + $config['show_the_software'] + $config['show_cultivate_your_garden'];
+        if ($nbcol > 0){
+            $colmd = 12/$nbcol; // 3 =>col-md-4, 2 =>col-md-6, 1 =>col-md-12.
+        }
+            if($config['show_what_is_that'] == true){
+                echo '<div class="col-md-'.$colmd.'">
+                <h3>'. _('What is that?') . '</h3>
+                <p class="text-center" role="presentation"><span class="glyphicon glyphicon-question-sign" style="font-size:50px"></span></p>
+                <p>'. _('Framadate is an online service for planning an appointment or make a decision quickly and easily. No registration is required.') .'</p>
+                <p>'. _('Here is how it works:') . '</p>
+                <ol>
+                    <li>'. _('Make a poll') . '</li>
+                    <li>'. _('Define dates or subjects to choose') . '</li>
+                    <li>'. _('Send the poll link to your friends or colleagues') . '</li>
+                    <li>'. _('Discuss and make a decision') . '</li>
+                </ol>
+                <p>'. _('Do you want to ') . '<a href="' . Utils::getUrlSondage('aqg259dth55iuhwm').'">'. _("view an example?") .'</a></p>
+                </div>';
+            }
 
-//bandeaux de tete
-logo();
-bandeau_tete();
-bandeau_titre(_("Organiser des rendez-vous simplement, librement."));
-sous_bandeau();
+            if($config['show_the_software'] == true){
+                echo '<div class="col-md-'.$colmd.'">
+                <h3>'. _('The software') .'</h3>
+                <p class="text-center" role="presentation"><span class="glyphicon glyphicon-cloud" style="font-size:50px"></span></p>
+                <p>'. _('Framadate was initially based on '). '<a href="https://sourcesup.cru.fr/projects/studs/">Studs</a>'. _(' a software developed by the University of Strasbourg. Today, it is devevoped by the association Framasoft') .'.</p>
+                <p>'. _('This software needs javascript and cookies enabled. It is compatible with the following web browsers:') .'</p>
+                <ul>
+                    <li>Microsoft Internet Explorer 9+</li>
+                    <li>Google Chrome 19+</li>
+                    <li>Firefox 12+</li>
+                    <li>Safari 5+</li>
+                    <li>Opera 11+</li>
+                </ul>
+                <p>'. _('It is governed by the ').'<a href="http://www.cecill.info">'. _('CeCILL-B license').'</a>.</p>
+                </div>';
+            }
 
-echo '<div class=corps>'."\n";
-#echo '<p><b>'.NOMAPPLICATION.'<br>'. _("What is it about?") .'</b></p>';
-#echo '<p>'. _("Making polls to schedule meetings or events, quickly and easily. <br> You can also run polls to determine what will be your next meeting place, the meeting topic or anything like the country you would like to visit during your next holidays.") .'</p>'."\n".'<br>'."\n";
-#echo '<div class="nouveau_sondage"><b>'. _("Make a poll") .'</b>';
-#     '<span>' .
-#     '<a href="/infos_sondage.php"><img alt="' . _('Make a poll') . '" src="images/next-32.png" /></a>' .
-#     '</span>';
-#echo '</div>' . "\n";
+            if($config['show_cultivate_your_garden'] == true){
+                echo '<div class="col-md-'.$colmd.'">
+                <h3>'. _('Cultivate your garden') .'</h3>
+                <p class="text-center" role="presentation"><span class="glyphicon glyphicon-tree-deciduous" style="font-size:50px"></span></p>
+                <p>'. _('To participate in the software development, suggest improvements or simply download it, please visit ') .'<a href="https://git.framasoft.org/framasoft/framadate">'._('the development site').'</a>.</p>
+                <br />
+                <p>'. _('If you want to install the software for your own use and thus increase your independence, we help you on:') .'</p>
+                <p class="text-center"><a href="http://framacloud.org/cultiver-son-jardin/installation-de-framadate/" class="btn btn-success"><span class="glyphicon glyphicon-tree-deciduous"></span> framacloud.org</a></p>
+                </div>';
+            }
+        echo '</div>'."\n";
 
-echo '<br>'."\n";
-
-echo '<div class="index_date">';
-echo '<div><a href="./infos_sondage.php?choix_sondage=date"/><image class="opacity" src="images/date.png"/></a></div>';
-echo '<a href="./infos_sondage.php?choix_sondage=date" class="button orange bigrounded"/><strong><img src="images/calendar-32.png" alt="" />'
-    . _('Schedule an event') . '</strong></a>';
-echo '</div>';
-
-echo '<div class="index_sondage">';
-echo '<div><a href="./infos_sondage.php?choix_sondage=autre"><image class="opacity" src="images/sondage2.png" /></a></div>';
-echo '<a href="./infos_sondage.php?choix_sondage=autre" class="button blue bigrounded"><strong><img src="images/chart-32.png" alt="" />'. _('Make a poll') . '</strong></a>';
-echo '</div>';
-
-
-echo '<div style="clear:both;"></div>'."\n";
-
-echo '</div>'."\n";
-//bandeau de pied
-//sur_bandeau_pied();
 bandeau_pied();
-
-echo '</body>'."\n";
-echo '</html>'."\n";

@@ -1,236 +1,253 @@
 <?php
-//==========================================================================
-//
-//Université de Strasbourg - Direction Informatique
-//Auteur : Guilhem BORGHESI
-//Création : Février 2008
-//
-//borghesi@unistra.fr
-//
-//Ce logiciel est régi par la licence CeCILL-B soumise au droit français et
-//respectant les principes de diffusion des logiciels libres. Vous pouvez
-//utiliser, modifier et/ou redistribuer ce programme sous les conditions
-//de la licence CeCILL-B telle que diffusée par le CEA, le CNRS et l'INRIA 
-//sur le site "http://www.cecill.info".
-//
-//Le fait que vous puissiez accéder à cet en-tête signifie que vous avez 
-//pris connaissance de la licence CeCILL-B, et que vous en avez accepté les
-//termes. Vous pouvez trouver une copie de la licence dans le fichier LICENCE.
-//
-//==========================================================================
-//
-//Université de Strasbourg - Direction Informatique
-//Author : Guilhem BORGHESI
-//Creation : Feb 2008
-//
-//borghesi@unistra.fr
-//
-//This software is governed by the CeCILL-B license under French law and
-//abiding by the rules of distribution of free software. You can  use, 
-//modify and/ or redistribute the software under the terms of the CeCILL-B
-//license as circulated by CEA, CNRS and INRIA at the following URL
-//"http://www.cecill.info". 
-//
-//The fact that you are presently reading this means that you have had
-//knowledge of the CeCILL-B license and that you accept its terms. You can
-//find a copy of this license in the file LICENSE.
-//
-//==========================================================================
+/**
+ * This software is governed by the CeCILL-B license. If a copy of this license
+ * is not distributed with this file, you can obtain one at
+ * http://www.cecill.info/licences/Licence_CeCILL-B_V1-en.txt
+ *
+ * Authors of STUdS (initial project): Guilhem BORGHESI (borghesi@unistra.fr) and Raphaël DROZ
+ * Authors of Framadate/OpenSondate: Framasoft (https://github.com/framasoft)
+ *
+ * =============================
+ *
+ * Ce logiciel est régi par la licence CeCILL-B. Si une copie de cette licence
+ * ne se trouve pas avec ce fichier vous pouvez l'obtenir sur
+ * http://www.cecill.info/licences/Licence_CeCILL-B_V1-fr.txt
+ *
+ * Auteurs de STUdS (projet initial) : Guilhem BORGHESI (borghesi@unistra.fr) et Raphaël DROZ
+ * Auteurs de Framadate/OpenSondage : Framasoft (https://github.com/framasoft)
+ */
+namespace Framadate;
 
 session_start();
 include_once('creation_sondage.php');
 
 if (file_exists('bandeaux_local.php')) {
-  include_once('bandeaux_local.php');
+    include_once('bandeaux_local.php');
 } else {
-  include_once('bandeaux.php');
+    include_once('bandeaux.php');
 }
 
-//si les variables de session ne sont pas valides, il y a une erreur
-if (issetAndNoEmpty('titre', $_SESSION) === false || issetAndNoEmpty('nom', $_SESSION) === false || issetAndNoEmpty('adresse', $_SESSION) === false) {
-  echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">'."\n";
-  echo '<html>'."\n";
-  echo '<head>'."\n";
-  echo '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'."\n";
-  echo '<title>'.NOMAPPLICATION.'</title>'."\n";
-  echo '<link rel="stylesheet" type="text/css" href="style.css">'."\n";
-  echo '</head>'."\n";
-  echo '<body>'."\n";
-  framanav();
-  logo();
-  bandeau_tete();
-  bandeau_titre(_("Error!"));
-  echo '<div class=corpscentre>'."\n";
-  print "<H2>" . _("You haven't filled the first section of the poll creation.") . " !</H2>"."\n";
-  print "" . _("Back to the homepage of ") . " <a href=\"index.php\"> ".NOMAPPLICATION."</A>."."\n";
-  echo '<br><br><br>'."\n";
-  echo '</div>'."\n";
-  //bandeau de pied
-  bandeau_pied();
-  echo '</body>'."\n";
-  echo '</html>'."\n";
+// Step 1/3 : error if $_SESSION from info_sondage are not valid
+if (Utils::issetAndNoEmpty('titre', $_SESSION) === false || Utils::issetAndNoEmpty('nom', $_SESSION) === false || (($config['use_smtp']) ? Utils::issetAndNoEmpty('adresse', $_SESSION) === false : false)) {
+
+    Utils::print_header ( _("Error!") );
+    bandeau_titre(_("Error!"));
+
+    echo '
+    <div class="alert alert-danger">
+        <h3>' . _("You haven't filled the first section of the poll creation.") . ' !</h3>
+        <p>' . _("Back to the homepage of ") . ' <a href="' . Utils::get_server_name() . '"> ' . NOMAPPLICATION . '</a></p>
+    </div>'."\n";
+
+    bandeau_pied();
+
 } else {
-  //partie creation du sondage dans la base SQL
-  //On prépare les données pour les inserer dans la base
-  
-  $erreur = false;
-  $testdate = true;
-  $date_selected = '';
-  
-  if (isset($_POST["confirmecreation"]) || isset($_POST["confirmecreation_x"])) {
-    //recuperation des données de champs textes
-    $toutchoix = '';
-    for ($i = 0; $i < $_SESSION["nbrecases"] + 1; $i++) {
-      if (isset($_POST["choix"]) && issetAndNoEmpty($i, $_POST["choix"])) {
-        $toutchoix.=',';
-        $toutchoix.=str_replace(",", " ", htmlentities(html_entity_decode($_POST["choix"][$i], ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8'));
-      }
-    }
-    
-    $toutchoix=substr("$toutchoix",1);
-    $_SESSION["toutchoix"]=$toutchoix;
-    
-    if (issetAndNoEmpty('champdatefin')) {
-      $registredate=explode("/",$_POST["champdatefin"]);
-      if (is_array($registredate) === false || count($registredate) !== 3) {
-        $testdate = false;
-        $date_selected = $_POST["champdatefin"];
-      } else {
-        $time = mktime(0,0,0,$registredate[1],$registredate[0],$registredate[2]);
-        if ($time === false || date('d/m/Y', $time) !== $_POST["champdatefin"]) {
-          $testdate = false;
-          $date_selected = $_POST["champdatefin"];
-        } else {
-          if (mktime(0,0,0,$registredate[1],$registredate[0],$registredate[2]) > time() + 250000) {
-            $_SESSION["champdatefin"]=mktime(0,0,0,$registredate[1],$registredate[0],$registredate[2]);
-          }
+    // Step 4 : Data prepare before insert in DB
+    if (isset($_POST["confirmecreation"])) {
+        //recuperation des données de champs textes
+        $temp_results = '';
+        if (isset($_SESSION['choices'])) {
+            for ($i = 0; $i < count($_SESSION['choices']); $i++) {
+                if ($_SESSION['choices'][$i]!="") {
+                    $temp_results.=','.str_replace(",", " ", htmlentities(html_entity_decode($_SESSION['choices'][$i], ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8'));
+                }
+            }
         }
-      }
-    } else {
-      $_SESSION["champdatefin"]=time()+15552000;
-    }
-    
-    if ($testdate === true) {
-      //format du sondage AUTRE
-      $_SESSION["formatsondage"]="A".$_SESSION["studsplus"];
-      
-      ajouter_sondage();
-    } else {
-      $_POST["fin_sondage_autre"] = 'ok';
-    }
-  }
-  
-  // recuperation des sujets pour sondage AUTRE
-  $erreur_injection = false;
-  if (isset($_SESSION["nbrecases"])) {
-    for ($i = 0; $i < $_SESSION["nbrecases"]; $i++) {
-      if (isset($_POST["choix"]) && isset($_POST["choix"][$i])) {
-        $_SESSION["choix$i"]=htmlentities(html_entity_decode($_POST["choix"][$i], ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8');
-      }
-    }
-  } else { //nombre de cases par défaut
-    $_SESSION["nbrecases"]=10;
-  }
-  
-  if (isset($_POST["ajoutcases"]) || isset($_POST["ajoutcases_x"])) {
-    $_SESSION["nbrecases"]=$_SESSION["nbrecases"]+5;
-  }
-  
-  print_header();
-  echo '<body>'."\n";
-  framanav();
-  
-  echo '<form name="formulaire" action="#bas" method="POST" onkeypress="javascript:process_keypress(event)">'."\n";
-  logo();
-  bandeau_tete();
-  bandeau_titre(_("Poll subjects (2 on 2)"));
-  sous_bandeau_choix();
-  
-  echo '<div class=corps>'."\n";
-  echo '<br>'. _("Your poll aim is to make a choice between different subjects.<br>Enter the subjects to vote for:") .'<br><br>'."\n";
-  echo '<table>'."\n";
-  
-  //affichage des cases texte de formulaire
-  for ($i = 0; $i < $_SESSION["nbrecases"]; $i++) {
-    $j = $i + 1;
-    if (isset($_SESSION["choix$i"]) === false) {
-      $_SESSION["choix$i"] = '';
-    }
-    echo '<tr><td>'. _("Choice") .' '.$j.' : </td><td><input type="text" name="choix[]" size="40" maxlength="40" value="'.str_replace("\\","",$_SESSION["choix$i"]).'" id="choix'.$i.'"></td></tr>'."\n";
-  }
-  
-  echo '</table>'."\n";
-  
-  //focus javascript sur premiere case
-  echo '<script type="text/javascript">'."\n";
-  echo 'document.formulaire.choix0.focus();'."\n";
-  echo '</script>'."\n";
-  
-  //ajout de cases supplementaires
-  echo '<table><tr>'."\n";
-  echo '<td>'. _("5 choices more") .'</td><td><input type="image" name="ajoutcases" value="Retour" src="images/add-16.png"></td>'."\n";
-  echo '</tr></table>'."\n";
-  echo'<br>'."\n";
-  
-  //echo '<table><tr>'."\n";
-  //echo '<td>'. _("Next") .'</td><td><input type="image" name="fin_sondage_autre" value="Cr&eacute;er le sondage" src="images/next-32.png"></td>'."\n";
-  //echo '</tr></table>'."\n";
 
-if (!isset($_POST["fin_sondage_autre_x"])) {
-  echo '<button name="fin_sondage_autre_x" value="'._('Next').'" type="submit" class="button green poursuivre"><strong>'. _('Next') . '</strong> </button>';
-  echo '<div style="clear:both"></div>';
-}
+        $temp_results=substr($temp_results,1);
+        $_SESSION["toutchoix"]=$temp_results;
 
-  //test de remplissage des cases
-  $testremplissage = '';
-  for ($i=0;$i<$_SESSION["nbrecases"];$i++) {
-    if (isset($_POST["choix"]) && issetAndNoEmpty($i, $_POST["choix"])) {
-      $testremplissage="ok";
+
+        if (Utils::issetAndNoEmpty('champdatefin')) {
+            $registredate = explode("/",$_POST["champdatefin"]);
+            if (is_array($registredate) == true && count($registredate) == 3) {
+                $time = mktime(0,0,0,$registredate[1],$registredate[0],$registredate[2]);
+                if ($time > time() + (24*60*60)) {
+                    $_SESSION["champdatefin"]=$time;
+                }
+            }
+        }
+
+        //format du sondage AUTRE
+        $_SESSION["formatsondage"]="A".$_SESSION["studsplus"];
+
+        ajouter_sondage();
+
     }
-  }
-  
-  //message d'erreur si aucun champ renseigné
-  if ($testremplissage != "ok" && (isset($_POST["fin_sondage_autre"]) || isset($_POST["fin_sondage_autre_x"]))) {
-    print "<br><font color=\"#FF0000\">" . _("Enter at least one choice") . "</font><br><br>"."\n";
-    $erreur = true;
-  }
-  
-  //message d'erreur si mauvaise date
-  if ($testdate === false) {
-    print "<br><font color=\"#FF0000\">" . _("Date must be have the format DD/MM/YYYY") . "</font><br><br>"."\n";
-  }
-  
-  if ($erreur_injection) {
-    print "<font color=#FF0000>" . _("Characters \" < and > are not permitted") . "</font><br><br>\n";
-  }
-  
-  if ((isset($_POST["fin_sondage_autre"]) || isset($_POST["fin_sondage_autre_x"])) && !$erreur && !$erreur_injection) {
-    //demande de la date de fin du sondage
-    echo '<br>'."\n";
-    echo '<div class=presentationdatefin>'."\n";
-    echo '<br>'. _("Your poll will be automatically removed after 6 months.<br> You can fix another removal date for it.") .'<br><br>'."\n";
-    echo _("Removal date (optional)") .' : <input type="text" class="champdatefin" name="champdatefin" value="'.$date_selected.'" size="10" maxlength="10"> '. _("(DD/MM/YYYY)") ."\n";
-    echo '</div>'."\n";
-    echo '<div class=presentationdatefin>'."\n";
-    echo '<font color=#FF0000>'. _("Once you have confirmed the creation of your poll, you will be automatically redirected on the page of your poll. <br><br>Then, you will receive quickly an email contening the link to your poll for sending it to the voters.") .'</font>'."\n";
-    echo '</div>'."\n";
-    echo '<br>'."\n";
-    //echo '<table>'."\n";
-    //echo '<tr><td>'. _("Create the poll") .'</td><td><input type="image" name="confirmecreation" value="Valider la cr&eacute;ation"i src="images/add.png"></td></tr>'."\n";
-    //echo '</table>'."\n";
-    
-    echo '<button name="confirmecreation" value="confirmecreation" type="submit" class="button green poursuivre"><strong>'. _('Make a poll') . '</strong> </button>';
-    echo '<div style="clear:both"></div>';
-    
-  }
-  
-  //fin du formulaire et bandeau de pied
-  echo '</form>'."\n";
-  echo '<a name=bas></a>'."\n";
-  echo '<br><br><br>'."\n";
-  echo '</div>'."\n";
-  //bandeau de pied
-  bandeau_pied_mobile();
-  echo '</body>'."\n";
-  echo '</html>'."\n";
+
+    // recuperation des sujets pour sondage AUTRE
+    if (isset($_POST['choices'])) {
+        $k = 0;
+        for ($i = 0; $i < count($_POST['choices']); $i++) {
+            if (Utils::issetAndNoEmpty($i, $_POST['choices'])) {
+                $_SESSION['choices'][$k]=htmlentities(html_entity_decode($_POST['choices'][$i], ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8');
+                $k++;
+            }
+        }
+    }
+
+    // Step 3/3 : Confirm poll creation and choose a removal date
+    if (isset($_POST["fin_sondage_autre"])) {
+        Utils::print_header ( _("Removal date and confirmation (3 on 3)") );
+        bandeau_titre(_("Removal date and confirmation (3 on 3)"));
+
+        // Expiration date is initialised with config parameter. Value will be modified in step 4 if user has defined an other date
+        $_SESSION["champdatefin"]= time()+ (86400 * $config['default_poll_duration']); //60 sec * 60 min * 24 hours * config
+
+        $removal_date= utf8_encode(strftime($date_format['txt_full'], ($_SESSION["champdatefin"])));//textual date
+
+        // Summary
+        $summary = '<ol>';
+        for ($i=0;$i<count($_SESSION['choices']);$i++) {
+
+            preg_match_all('/\[!\[(.*?)\]\((.*?)\)\]\((.*?)\)/',$_SESSION['choices'][$i],$md_a_img);  // Markdown [![alt](src)](href)
+            preg_match_all('/!\[(.*?)\]\((.*?)\)/',$_SESSION['choices'][$i],$md_img);                 // Markdown ![alt](src)
+            preg_match_all('/\[(.*?)\]\((.*?)\)/',$_SESSION['choices'][$i],$md_a);                    // Markdown [text](href)
+            if (isset($md_a_img[2][0]) && $md_a_img[2][0]!='' && isset($md_a_img[3][0]) && $md_a_img[3][0]!='') { // [![alt](src)](href)
+
+                $li_subject_text = (isset($md_a_img[1][0]) && $md_a_img[1][0]!='') ? stripslashes($md_a_img[1][0]) : _("Choice") .' '.($i+1);
+                $li_subject_html = '<a href="'.$md_a_img[3][0].'"><img src="'.$md_a_img[2][0].'" class="img-responsive" alt="'.$li_subject_text.'" /></a>';
+
+            } elseif (isset($md_img[2][0]) && $md_img[2][0]!='') { // ![alt](src)
+
+                $li_subject_text = (isset($md_img[1][0]) && $md_img[1][0]!='') ? stripslashes($md_img[1][0]) : _("Choice") .' '.($i+1);
+                $li_subject_html = '<img src="'.$md_img[2][0].'" class="img-responsive" alt="'.$li_subject_text.'" />';
+
+            } elseif (isset($md_a[2][0]) && $md_a[2][0]!='') { // [text](href)
+
+                $li_subject_text = (isset($md_a[1][0]) && $md_a[1][0]!='') ? stripslashes($md_a[1][0]) : _("Choice") .' '.($i+1);
+                $li_subject_html = '<a href="'.$md_a[2][0].'">'.$li_subject_text.'</a>';
+
+            } else { // text only
+
+                $li_subject_text = stripslashes($_SESSION['choices'][$i]);
+                $li_subject_html = $li_subject_text;
+
+            }
+
+            $summary .= '<li>'.$li_subject_html.'</li>'."\n";
+        }
+        $summary .= '</ol>';
+
+        echo '
+    <form name="formulaire" action="' . Utils::get_server_name() . 'choix_autre.php" method="POST" class="form-horizontal" role="form">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="well summary">
+                <h4>'. _("List of your choices").'</h4>
+                '. $summary .'
+            </div>
+            <div class="alert alert-info">
+                <p>' . _("Your poll will be automatically removed after"). " " . $config['default_poll_duration'] . " " . _("days") . ': <strong>'.$removal_date.'</strong>.<br />' . _("You can fix another removal date for it.") .'</p>
+                <div class="form-group">
+                    <label for="champdatefin" class="col-sm-5 control-label">'. _("Removal date (optional)") .'</label>
+                    <div class="col-sm-6">
+                        <div class="input-group date">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar text-info"></i></span>
+                            <input type="text" class="form-control" id="champdatefin" data-date-format="'. _("dd/mm/yyyy") .'" aria-describedby="dateformat" name="champdatefin" value="" size="10" maxlength="10" placeholder="'. _("dd/mm/yyyy") .'" />
+                        </div>
+                    </div>
+                    <span id="dateformat" class="sr-only">'. _("(dd/mm/yyyy)") .'</span>
+                </div>
+            </div>
+            <div class="alert alert-warning">
+                <p>'. _("Once you have confirmed the creation of your poll, you will be automatically redirected on the administration page of your poll."). '</p>';
+        if($config['use_smtp']==true){
+            echo '
+                <p>' . _("Then, you will receive quickly two emails: one contening the link of your poll for sending it to the voters, the other contening the link to the administration page of your poll.") .'</p>';
+        }
+        echo '
+            </div>
+            <p class="text-right">
+                <button class="btn btn-default" onclick="javascript:window.history.back();" title="'. _('Back to step 2') . '">'. _('Back') . '</button>
+                <button name="confirmecreation" value="confirmecreation" type="submit" class="btn btn-success">'. _('Create the poll') . '</button>
+            </p>
+        </div>
+    </div>
+    </form>'."\n";
+
+        bandeau_pied();
+
+    // Step 2/3 : Select choices of the poll
+    } else {
+        Utils::print_header( _("Poll subjects (2 on 3)"));
+        bandeau_titre(_("Poll subjects (2 on 3)"));
+
+        echo '
+    <form name="formulaire" action="' . Utils::get_server_name() . 'choix_autre.php" method="POST" class="form-horizontal" role="form">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">';
+        echo '
+            <div class="alert alert-info">
+                <p>'. _("To make a generic poll you need to propose at least two choices between differents subjects.") .'</p>
+                <p>'. _("You can add or remove additional choices with the buttons") .' <span class="glyphicon glyphicon-minus text-info"></span><span class="sr-only">'. _("Remove") .'</span> <span class="glyphicon glyphicon-plus text-success"></span><span class="sr-only">'. _("Add") .'</span></p>';
+        if($config['user_can_add_img_or_link']){
+            echo '    <p>'. _("It's possible to propose links or images by using "). '<a href="http://'.$lang.'.wikipedia.org/wiki/Markdown">'. _("the Markdown syntax") .'</a>.</p>';
+        }
+        echo '    </div>'."\n";
+
+        // Fields choices : 5 by default
+        $nb_choices = (isset($_SESSION['choices'])) ? max(count($_SESSION['choices']), 5) : 5;
+        for ($i = 0; $i < $nb_choices; $i++) {
+            $choice_value = (isset($_SESSION['choices'][$i])) ? str_replace("\\","",$_SESSION['choices'][$i]) : '';
+            echo '
+            <div class="form-group choice-field">
+                <label for="choice'.$i.'" class="col-sm-2 control-label">'. _("Choice") .' '.($i+1).'</label>
+                <div class="col-sm-10 input-group">
+                    <input type="text" class="form-control" name="choices[]" size="40" value="'.$choice_value.'" id="choice'.$i.'" />';
+                    if($config['user_can_add_img_or_link']){
+                        echo '<span class="input-group-addon btn-link md-a-img" title="'. _("Add a link or an image") .' - '. _("Choice") .' '.($i+1).'" ><span class="glyphicon glyphicon-picture"></span> <span class="glyphicon glyphicon-link"></span></span>';
+                    }
+            echo '
+            </div>
+            </div>'."\n";
+        }
+
+        echo '
+            <div class="col-md-4">
+                <div class="btn-group btn-group">
+                    <button type="button" id="remove-a-choice" class="btn btn-default" title="'. _("Remove a choice") .'"><span class="glyphicon glyphicon-minus text-info"></span><span class="sr-only">'. _("Remove") .'</span></button>
+                    <button type="button" id="add-a-choice" class="btn btn-default" title="'. _("Add a choice") .'"><span class="glyphicon glyphicon-plus text-success"></span><span class="sr-only">'. _("Add") .'</span></button>
+                </div>
+            </div>
+            <div class="col-md-8 text-right">
+                <a class="btn btn-default" href="'.Utils::get_server_name().'infos_sondage.php?choix_sondage=autre" title="'. _('Back to step 1') . '">'. _('Back') . '</a>
+                <button name="fin_sondage_autre" value="'._('Next').'" type="submit" class="btn btn-success disabled" title="'. _('Go to step 3') . '">'. _('Next') . '</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="md-a-imgModal" tabindex="-1" role="dialog" aria-labelledby="md-a-imgModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">'. _('Close') . '</span></button>
+                    <p class="modal-title" id="md-a-imgModalLabel">'. _("Add a link or an image") .'</p>
+                </div>
+                <div class="modal-body">
+                    <p class="alert alert-info">'. _("These fields are optional. You can add a link, an image or both.") .'</p>
+                    <div class="form-group">
+                        <label for="md-img"><span class="glyphicon glyphicon-picture"></span> '. _('URL of the image') . '</label>
+                        <input id="md-img" type="text" placeholder="http://…" class="form-control" size="40" />
+                    </div>
+                    <div class="form-group">
+                        <label for="md-a"><span class="glyphicon glyphicon-link"></span> '. _('Link') . '</label>
+                        <input id="md-a" type="text" placeholder="http://…" class="form-control" size="40" />
+                    </div>
+                    <div class="form-group">
+                        <label for="md-text">'. _('Alternative text') . '</label>
+                        <input id="md-text" type="text" class="form-control" size="40" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">'. _('Cancel') . '</button>
+                    <button type="button" class="btn btn-primary">'. _('Add') . '</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>'."\n";
+
+        bandeau_pied();
+
+    }
 }
