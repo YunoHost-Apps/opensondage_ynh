@@ -101,7 +101,7 @@ echo '
                 </div>';
             }
         echo '</div>'."\n";
-        if (URL_ABOUT && !is_empty(URL_ABOUT) && URL_ABOUT!='./apropos.php')
+        if (URL_ABOUT!='./apropos.php' && URL_ABOUT!='' && URL_ABOUT!='false' && URL_ABOUT!='no')
         {
 			echo '<div class="row" style="text-align:center">'."\n";
 			echo '<a href="'.URL_ABOUT.'">'._("About").'</a>';
