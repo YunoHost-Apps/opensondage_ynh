@@ -687,4 +687,3 @@ msgstr "Author's message"
 
 msgid "For sending to the polled users"
 msgstr "For sending to the polled users"
-
