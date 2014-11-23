@@ -36,7 +36,7 @@ if (isset($_POST['lang']) && is_string($_POST['lang']) && in_array($_POST['lang'
 
 }
 
-$locale = $mlocale . '.utf8';//unix format
+$locale = $mlocale . '.UTF-8';//unix format
 if (strtoupper(substr(PHP_OS,0,3))=='WIN'){ 
 	 putenv("LC_ALL=$mlocale"); //Windows env. needed to switch between languages
 	 switch ($mlocale){
@@ -47,15 +47,16 @@ if (strtoupper(substr(PHP_OS,0,3))=='WIN'){
 	 }
 }
 
-putenv('LANGUAGE=');//sert à quoi?
-setlocale(LC_ALL, $locale);
+putenv('LANGUAGE=C.UTF-8');
+setlocale(LC_ALL, 'C.UTF-8');
 setlocale(LC_TIME, $locale);
-setlocale(LC_MESSAGES, $locale);
+setlocale(LC_MESSAGES, 'C.UTF-8');
 
 $domain = 'Studs';
-bindtextdomain($domain, 'locale');
+bindtextdomain($domain, 'locale/'.$mlocale);
 bind_textdomain_codeset($domain, 'UTF-8');
 textdomain($domain);
+
 
 /* temp, for compatibility :*/
 $a = explode('_', $mlocale);
