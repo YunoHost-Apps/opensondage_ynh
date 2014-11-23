@@ -55,7 +55,8 @@
                     "en": "Indicate a web page with legal information",
                     "fr": "Indiquez la page où figure les mentions légales",
                     "de": "Tragen Sie bitte die Website ein, wo man den Impressum finden kann."
-                },
+                },    
+                "optional" : "true",
                 "example": "http://example.com",
                 "default": ""
             },
