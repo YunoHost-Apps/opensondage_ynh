@@ -61,7 +61,7 @@ echo '
                 echo '<div class="col-md-'.$colmd.'">
                 <h3>'. _('What is that?') . '</h3>
                 <p class="text-center" role="presentation"><span class="glyphicon glyphicon-question-sign" style="font-size:50px"></span></p>
-                <p>'. _('Framadate is an online service for planning an appointment or make a decision quickly and easily. No registration is required.') .'</p>
+                <p>'. str_replace('Framadate',NOMAPPLICATION,_('Framadate is an online service for planning an appointment or make a decision quickly and easily. No registration is required.')) .'</p>
                 <p>'. _('Here is how it works:') . '</p>
                 <ol>
                     <li>'. _('Make a poll') . '</li>
@@ -101,5 +101,10 @@ echo '
                 </div>';
             }
         echo '</div>'."\n";
-
+        if (URL_ABOUT && !is_empty(URL_ABOUT) && URL_ABOUT!='./apropos.php')
+        {
+			echo '<div class="row" style="text-align:center">'."\n";
+			echo '<a href="'.URL_ABOUT.'">'._("About").'</a>';
+			echo '</div>'."\n";
+		}
 bandeau_pied();

@@ -50,6 +50,9 @@ const BASE_TYPE = 'mysql';
 // Default Language using POSIX variant of BC P47 standard (choose in $ALLOWED_LANGUAGES)
 const LANGUE = 'I18NTOCHANGE';
 
+// Database password
+const URL_ABOUT = 'yunoabout';
+
 // List of supported languages, fake constant as arrays can be used as constants only in PHP >=5.6
 $ALLOWED_LANGUAGES = [
     'fr_FR' => 'Français',

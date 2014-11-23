@@ -57,7 +57,7 @@
                     "de": "Tragen Sie bitte die Website ein, wo man den Impressum finden kann."
                 },
                 "example": "http://example.com",
-                "default": "./apropos.php"
+                "default": ""
             },
             {
                 "name": "language",

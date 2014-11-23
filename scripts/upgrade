@@ -48,7 +48,7 @@ sudo sed -i "s/yunoadmin/$admin/g" $final_path/app/inc/constants.php
 sudo sed -i "s/I18NTOCHANGE/$language/g" $final_path/app/inc/constants.php
 sudo sed -i "s@yunourl@$domain$path@g" $final_path/app/inc/constants.php
 sudo sed -i "s@yunodomain@$domain@g" $final_path/app/inc/constants.php
-sudo sed -i "s@yunoinfolegal@$legal@g" $final_path/app/inc/constants.php
+sudo sed -i "s@yunoabout@$legal@g" $final_path/app/inc/constants.php
 
 # Create log file
 sudo cp ../conf/logs_studs.txt $final_path/admin/
