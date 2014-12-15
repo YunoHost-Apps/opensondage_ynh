@@ -4,9 +4,9 @@
 domain=$1
 path=$2
 admin=$3
-legal=$4
-language=$5
-public_site=$6
+language=$4
+public_site=$5
+legal='no'
 
 # Check if admin exists
 sudo yunohost user list --json | grep -q "\"username\": \"$admin\""
