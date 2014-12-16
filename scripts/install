@@ -87,7 +87,7 @@ sudo service nginx reload
 sudo yunohost app setting opensondage skipped_uris -v "/"  
 if [ $public_site = "No" ];
 then              
-	sudo yunohost app setting opensondage protected_uris -v "/admin/index.php,/admin/logs_studs.txt,/index.php,/choix_date.php,/choix_autre.php,/infos_sondage.php,/scripts" 
+	sudo yunohost app setting opensondage protected_uris -v "/admin,/index.php,/choix_date.php,/choix_autre.php,/infos_sondage.php,/scripts" 
 else              
 	sudo yunohost app setting opensondage protected_uris -v "/admin/index.php,/admin/logs_studs.txt,/scripts"
 fi
