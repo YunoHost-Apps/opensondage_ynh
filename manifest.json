@@ -6,16 +6,7 @@
         "fr": "OpenSondage sert à faire des sondages sans authentification pour trouver une date de réunion qui convienne à toutes les personnes concernées.",
         "de": "Mit OpenSondage kann man durch einem Link (ohne Anmeldung) Umfrage schaffen, um einem Datum für einen Sitzung oder Trefffen rauszufinden."
     },
-	"categories": [
-		 "poll"
-	],
-    "license": "CeCILL-B",
-    "version": "0.8", 
     "maintainer": {
-        "name": "zamentur",
-        "email": "valentin@grimaud.me"
-    },
-    "developer": {
         "name": "zamentur",
         "email": "valentin@grimaud.me"
     },
