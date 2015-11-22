@@ -11,6 +11,11 @@
         "email": "valentin@grimaud.me"
     },
     "multi_instance": "true",
+    "services": [
+        "nginx",
+        "php5-fpm",
+        "mysql"
+    ],
     "arguments": {
         "install" : [
             {
