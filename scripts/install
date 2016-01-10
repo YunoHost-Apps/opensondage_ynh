@@ -53,7 +53,7 @@ sudo sed -i "s@yunoabout@$legal@g" $final_path/app/inc/constants.php
 
 # Create log file
 touch $final_path/admin/logs_studs.txt
-chmod 700 $final_path/admin/logs_studs.txt
+sudo chmod 700 $final_path/admin/logs_studs.txt
 # Set permissions
 sudo chown -R www-data: $final_path
 
@@ -75,7 +75,7 @@ sudo chmod 644 $finalphpini
 # Reload Nginx and regenerate SSOwat conf
 sudo service php5-fpm restart
 
-sudo apt-get install php-fpdf
+sudo DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confdef" -y --force-yes -qq install php-fpdf
 sudo yunohost app addaccess opensondage -u $admin
 
 # Modify Nginx configuration file and copy it to Nginx conf directory
@@ -84,11 +84,11 @@ sed -i "s@ALIASTOCHANGE@$final_path/@g" ../conf/nginx.conf
 sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/opensondage.conf
 # Reload Nginx and regenerate SSOwat conf
 sudo service nginx reload
-sudo yunohost app setting opensondage skipped_uris -v "/"  
+sudo yunohost app setting opensondage skipped_uris -v "/"
 if [ $public_site = "No" ];
-then              
-	sudo yunohost app setting opensondage protected_uris -v "/admin,/index.php,/choix_date.php,/choix_autre.php,/infos_sondage.php,/scripts" 
-else              
+then
+	sudo yunohost app setting opensondage protected_uris -v "/admin,/index.php,/choix_date.php,/choix_autre.php,/infos_sondage.php,/scripts"
+else
 	sudo yunohost app setting opensondage protected_uris -v "/admin/index.php,/admin/logs_studs.txt,/scripts"
 fi
 sudo yunohost app ssowatconf
