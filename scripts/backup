@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# The parameter $1 is the backup directory location dedicated to the app
+backup_dir=$1
+
+# The parameter $2 is theid of the app instance
+app=$2
+
+domain=$(sudo yunohost app setting $app domain)
+path=$(sudo yunohost app setting $app path)
+admin=$(sudo yunohost app setting $app admin)
+language=$(sudo yunohost app setting $app language)
+public_site=$(sudo yunohost app setting $app public_site)
+
+# Copy the app files
+final_path=/var/www/$app
+sudo mkdir -p ${backup_dir}/var/www
+sudo cp -a $final_path "${backup_dir}/var/www/$app"
+
+# Copy the conf files
+sudo mkdir -p "${backup_dir}/conf"
+sudo cp -a /etc/nginx/conf.d/$domain.d/$app.conf "${backup_dir}/conf/nginx.conf"
+sudo cp -a /etc/php5/fpm/pool.d/$app.conf "${backup_dir}/conf/php-fpm.conf"
+sudo cp -a /etc/php5/fpm/conf.d/20-$app.ini "${backup_dir}/conf/php-fpm.ini"
+
+# Backup db
+db_pwd=$(sudo yunohost app setting $app mysqlpwd)
+sudo su -c "mysqldump -u $app -p"$db_pwd" --no-create-db $app > ${backup_dir}/db.sql"
