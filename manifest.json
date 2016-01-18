@@ -2,9 +2,9 @@
     "name": "OpenSondage",
     "id": "opensondage",
     "description": {
-        "en": "OpenSondage is used to poll people invite for a meeting.",
+        "en": "OpenSondage is an online service for planning an appointment or making a decision quickly and easily. No registration is required.",
         "fr": "OpenSondage sert à faire des sondages sans authentification pour trouver une date de réunion qui convienne à toutes les personnes concernées.",
-        "de": "Mit OpenSondage kann man durch einem Link (ohne Anmeldung) Umfrage schaffen, um einem Datum für einen Sitzung oder Trefffen rauszufinden."
+        "de": "OpenSondage ist ein Online-Dienst, der Ihnen bei der Absprache von Terminen oder der Entscheidungsfindung hilft."
     },
     "maintainer": {
         "name": "zamentur",
@@ -34,7 +34,7 @@
                 "ask": {
                     "en": "Choose a path for OpenSondage",
                     "fr": "Choisissez l'adresse pour OpenSondage",
-                    "de": "Tragen Sie bitte die Adresse für OpenSondage ein"
+                    "de": "Tragen Sie bitte den Pfad für OpenSondage ein"
                 },
                 "example": "/date",
                 "default": "/date"
@@ -45,7 +45,7 @@
                 "ask": {
                     "en": "Choose the OpenSondage administrator (must be an existing YunoHost user)",
                     "fr": "Choisissez l'administrateur d'OpenSondage (doit être un utilisateur YunoHost)",
-                    "de": "Wählen Sie bitte den OpenSondageadministrator (er musst einen YunoHostnützer sein)"
+                    "de": "Wählen Sie bitte den OpenSondageadministrator (muss ein vorhandener YunoHost Nutzer sein)"
                 },
                 "example": "homer"
             },
@@ -64,7 +64,7 @@
                 "ask": {
                     "en": "Could non member create poll ?",
                     "fr": "Une personne non membre peut elle créer un sondage ?",
-                    "de": "Kann einen nicht-Nützer einen Umfrage schaffen?"
+                    "de": "Kann einen nicht eingeloggter Nutzer einen Umfrage erstellen?"
                 },
                 "choices": ["Yes", "No"],
                 "default": "Yes"
