@@ -10,7 +10,7 @@ This package contains a custom version of Framadate (fork of OpenSondage and Stu
 
 ## How to report a bug ?
 
-You can report an issue on the official YunoHost bug tracker : https://dev.yunohost.org .
+You can report an issue concerning this package on the official YunoHost bug tracker : https://dev.yunohost.org .
 
 ## Screenshot
 
