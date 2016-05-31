@@ -8,8 +8,11 @@
         "de": "OpenSondage ist ein Online-Dienst, der Ihnen bei der Absprache von Terminen oder der Entscheidungsfindung hilft."
     },
     "maintainer": {
-        "name": "zamentur",
-        "email": "valentin@grimaud.me"
+        "name": "ljf",
+        "email": "ljf+yunohost@grimaud.me"
+    },
+    "requirements": {
+        "yunohost": ">> 2.3.12.1"
     },
     "multi_instance": "true",
     "services": [
@@ -48,7 +51,7 @@
                     "fr": "Choisissez l'administrateur d'OpenSondage (doit être un utilisateur YunoHost)",
                     "de": "Wählen Sie bitte den OpenSondageadministrator (muss ein vorhandener YunoHost Nutzer sein)"
                 },
-                "example": "homer"
+                "example": "johndoe"
             },
             {
                 "name": "language",
@@ -61,14 +64,14 @@
                 "default": "en_GB"
             },
             {
-                "name": "public_site",
+                "name": "is_public",
+                "type": "boolean",
                 "ask": {
                     "en": "Could non member create poll ?",
                     "fr": "Une personne non membre peut elle créer un sondage ?",
                     "de": "Kann einen nicht eingeloggter Nutzer einen Umfrage erstellen?"
                 },
-                "choices": ["Yes", "No"],
-                "default": "Yes"
+                "default": true
             }
 
 

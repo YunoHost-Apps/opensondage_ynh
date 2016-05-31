@@ -1,15 +1,25 @@
 #!/bin/bash
+app=$YNH_APP_INSTANCE_NAME
+# Source YunoHost helpers
+. /usr/share/yunohost/helpers
 
-db_user=opensondage
-db_name=opensondage
-root_pwd=$(sudo cat /etc/yunohost/mysql)
-domain=$(sudo yunohost app setting opensondage domain)
+# Retrieve app settings
+domain=$(ynh_app_setting_get "$app" domain)
 
-mysql -u root -p$root_pwd -e "DROP DATABASE $db_name ; DROP USER $db_user@localhost ;"
-sudo rm -rf /var/www/opensondage
-sudo rm -f /etc/nginx/conf.d/$domain.d/opensondage.conf
-sudo rm -f /etc/php5/fpm/pool.d/opensondage.conf
-sudo rm -f /etc/php5/fpm/conf.d/20-opensondage.ini
-sudo service php5-fpm restart
+# Remove sources
+sudo rm -rf /var/www/$app
+
+# Remove configuration files
+sudo rm -f /etc/nginx/conf.d/$domain.d/$app.conf
+
+sudo rm -f /etc/php5/fpm/pool.d/$app.conf
+sudo rm -f /etc/php5/fpm/conf.d/20-$app.ini
+sudo service php5-fpm reload
+
+# Drop MySQL database and user
+dbname=$app
+dbuser=$app
+ynh_mysql_drop_db "$dbname" || true
+ynh_mysql_drop_user "$dbuser" || true
+
 sudo service nginx reload
-sudo yunohost ssowatconf
