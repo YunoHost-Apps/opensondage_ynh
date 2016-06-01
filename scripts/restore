@@ -43,7 +43,7 @@ if [ -f $phpini ]; then
 fi
 
 # Dependences
-sudo DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confdef" -y --force-yes -qq install php-fpdf
+ynh_package_install php-fpdf
 
 # Restore sources & data
 sudo cp -a ./sources $final_path
@@ -68,7 +68,7 @@ sudo chown root: $phpini
 sudo chmod 644 $phpini
 
 # Set Administrator
-if sudo yunohost user info $admin > /dev/null; then
+if ynh_user_exists $admin; then
     sudo yunohost app addaccess $app -u $admin
 fi
 
