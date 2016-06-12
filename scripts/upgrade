@@ -72,7 +72,7 @@ sudo chown -R www-data: $final_path
 # Modify Nginx configuration file and copy it to Nginx conf directory
 sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
 sed -i "s@ALIASTOCHANGE@$final_path/@g" ../conf/nginx.conf
-sed -i "s@YNH_APP_INSTANCE_NAME@$app/@g" ../conf/nginx.conf
+sed -i "s@YNH_APP_INSTANCE_NAME@$app@g" ../conf/nginx.conf
 
 if ynh_user_exists $admin; then
     sudo yunohost app addaccess $app -u $admin
