@@ -184,7 +184,7 @@ class Utils
         $headers .= "Auto-Submitted:auto-generated\n";
         $headers .= 'Return-Path: <>';
 
-        $body = html_entity_decode($body, ENT_QUOTES, 'UTF-8'). "\n--\n\n" . _('« La route est longue, mais la voie est libre… »') ."\n" . _('Framasoft ne vit que par vos dons (déductibles des impôts).') ."\n". _('Merci d’avance pour votre soutien http://soutenir.framasoft.org.');
+        $body = html_entity_decode($body, ENT_QUOTES, 'UTF-8').
 
         mail($to, $subject, $body, $headers, $param);
     }
