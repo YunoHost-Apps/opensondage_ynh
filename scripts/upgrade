@@ -44,7 +44,7 @@ fi
 language=$(ynh_app_setting_get "$app" language)
 if [[ "$language" = "" ]];
 then
-    language=$(sudo grep LANGUE /var/www/$app/variables.php | grep -Po "'.*?'" | cut -d"'" -f2)
+    language=$(grep LANGUE /var/www/$app/variables.php | grep -Po "'.*?'" | cut -d"'" -f2)
 fi
 
 # Check if admin is not null
@@ -55,7 +55,7 @@ fi
 # Remove trailing "/" for next commands
 path=${path%/}
 
-root_pwd=$(sudo cat /etc/yunohost/mysql)
+root_pwd=$(cat /etc/yunohost/mysql)
 dbname=$app
 dbpass=$(ynh_app_setting_get "$app" mysqlpwd)
 dbuser=$app
@@ -63,9 +63,9 @@ dbuser=$app
 ### Execute potential SQL statements here
 # Copy files to the right place
 final_path=/var/www/$app
-sudo cp $final_path/admin/logs_studs.txt ../conf/
-sudo rm -Rf $final_path
-sudo mkdir -p $final_path
+cp $final_path/admin/logs_studs.txt ../conf/
+rm -Rf $final_path
+mkdir -p $final_path
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -75,24 +75,24 @@ ynh_app_setting_set "$app" final_path "$final_path"
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source "$final_path"
 
-sudo cp ../conf/constants.php.template $final_path/app/inc/constants.php
+cp ../conf/constants.php.template $final_path/app/inc/constants.php
 
 # Change variables in configuration
-sudo sed -i "s/yunouser/$dbuser/g" $final_path/app/inc/constants.php
-sudo sed -i "s/yunopass/$dbpass/g" $final_path/app/inc/constants.php
-sudo sed -i "s/yunobase/$dbname/g" $final_path/app/inc/constants.php
-sudo sed -i "s/yunoadmin/$admin/g" $final_path/app/inc/constants.php
-sudo sed -i "s/I18NTOCHANGE/$language/g" $final_path/app/inc/constants.php
-sudo sed -i "s@yunourl@$domain$path@g" $final_path/app/inc/constants.php
-sudo sed -i "s@yunodomain@$domain@g" $final_path/app/inc/constants.php
-sudo sed -i "s@yunoabout@$legal@g" $final_path/app/inc/constants.php
+sed -i "s/yunouser/$dbuser/g" $final_path/app/inc/constants.php
+sed -i "s/yunopass/$dbpass/g" $final_path/app/inc/constants.php
+sed -i "s/yunobase/$dbname/g" $final_path/app/inc/constants.php
+sed -i "s/yunoadmin/$admin/g" $final_path/app/inc/constants.php
+sed -i "s/I18NTOCHANGE/$language/g" $final_path/app/inc/constants.php
+sed -i "s@yunourl@$domain$path@g" $final_path/app/inc/constants.php
+sed -i "s@yunodomain@$domain@g" $final_path/app/inc/constants.php
+sed -i "s@yunoabout@$legal@g" $final_path/app/inc/constants.php
 
 # Create log file
-sudo cp ../conf/logs_studs.txt $final_path/admin/
-sudo chmod 700 $final_path/admin/logs_studs.txt
+cp ../conf/logs_studs.txt $final_path/admin/
+chmod 700 $final_path/admin/logs_studs.txt
 
 # Set permissions to roundcube directory
-sudo chown -R www-data: $final_path
+chown -R www-data: $final_path
 
 # Modify Nginx configuration file and copy it to Nginx conf directory
 sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
@@ -100,24 +100,24 @@ sed -i "s@ALIASTOCHANGE@$final_path/@g" ../conf/nginx.conf
 sed -i "s@YNH_APP_INSTANCE_NAME@$app@g" ../conf/nginx.conf
 
 if ynh_user_exists $admin; then
-    sudo yunohost app addaccess $app -u $admin
+    yunohost app addaccess $app -u $admin
 fi
-sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$app.conf
+cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$app.conf
 
 sed -i "s@NAMETOCHANGE@$app@g" ../conf/php-fpm.conf
 finalphpconf=/etc/php5/fpm/pool.d/$app.conf
-sudo cp ../conf/php-fpm.conf $finalphpconf
-sudo chown root: $finalphpconf
-sudo chmod 644 $finalphpconf
+cp ../conf/php-fpm.conf $finalphpconf
+chown root: $finalphpconf
+chmod 644 $finalphpconf
 
 finalphpini=/etc/php5/fpm/conf.d/20-$app.ini
-sudo cp ../conf/php-fpm.ini $finalphpini
-sudo chown root: $finalphpini
-sudo chmod 644 $finalphpini
+cp ../conf/php-fpm.ini $finalphpini
+chown root: $finalphpini
+chmod 644 $finalphpini
 
-sudo service php5-fpm restart
+service php5-fpm restart
 # Reload Nginx
-sudo service nginx reload
+service nginx reload
 ynh_app_setting_set "$app" skipped_uris "/"
 if [ $is_public -eq 0 ];
 then
@@ -125,4 +125,4 @@ then
 else
   ynh_app_setting_set "$app" protected_uris "/admin/index.php,/admin/logs_studs.txt,/scripts"
 fi
-sudo yunohost app ssowatconf
+yunohost app ssowatconf

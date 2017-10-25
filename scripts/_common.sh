@@ -8,7 +8,6 @@ exec_as() {
 	then
 		eval $@
 	else
-		# use sudo twice to be root and be allowed to use another user
 		sudo -u "$USER" $@
 	fi
 }

@@ -19,14 +19,14 @@ app=$YNH_APP_INSTANCE_NAME
 domain=$(ynh_app_setting_get "$app" domain)
 
 # Remove sources
-sudo rm -rf /var/www/$app
+rm -rf /var/www/$app
 
 # Remove configuration files
-sudo rm -f /etc/nginx/conf.d/$domain.d/$app.conf
+rm -f /etc/nginx/conf.d/$domain.d/$app.conf
 
-sudo rm -f /etc/php5/fpm/pool.d/$app.conf
-sudo rm -f /etc/php5/fpm/conf.d/20-$app.ini
-sudo service php5-fpm reload
+rm -f /etc/php5/fpm/pool.d/$app.conf
+rm -f /etc/php5/fpm/conf.d/20-$app.ini
+service php5-fpm reload
 
 # Drop MySQL database and user
 dbname=$app
@@ -34,4 +34,4 @@ dbuser=$app
 ynh_mysql_drop_db "$dbname" || true
 ynh_mysql_drop_user "$dbuser" || true
 
-sudo service nginx reload
+service nginx reload

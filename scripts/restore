@@ -37,7 +37,7 @@ public_site=$(ynh_app_setting_get "$app" public_site)
 legal=$(ynh_app_setting_get "$app" legal)
 
 # Check domain/path availability
-sudo yunohost app checkurl $domain$path -a $app \
+yunohost app checkurl $domain$path -a $app \
     || ynh_die "Path not available: ${domain}${path}"
 
 
@@ -74,26 +74,26 @@ ynh_mysql_create_db "$dbname" "$dbuser" "$dbpass"
 ynh_mysql_connect_as "$dbuser" "$dbpass" "$dbname" < ./dump.sql
 
 # Set permissions
-sudo chmod 700 $final_path/admin/logs_studs.txt
-sudo chown -R www-data:www-data $final_path
+chmod 700 $final_path/admin/logs_studs.txt
+chown -R www-data:www-data $final_path
 
 # Restore conf files
-sudo cp -a ./nginx.conf $conf
-sudo cp -a ./php-fpm.conf $phpconf
-sudo chown root: $phpconf
-sudo chmod 644 $phpconf
-sudo cp -a ./php-fpm.ini $phpini
-sudo chown root: $phpini
-sudo chmod 644 $phpini
+cp -a ./nginx.conf $conf
+cp -a ./php-fpm.conf $phpconf
+chown root: $phpconf
+chmod 644 $phpconf
+cp -a ./php-fpm.ini $phpini
+chown root: $phpini
+chmod 644 $phpini
 
 # Set Administrator
 if ynh_user_exists $admin; then
-    sudo yunohost app addaccess $app -u $admin
+    yunohost app addaccess $app -u $admin
 fi
 
 # Reload Nginx
-sudo service php5-fpm restart
-sudo service nginx reload
+service php5-fpm restart
+service nginx reload
 
 # Set ssowat config
 ynh_app_setting_set "$app" skipped_uris "/"
@@ -103,4 +103,4 @@ then
 else
 	ynh_app_setting_set "$app" protected_uris "/admin/index.php,/admin/logs_studs.txt,/scripts"
 fi
-sudo yunohost app ssowatconf
+yunohost app ssowatconf
