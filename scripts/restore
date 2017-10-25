@@ -30,77 +30,75 @@ app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve old app settings
 domain=$(ynh_app_setting_get "$app" domain)
-path=$(ynh_app_setting_get "$app" path)
+path_url=$(ynh_app_setting_get "$app" path)
 admin=$(ynh_app_setting_get "$app" admin)
 is_public=$(ynh_app_setting_get "$app" is_public)
 public_site=$(ynh_app_setting_get "$app" public_site)
-legal=$(ynh_app_setting_get "$app" legal)
+db_name=$(ynh_app_setting_get "$app" db_name)
+dbuser=$app
+final_path=$(ynh_app_setting_get "$app" final_path)
 
-# Check domain/path availability
-yunohost app checkurl $domain$path -a $app \
-    || ynh_die "Path not available: ${domain}${path}"
+#=================================================
+# CHECK IF THE APP CAN BE RESTORED
+#================================================
+
+ynh_webpath_available $domain $path_url \
+	|| ynh_die "Path not available: ${domain}${path_url}"
+test ! -d $final_path \
+|| ynh_die "There is already a directory: $final_path"
+
+#=================================================
+# STANDARD RESTORATION STEPS
+#=================================================
+# RESTORE THE NGINX CONFIGURATION
+#=================================================
+
+ynh_restore_file "/etc/nginx/conf.d/$domain.d/$app.conf"
+
+#=================================================
+# RESTORE THE APP MAIN DIR
+#=================================================
+
+ynh_restore_file "$final_path"
+
+#=================================================
+# RESTORE USER RIGHTS
+#=================================================
+
+# Set permissions
+chown -R www-data:www-data $final_path
 
 
-final_path=/var/www/$app
-if [ -d $final_path ]; then
-     ynh_die "There is already a directory: $final_path "
-fi
+#=================================================
+# RESTORE THE PHP-FPM CONFIGURATION
+#=================================================
 
-conf=/etc/nginx/conf.d/$domain.d/$app.conf
-if [ -f $conf ]; then
-    ynh_die "There is already a nginx conf file at this path: $conf "
-fi
+ynh_restore_file "/etc/php5/fpm/pool.d/$app.conf"
+ynh_restore_file "/etc/php5/fpm/conf.d/20-$app.ini"
 
-phpconf=/etc/php5/fpm/pool.d/$app.conf
-if [ -f $phpconf ]; then
-    ynh_die "There is already a php-fpm conf file at this path: $phpconf "
-fi
+#=================================================
+# RESTORE THE MYSQL DATABASE
+#=================================================
 
-phpini=/etc/php5/fpm/conf.d/20-$app.ini
-if [ -f $phpini ]; then
-    ynh_die "There is already a php-fpm ini file at this path: $phpini "
-fi
+dbpass=$(ynh_app_setting_get "$app" mysqlpwd)
+ynh_mysql_setup_db "$db_name" "$db_name" "$db_pwd"
+ynh_mysql_connect_as "$db_name" "$db_pwd" "$db_name" < ./db.sql
+
+#=================================================
+# SPECIFIC RESTORATION
+#=================================================
+# REINSTALL DEPENDENCIES
+#=================================================
 
 # Dependences
 ynh_package_install php-fpdf
 
-# Restore sources & data
-ynh_restore_file "$final_path"
-
-dbname=$app
-dbuser=$app
-dbpass=$(ynh_app_setting_get "$app" mysqlpwd)
-ynh_mysql_create_db "$dbname" "$dbuser" "$dbpass"
-ynh_mysql_connect_as "$dbuser" "$dbpass" "$dbname" < ./dump.sql
-
-# Set permissions
-chmod 700 $final_path/admin/logs_studs.txt
-chown -R www-data:www-data $final_path
-
-# Restore conf files
-cp -a ./nginx.conf $conf
-cp -a ./php-fpm.conf $phpconf
-chown root: $phpconf
-chmod 644 $phpconf
-cp -a ./php-fpm.ini $phpini
-chown root: $phpini
-chmod 644 $phpini
-
-# Set Administrator
-if ynh_user_exists $admin; then
-    yunohost app addaccess $app -u $admin
-fi
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# RELOAD NGINX AND PHP-FPM
+#=================================================
 
 # Reload Nginx
 service php5-fpm restart
 service nginx reload
-
-# Set ssowat config
-ynh_app_setting_set "$app" skipped_uris "/"
-if [[ $is_public -eq 0 ]];
-then
-	ynh_app_setting_set "$app" protected_uris "/admin,/index.php,/choix_date.php,/choix_autre.php,/infos_sondage.php,/scripts"
-else
-	ynh_app_setting_set "$app" protected_uris "/admin/index.php,/admin/logs_studs.txt,/scripts"
-fi
-yunohost app ssowatconf

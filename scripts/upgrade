@@ -24,102 +24,167 @@ app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve arguments
 domain=$(ynh_app_setting_get "$app" domain)
-path=$(ynh_app_setting_get "$app" path)
+path_url=$(ynh_app_setting_get "$app" path)
 admin=$(ynh_app_setting_get "$app" admin)
 public_site=$(ynh_app_setting_get "$app" public_site)
-legal=$(ynh_app_setting_get "$app" legal)
-
 is_public=$(ynh_app_setting_get "$app" is_public)
-if [[ "$is_public" = "" ]];
-then
-    if [ $public_site = "No" ];
-    then
-        is_public=0
-    else
-        is_public=1
-    fi
-    ynh_app_setting_set "$app" is_public "$is_public"
+db_name=$(ynh_app_setting_get $app db_name)
+dbuser=$app
+dbpass=$(ynh_app_setting_get "$app" mysqlpwd)
+final_path=(ynh_app_setting_get "$app" final_path)
+
+#=================================================
+# ENSURE DOWNWARD COMPATIBILITY
+#=================================================
+
+# Fix is_public as a boolean value
+if [ "$is_public" = "Yes" ]; then
+	ynh_app_setting_set $app is_public 1
+	is_public=1
+elif [ "$is_public" = "No" ]; then
+	ynh_app_setting_set $app is_public 0
+	is_public=0
 fi
 
+# If db_name doesn't exist, create it
+if [ -z $db_name ]; then
+	db_name=$(ynh_sanitize_dbid $app)
+	ynh_app_setting_set $app db_name $db_name
+fi
+
+# If final_path doesn't exist, create it
+if [ -z $final_path ]; then
+	final_path=/var/www/$app
+	ynh_app_setting_set $app final_path $final_path
+fi
+
+# make sure default language is set
 language=$(ynh_app_setting_get "$app" language)
 if [[ "$language" = "" ]];
 then
     language=$(grep LANGUE /var/www/$app/variables.php | grep -Po "'.*?'" | cut -d"'" -f2)
 fi
 
-# Check if admin is not null
-if [[ "$admin" = "" ||  "$language" = "" ]]; then
-    ynh_die "Unable to upgrade, please contact support"
-fi
+#=================================================
+# BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
+#=================================================
 
-# Remove trailing "/" for next commands
-path=${path%/}
+# Backup the current version of the app
+ynh_backup_before_upgrade
+ynh_clean_setup () {
+	# restore it if the upgrade fails
+	ynh_restore_upgradebackup
+}
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
 
-root_pwd=$(cat /etc/yunohost/mysql)
-dbname=$app
-dbpass=$(ynh_app_setting_get "$app" mysqlpwd)
-dbuser=$app
+#=================================================
+# CHECK THE PATH
+#=================================================
 
-### Execute potential SQL statements here
-# Copy files to the right place
-final_path=/var/www/$app
+# Normalize the URL path syntax
+path_url=$(ynh_normalize_url_path $path_url)
 
+# Check web path availability
+ynh_webpath_available $domain $path_url
+
+#=================================================
+# STANDARD UPGRADE STEPS
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 
-ynh_app_setting_set "$app" final_path "$final_path"
 # Download, check integrity, uncompress and patch the source from app.src
 ynh_setup_source "$final_path"
 
-cp ../conf/constants.php.template $final_path/app/inc/constants.php
+#=================================================
+# NGINX CONFIGURATION
+#=================================================
+
+# Create a dedicated nginx config
+ynh_add_nginx_config
+
+#=================================================
+# PHP-FPM CONFIGURATION
+#=================================================
+
+# Create a dedicated php-fpm config
+ynh_add_fpm_config
+
+#=================================================
+# SPECIFIC UPGRADE
+#=================================================
+# Create config.php
+#=================================================
+
+config="$final_path/app/inc/config.php"
+cp ../conf/config.php $config
 
 # Change variables in configuration
-sed -i "s/yunouser/$dbuser/g" $final_path/app/inc/constants.php
-sed -i "s/yunopass/$dbpass/g" $final_path/app/inc/constants.php
-sed -i "s/yunobase/$dbname/g" $final_path/app/inc/constants.php
-sed -i "s/yunoadmin/$admin/g" $final_path/app/inc/constants.php
-sed -i "s/I18NTOCHANGE/$language/g" $final_path/app/inc/constants.php
-sed -i "s@yunourl@$domain$path@g" $final_path/app/inc/constants.php
-sed -i "s@yunodomain@$domain@g" $final_path/app/inc/constants.php
-sed -i "s@yunoabout@$legal@g" $final_path/app/inc/constants.php
+ynh_replace_string "__DBUSER__"    "$dbuser"   $config
+ynh_replace_string "__DBPWD__"     "$dbpass"   $config
+ynh_replace_string "__DBNAME__"    "$db_name"   $config
+ynh_replace_string "__ADMINMAIL__" "$admin"    $config
+ynh_replace_string "__LANGUAGE__"  "$language" $config
+ynh_replace_string "__DOMAIN__"    "$domain"   $config
+ynh_replace_string "__PATH__"      "$path_url"     $config
+
+#=================================================
+# Replace logo image (default is FramaDate)
+#=================================================
+
+cp ../img/logo.png "$final_path/images"
+
+#=================================================
+# STORE THE CHECKSUM OF THE CONFIG FILE
+#=================================================
+
+# Verify the checksum and backup the file if it's different
+ynh_backup_if_checksum_is_different "$config"
+# Recalculate and store the config file checksum into the app settings
+ynh_store_file_checksum "$config"
+
+#=================================================
+# Create log file
+#=================================================
 
 # Create log file
-cp ../conf/logs_studs.txt $final_path/admin/
-chmod 700 $final_path/admin/logs_studs.txt
+touch $final_path/admin/stdout.log
+
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# SECURE FILES AND DIRECTORIES
+#=================================================
 
 # Set permissions to roundcube directory
 chown -R www-data: $final_path
 
-# Modify Nginx configuration file and copy it to Nginx conf directory
-sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
-sed -i "s@ALIASTOCHANGE@$final_path/@g" ../conf/nginx.conf
-sed -i "s@YNH_APP_INSTANCE_NAME@$app@g" ../conf/nginx.conf
+#=================================================
+# Run database initilization
+#=================================================
 
-if ynh_user_exists $admin; then
-    yunohost app addaccess $app -u $admin
-fi
-cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$app.conf
+init_composer "www-data" "$final_path"
 
-sed -i "s@NAMETOCHANGE@$app@g" ../conf/php-fpm.conf
-finalphpconf=/etc/php5/fpm/pool.d/$app.conf
-cp ../conf/php-fpm.conf $finalphpconf
-chown root: $finalphpconf
-chmod 644 $finalphpconf
+sudo -u "www-data" php "$final_path/admin/migration.php"
 
-finalphpini=/etc/php5/fpm/conf.d/20-$app.ini
-cp ../conf/php-fpm.ini $finalphpini
-chown root: $finalphpini
-chmod 644 $finalphpini
+#=================================================
+# SETUP SSOWAT
+#=================================================
 
-service php5-fpm restart
-# Reload Nginx
-service nginx reload
 ynh_app_setting_set "$app" skipped_uris "/"
 if [ $is_public -eq 0 ];
 then
-  ynh_app_setting_set "$app" protected_uris "/admin,/index.php,/choix_date.php,/choix_autre.php,/infos_sondage.php,/scripts"
+	ynh_app_setting_set "$app" protected_uris "/admin,/index.php,/choix_date.php,/choix_autre.php,/infos_sondage.php,/scripts"
 else
-  ynh_app_setting_set "$app" protected_uris "/admin/index.php,/admin/logs_studs.txt,/scripts"
+	ynh_app_setting_set "$app" protected_uris "/admin/index.php,/admin/stdout.log,/scripts"
+	ynh_replace_string "	include conf.d/"  "	#include conf.d/"  "$finalnginxconf"
+
+	ynh_store_file_checksum "$finalnginxconf"
 fi
-yunohost app ssowatconf
+
+#=================================================
+# RELOAD NGINX
+#=================================================
+
+systemctl reload nginx

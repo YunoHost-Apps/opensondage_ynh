@@ -27,20 +27,35 @@ ynh_abort_if_errors
 
 # See comments in install script
 app=$YNH_APP_INSTANCE_NAME
+db_name=$(ynh_app_setting_get "$app" db_name)
+dbuser=$app
+dbpass=$(ynh_app_setting_get "$app" mysqlpwd)
+domain=$(ynh_app_setting_get "$app" domain)
+
+#=================================================
+# STANDARD BACKUP STEPS
+#=================================================
+# BACKUP THE APP MAIN DIR
+#=================================================
 
 # Backup sources & data
 ynh_backup "/var/www/$app"
 
-# Dump the database
-dbname=$app
-dbuser=$app
-dbpass=$(ynh_app_setting_get "$app" mysqlpwd)
-mysqldump -u "$dbuser" -p"$dbpass" --no-create-db "$dbname" > ./dump.sql
+#=================================================
+# BACKUP THE NGINX CONFIGURATION
+#=================================================
 
-# Copy NGINX configuration
-domain=$(ynh_app_setting_get "$app" domain)
-ynh_backup "/etc/nginx/conf.d/${domain}.d/${app}.conf" "nginx.conf"
+ynh_backup "/etc/nginx/conf.d/$domain.d/$app.conf"
 
-# Copy PHP-FPM pool configuration
-ynh_backup "/etc/php5/fpm/pool.d/${app}.conf" "php-fpm.conf"
-ynh_backup "/etc/php5/fpm/conf.d/20-${app}.ini" "php-fpm.ini"
+#=================================================
+# BACKUP THE PHP-FPM CONFIGURATION
+#=================================================
+
+ynh_backup "/etc/php5/fpm/pool.d/$app.conf"
+ynh_backup "/etc/php5/fpm/conf.d/20-$app.ini"
+
+#=================================================
+# BACKUP THE MYSQL DATABASE
+#=================================================
+
+ynh_mysql_dump_db "$db_name" > db.sql

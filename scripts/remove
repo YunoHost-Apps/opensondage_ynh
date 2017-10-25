@@ -18,20 +18,40 @@ app=$YNH_APP_INSTANCE_NAME
 # Retrieve app settings
 domain=$(ynh_app_setting_get "$app" domain)
 
-# Remove sources
+#=================================================
+# STANDARD REMOVE
+#=================================================
+# REMOVE DEPENDENCIES
+#=================================================
+
+# Remove metapackage and its dependencies
+ynh_remove_app_dependencies
+
+#=================================================
+# REMOVE THE MYSQL DATABASE
+#=================================================
+
+# Remove a database if it exists, along with the associated user
+db_name=$app
+dbuser=$app
+ynh_mysql_remove_db "$db_name" "$dbuser"
+
+#=================================================
+# REMOVE APP MAIN DIR
+#=================================================
+
 ynh_secure_remove "/var/www/$app"
 
-# Remove configuration files
-ynh_secure_remove /etc/nginx/conf.d/$domain.d/$app.conf
+#=================================================
+# REMOVE NGINX CONFIGURATION
+#=================================================
 
-ynh_secure_remove /etc/php5/fpm/pool.d/$app.conf
-ynh_secure_remove /etc/php5/fpm/conf.d/20-$app.ini
+# Remove the dedicated nginx config
+ynh_remove_nginx_config
 
-# Drop MySQL database and user
-dbname=$app
-dbuser=$app
-ynh_mysql_drop_db "$dbname" || true
-ynh_mysql_drop_user "$dbuser" || true
+#=================================================
+# REMOVE PHP-FPM CONFIGURATION
+#=================================================
 
-service nginx reload
-service php5-fpm reload
+# Remove the dedicated php-fpm config
+ynh_remove_fpm_config
