@@ -63,9 +63,6 @@ dbuser=$app
 ### Execute potential SQL statements here
 # Copy files to the right place
 final_path=/var/www/$app
-cp $final_path/admin/logs_studs.txt ../conf/
-rm -Rf $final_path
-mkdir -p $final_path
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
