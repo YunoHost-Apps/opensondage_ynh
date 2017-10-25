@@ -1,9 +1,26 @@
 #!/bin/bash
-set -eu
-app=$YNH_APP_INSTANCE_NAME
 
-# Source YunoHost helpers
-. /usr/share/yunohost/helpers
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# MANAGE SCRIPT FAILURE
+#=================================================
+
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
+
+#=================================================
+# RETRIEVE ARGUMENTS FROM THE MANIFEST
+#=================================================
+
+app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve arguments
 domain=$(ynh_app_setting_get "$app" domain)
@@ -49,7 +66,15 @@ final_path=/var/www/$app
 sudo cp $final_path/admin/logs_studs.txt ../conf/
 sudo rm -Rf $final_path
 sudo mkdir -p $final_path
-sudo cp -a ../sources/. $final_path
+
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+
+ynh_app_setting_set "$app" final_path "$final_path"
+# Download, check integrity, uncompress and patch the source from app.src
+ynh_setup_source "$final_path"
+
 sudo cp ../conf/constants.php.template $final_path/app/inc/constants.php
 
 # Change variables in configuration

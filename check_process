@@ -4,7 +4,7 @@
 		domain="domain.tld"	(DOMAIN)
 		path="/path"	(PATH)
 		admin="john"	(USER)
-		language="en_GB"
+		language="fr"
 		is_public=1	(PUBLIC|public=1|private=0)
 	; Checks
 		pkg_linter=1

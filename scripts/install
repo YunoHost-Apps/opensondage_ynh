@@ -1,6 +1,24 @@
 #!/bin/bash
 
-set -eu
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# MANAGE SCRIPT FAILURE
+#=================================================
+
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
+
+#=================================================
+# RETRIEVE ARGUMENTS FROM THE MANIFEST
+#=================================================
 
 app=$YNH_APP_INSTANCE_NAME
 
@@ -11,9 +29,6 @@ admin=$YNH_APP_ARG_ADMIN
 language=$YNH_APP_ARG_LANGUAGE
 is_public=$YNH_APP_ARG_IS_PUBLIC
 legal='no'
-
-# Source YunoHost helpers
-. /usr/share/yunohost/helpers
 
 # Check if admin exists
 ynh_user_exists $admin \
@@ -33,8 +48,14 @@ sudo yunohost app checkurl "${domain}${path}" -a "$app" \
 # Copy files to the right place
 final_path=/var/www/$app
 sudo mkdir -p $final_path
-sudo cp -a ../sources/. $final_path
-sudo cp ../conf/constants.php.template $final_path/app/inc/constants.php
+
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+
+ynh_app_setting_set "$app" final_path "$final_path"
+# Download, check integrity, uncompress and patch the source from app.src
+ynh_setup_source "$final_path"
 
 # Generate MySQL password and create database
 dbuser=$app
@@ -43,25 +64,29 @@ dbpass=$(ynh_string_random 12)
 ynh_app_setting_set "$app" mysqlpwd "$dbpass"
 ynh_mysql_create_db "$dbname" "$dbuser" "$dbpass"
 
-# Load initial SQL into the new database
-ynh_mysql_connect_as "$dbuser" "$dbpass" "$dbname" \
-    < $final_path/install.mysql.sql
+config="$final_path/app/inc/config.php"
+sudo cp ../conf/config.php $config
 
 # Change variables in configuration
-sudo sed -i "s/yunouser/$dbuser/g" $final_path/app/inc/constants.php
-sudo sed -i "s/yunopass/$dbpass/g" $final_path/app/inc/constants.php
-sudo sed -i "s/yunobase/$dbname/g" $final_path/app/inc/constants.php
-sudo sed -i "s/yunoadmin/$admin/g" $final_path/app/inc/constants.php
-sudo sed -i "s/I18NTOCHANGE/$language/g" $final_path/app/inc/constants.php
-sudo sed -i "s@yunourl@$domain$path@g" $final_path/app/inc/constants.php
-sudo sed -i "s@yunodomain@$domain@g" $final_path/app/inc/constants.php
-sudo sed -i "s@yunoabout@$legal@g" $final_path/app/inc/constants.php
+ynh_replace_string "__DBUSER__"    "$dbuser"   $config
+ynh_replace_string "__DBPWD__"     "$dbpass"   $config
+ynh_replace_string "__DBNAME__"    "$dbname"   $config
+ynh_replace_string "__ADMINMAIL__" "$admin"    $config
+ynh_replace_string "__LANGUAGE__"  "$language" $config
+ynh_replace_string "__DOMAIN__"    "$domain"   $config
+ynh_replace_string "__PATH__"      "$path"     $config
+
+cp ../img/logo.png $final_path/images
 
 # Create log file
-touch $final_path/admin/logs_studs.txt
-sudo chmod 700 $final_path/admin/logs_studs.txt
+touch $final_path/admin/stdout.log
+sudo chmod 700 $final_path/admin/stdout.log
 # Set permissions
 sudo chown -R www-data: $final_path
+
+init_composer "www-data" "$final_path"
+
+sudo -u "www-data" php "$final_path/admin/migration.php"
 
 # Modify PHP-FPM pool configuration and copy it to the pool directory
 sed -i "s@NAMETOCHANGE@$app@g" ../conf/php-fpm.conf

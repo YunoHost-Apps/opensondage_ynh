@@ -1,7 +1,19 @@
 #!/bin/bash
+
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# LOAD SETTINGS
+#=================================================
+
 app=$YNH_APP_INSTANCE_NAME
-# Source YunoHost helpers
-. /usr/share/yunohost/helpers
 
 # Retrieve app settings
 domain=$(ynh_app_setting_get "$app" domain)
