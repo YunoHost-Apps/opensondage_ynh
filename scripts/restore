@@ -80,7 +80,7 @@ ynh_restore_file "/etc/php5/fpm/conf.d/20-$app.ini"
 # RESTORE THE MYSQL DATABASE
 #=================================================
 
-dbpass=$(ynh_app_setting_get "$app" mysqlpwd)
+db_pwd=$(ynh_app_setting_get "$app" mysqlpwd)
 ynh_mysql_setup_db "$db_name" "$db_name" "$db_pwd"
 ynh_mysql_connect_as "$db_name" "$db_pwd" "$db_name" < ./db.sql
 
