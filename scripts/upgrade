@@ -31,7 +31,7 @@ is_public=$(ynh_app_setting_get "$app" is_public)
 db_name=$(ynh_app_setting_get $app db_name)
 dbuser=$app
 dbpass=$(ynh_app_setting_get "$app" mysqlpwd)
-final_path=(ynh_app_setting_get "$app" final_path)
+final_path=$(ynh_app_setting_get "$app" final_path)
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
