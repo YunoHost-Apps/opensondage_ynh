@@ -62,12 +62,18 @@ ynh_restore_file "/etc/nginx/conf.d/$domain.d/$app.conf"
 ynh_restore_file "$final_path"
 
 #=================================================
+# CREATE DEDICATED USER
+#=================================================
+
+# Create a system user
+ynh_system_user_create "$app"
+
+#=================================================
 # RESTORE USER RIGHTS
 #=================================================
 
 # Set permissions
-chown -R www-data:www-data $final_path
-
+chown -R "$app": "$final_path"
 
 #=================================================
 # RESTORE THE PHP-FPM CONFIGURATION

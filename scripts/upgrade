@@ -105,6 +105,13 @@ ynh_setup_source "$final_path"
 ynh_add_nginx_config
 
 #=================================================
+# CREATE DEDICATED USER
+#=================================================
+
+# Create a system user
+ynh_system_user_create "$app"
+
+#=================================================
 # PHP-FPM CONFIGURATION
 #=================================================
 
@@ -158,15 +165,15 @@ touch $final_path/admin/stdout.log
 #=================================================
 
 # Set permissions to roundcube directory
-chown -R www-data: $final_path
+chown -R "$app": "$final_path"
 
 #=================================================
 # Run database initilization
 #=================================================
 
-init_composer "www-data" "$final_path"
+init_composer "$app" "$final_path"
 
-sudo -u "www-data" php "$final_path/admin/migration.php"
+sudo -u "$app" php "$final_path/admin/migration.php"
 
 #=================================================
 # SETUP SSOWAT
