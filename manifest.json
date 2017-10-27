@@ -2,7 +2,7 @@
     "name": "OpenSondage",
     "id": "opensondage",
     "packaging_format": 1,
-    "url": "",
+    "url": "https://git.framasoft.org/framasoft/framadate",
     "version": "1.0.3",
     "license": "CECILL-B",
     "description": {
