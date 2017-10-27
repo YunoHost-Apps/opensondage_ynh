@@ -33,7 +33,6 @@ domain=$(ynh_app_setting_get "$app" domain)
 path_url=$(ynh_app_setting_get "$app" path)
 admin=$(ynh_app_setting_get "$app" admin)
 is_public=$(ynh_app_setting_get "$app" is_public)
-public_site=$(ynh_app_setting_get "$app" public_site)
 db_name=$(ynh_app_setting_get "$app" db_name)
 dbuser=$app
 final_path=$(ynh_app_setting_get "$app" final_path)
@@ -42,7 +41,7 @@ final_path=$(ynh_app_setting_get "$app" final_path)
 # CHECK IF THE APP CAN BE RESTORED
 #================================================
 
-ynh_webpath_available $domain $path_url \
+ynh_webpath_available "$domain" "$path_url" \
 	|| ynh_die "Path not available: ${domain}${path_url}"
 test ! -d $final_path \
 || ynh_die "There is already a directory: $final_path"

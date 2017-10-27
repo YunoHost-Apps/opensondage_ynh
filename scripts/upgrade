@@ -26,43 +26,49 @@ app=$YNH_APP_INSTANCE_NAME
 domain=$(ynh_app_setting_get "$app" domain)
 path_url=$(ynh_app_setting_get "$app" path)
 admin=$(ynh_app_setting_get "$app" admin)
-public_site=$(ynh_app_setting_get "$app" public_site)
 is_public=$(ynh_app_setting_get "$app" is_public)
-db_name=$(ynh_app_setting_get $app db_name)
+db_name=$(ynh_app_setting_get "$app" db_name)
 dbuser=$app
 dbpass=$(ynh_app_setting_get "$app" mysqlpwd)
 final_path=$(ynh_app_setting_get "$app" final_path)
+language=$(ynh_app_setting_get "$app" language)
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
 
+if [ -z "$is_public" ];
+then
+    is_public=$(ynh_app_setting_get "$app" public_site)
+    ynh_app_setting_set "$app" is_public "$is_public"
+    ynh_app_setting_delete "$app" public_site
+fi
+
 # Fix is_public as a boolean value
 if [ "$is_public" = "Yes" ]; then
-	ynh_app_setting_set $app is_public 1
+	ynh_app_setting_set "$app" is_public 1
 	is_public=1
 elif [ "$is_public" = "No" ]; then
-	ynh_app_setting_set $app is_public 0
+	ynh_app_setting_set "$app" is_public 0
 	is_public=0
 fi
 
 # If db_name doesn't exist, create it
-if [ -z $db_name ]; then
-	db_name=$(ynh_sanitize_dbid $app)
-	ynh_app_setting_set $app db_name $db_name
+if [ -z "$db_name" ]; then
+	db_name=$(ynh_sanitize_dbid "$app")
+	ynh_app_setting_set "$app" db_name "$db_name"
 fi
 
 # If final_path doesn't exist, create it
-if [ -z $final_path ]; then
+if [ -z "$final_path" ]; then
 	final_path=/var/www/$app
-	ynh_app_setting_set $app final_path $final_path
+	ynh_app_setting_set "$app" final_path "$final_path"
 fi
 
 # make sure default language is set
-language=$(ynh_app_setting_get "$app" language)
-if [[ "$language" = "" ]];
+if [ -z "$language" ];
 then
-    language=$(grep LANGUE /var/www/$app/variables.php | grep -Po "'.*?'" | cut -d"'" -f2)
+    language=$(grep LANGUE "/var/www/$app/variables.php" | grep -Po "'.*?'" | cut -d"'" -f2)
 fi
 
 #=================================================
@@ -83,10 +89,10 @@ ynh_abort_if_errors
 #=================================================
 
 # Normalize the URL path syntax
-path_url=$(ynh_normalize_url_path $path_url)
+path_url=$(ynh_normalize_url_path "$path_url")
 
 # Check web path availability
-ynh_webpath_available $domain $path_url
+ynh_webpath_available "$domain" "$path_url"
 
 #=================================================
 # STANDARD UPGRADE STEPS
@@ -125,16 +131,16 @@ ynh_add_fpm_config
 #=================================================
 
 config="$final_path/app/inc/config.php"
-cp ../conf/config.php $config
+cp ../conf/config.php "$config"
 
 # Change variables in configuration
-ynh_replace_string "__DBUSER__"    "$dbuser"   $config
-ynh_replace_string "__DBPWD__"     "$dbpass"   $config
-ynh_replace_string "__DBNAME__"    "$db_name"   $config
-ynh_replace_string "__ADMINMAIL__" "$admin"    $config
-ynh_replace_string "__LANGUAGE__"  "$language" $config
-ynh_replace_string "__DOMAIN__"    "$domain"   $config
-ynh_replace_string "__PATH__"      "$path_url"     $config
+ynh_replace_string "__DBUSER__"    "$dbuser"   "$config"
+ynh_replace_string "__DBPWD__"     "$dbpass"   "$config"
+ynh_replace_string "__DBNAME__"    "$db_name"  "$config"
+ynh_replace_string "__ADMINMAIL__" "$admin"    "$config"
+ynh_replace_string "__LANGUAGE__"  "$language" "$config"
+ynh_replace_string "__DOMAIN__"    "$domain"   "$config"
+ynh_replace_string "__PATH__"      "$path_url" "$config"
 
 #=================================================
 # Replace logo image (default is FramaDate)
@@ -156,7 +162,7 @@ ynh_store_file_checksum "$config"
 #=================================================
 
 # Create log file
-touch $final_path/admin/stdout.log
+touch "$final_path/admin/stdout.log"
 
 #=================================================
 # GENERIC FINALIZATION

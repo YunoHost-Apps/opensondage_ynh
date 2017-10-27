@@ -37,12 +37,12 @@ final_path=/var/www/$app
 test ! -e "$final_path" || ynh_die "This path already contains a folder"
 
 # Normalize the url path syntax
-path_url=$(ynh_normalize_url_path $path_url)
+path_url=$(ynh_normalize_url_path "$path_url")
 
 # Check web path availability
-ynh_webpath_available $domain $path_url
+ynh_webpath_available "$domain" "$path_url"
 # Register (book) web path
-ynh_webpath_register $app $domain $path_url
+ynh_webpath_register "$app" "$domain" "$path_url"
 
 #=================================================
 # STORE SETTINGS FROM MANIFEST
@@ -53,7 +53,6 @@ ynh_app_setting_set "$app" path_url "$path_url"
 ynh_app_setting_set "$app" admin "$admin"
 ynh_app_setting_set "$app" language "$language"
 ynh_app_setting_set "$app" is_public "$is_public"
-ynh_app_setting_set "$app" public_site "$is_public"
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -111,22 +110,23 @@ ynh_add_fpm_config
 #=================================================
 
 config="$final_path/app/inc/config.php"
-cp ../conf/config.php $config
+admin_mail=$(ynh_user_get_info "$admin" mail)
+cp ../conf/config.php "$config"
 
 # Change variables in configuration
-ynh_replace_string "__DBUSER__"    "$dbuser"   $config
-ynh_replace_string "__DBPWD__"     "$dbpass"   $config
-ynh_replace_string "__DBNAME__"    "$db_name"   $config
-ynh_replace_string "__ADMINMAIL__" "$admin"    $config
-ynh_replace_string "__LANGUAGE__"  "$language" $config
-ynh_replace_string "__DOMAIN__"    "$domain"   $config
-ynh_replace_string "__PATH__"      "$path_url" $config
+ynh_replace_string "__DBUSER__"    "$dbuser"   "$config"
+ynh_replace_string "__DBPWD__"     "$dbpass"   "$config"
+ynh_replace_string "__DBNAME__"    "$db_name"   "$config"
+ynh_replace_string "__ADMINMAIL__" "$admin_mail" "$config"
+ynh_replace_string "__LANGUAGE__"  "$language" "$config"
+ynh_replace_string "__DOMAIN__"    "$domain"   "$config"
+ynh_replace_string "__PATH__"      "$path_url" "$config"
 
 #=================================================
 # Replace logo image (default is FramaDate)
 #=================================================
 
-cp ../img/logo.png $final_path/images
+cp ../img/logo.png "$final_path/images"
 
 #=================================================
 # STORE THE CHECKSUM OF THE CONFIG FILE
@@ -140,7 +140,7 @@ ynh_store_file_checksum "$config"
 #=================================================
 
 # Create log file
-touch $final_path/admin/stdout.log
+touch "$final_path/admin/stdout.log"
 
 
 #=================================================
