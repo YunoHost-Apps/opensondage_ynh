@@ -131,6 +131,7 @@ ynh_add_fpm_config
 #=================================================
 # STORE THE CHECKSUM OF THE CONFIG FILE
 #=================================================
+config="$final_path/app/inc/config.php"
 # Verify the checksum and backup the file if it's different
 ynh_backup_if_checksum_is_different "$config"
 
@@ -138,7 +139,6 @@ ynh_backup_if_checksum_is_different "$config"
 # Create config.php
 #=================================================
 
-config="$final_path/app/inc/config.php"
 cp ../conf/config.php "$config"
 
 # Change variables in configuration
@@ -173,30 +173,34 @@ touch "$final_path/admin/stdout.log"
 #=================================================
 # GENERIC FINALIZATION
 #=================================================
-# SECURE FILES AND DIRECTORIES
-#=================================================
-
-# Set permissions to roundcube directory
-chown -R "$app": "$final_path"
-
-#=================================================
 # Run database initilization
 #=================================================
+
+# Set initial permissions for initilization
+chown -R "$app": "$final_path"
 
 init_composer "$app" "$final_path"
 
 sudo -u "$app" php "$final_path/admin/migration.php"
 
 #=================================================
+# SECURE FILES AND DIRECTORIES
+#=================================================
+
+chown -R root: "$final_path"
+chown -R "$app": "$final_path/tpl_c"
+
+#=================================================
 # SETUP SSOWAT
 #=================================================
 
 ynh_app_setting_set "$app" skipped_uris "/"
+
 if [ $is_public -eq 0 ];
 then
-	ynh_app_setting_set "$app" protected_uris "/admin,/index.php,/choix_date.php,/choix_autre.php,/infos_sondage.php,/scripts"
+	ynh_app_setting_set "$app" protected_uris "/"
 else
-	ynh_app_setting_set "$app" protected_uris "/admin/index.php,/admin/stdout.log,/scripts"
+	ynh_app_setting_set "$app" protected_uris "/admin"
 	ynh_replace_string "	include conf.d/"  "	#include conf.d/"  "$finalnginxconf"
 
 	ynh_store_file_checksum "$finalnginxconf"
