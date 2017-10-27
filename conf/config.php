@@ -85,7 +85,7 @@ const TIME_EDIT_LINK_EMAIL = 60;
 // Config
 $config = [
 	/* general config */
-	'use_smtp' => true,                     // use email for polls creation/modification/responses notification
+	'use_smtp' => false,                     // use email for polls creation/modification/responses notification
 	/* home */
 	'show_what_is_that' => false,           // display "how to use" section
 	'show_the_software' => false,           // display technical information about the software
