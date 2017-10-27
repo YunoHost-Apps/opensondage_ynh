@@ -68,7 +68,7 @@ const IMAGE_TITRE = 'images/logo.png';
 const URL_PROPRE = false;
 
 // Use REMOTE_USER data provided by web server
-const USE_REMOTE_USER =  true;
+const USE_REMOTE_USER =  false;
 
 // Path to the log file
 const LOG_FILE = 'admin/stdout.log';

@@ -27,7 +27,7 @@
 	Level 1=auto
 	Level 2=auto
 	Level 3=auto
-# Niveau 4 ignoré, mais c'est à confirmé par le mainteneur de l'application.
+# Niveau 4 non fonctionnel, https://framagit.org/framasoft/framadate/issues/177
 	Level 4=na
 	Level 5=auto
 	Level 6=auto
