@@ -1,0 +1,31 @@
+From 3ddf8c6c94d3e14566c50d57a457c8d7eaf7bb3c Mon Sep 17 00:00:00 2001
+From: Jean-Baptiste Holcroft <jean-baptiste@holcroft.fr>
+Date: Fri, 27 Oct 2017 13:21:44 +0200
+Subject: [PATCH] Use sendmail
+
+---
+ app/classes/Framadate/Services/MailService.php | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/app/classes/Framadate/Services/MailService.php b/app/classes/Framadate/Services/MailService.php
+index b7c60dc..f292e7e 100644
+--- a/app/classes/Framadate/Services/MailService.php
++++ b/app/classes/Framadate/Services/MailService.php
+@@ -25,7 +25,7 @@ class MailService {
+     function send($to, $subject, $body, $msgKey = null) {
+         if ($this->smtp_allowed == true && $this->canSendMsg($msgKey)) {
+             $mail = new PHPMailer(true);
+-            $mail->isSMTP();
++            $mail->IsSendmail();
+ 
+             // From
+             $mail->FromName = NOMAPPLICATION;
+@@ -73,4 +73,3 @@ class MailService {
+     }
+ 
+ }
+- 
+\ No newline at end of file
+-- 
+2.13.6
+
