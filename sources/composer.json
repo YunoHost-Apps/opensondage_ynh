@@ -1,9 +1,0 @@
-{
-    "require": {
-        "adodb/adodb-php": "5.19"
-    },
-
-    "autoload": {
-        "psr-0": {"Framadate": "app/classes/"}
-    }
-}

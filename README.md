@@ -6,7 +6,12 @@ OpenSondage for YunoHost
 OpenSondage is used to poll people invite for a meeting.
 
 ## Change done from original sources
-This package contains a custom version of Framadate (fork of OpenSondage and Studs), the sources are here: https://git.framasoft.org/framasoft/framadate/commit/2c49a9f0acdc6ee1164d3d533a35b273af30c263. You can see change in the history of the depot.
+This package contains a custom version of Framadate (fork of OpenSondage and Studs), the sources are here: https://git.framasoft.org/framasoft/framadate/.
+
+## Broken things
+
+ 1. There is no way to configure mail, either with smtp or with sendmail. See https://framagit.org/framasoft/framadate/merge_requests/184
+ 2. There is no way to use SSOWAT to identify current user. See https://framagit.org/framasoft/framadate/issues/177
 
 ## Screenshot
 
