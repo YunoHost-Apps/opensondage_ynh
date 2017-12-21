@@ -70,8 +70,9 @@
                 "name": "is_public",
                 "type": "boolean",
                 "ask": {
-                    "en": "Is this application public?",
-                    "fr": "Cette application est-elle publique ?"
+                    "en": "Can non-members create a poll?",
+                    "fr": "Une personne non membre peut elle créer un sondage ?",
+                    "de": "Kann einen nicht eingeloggter Nutzer einen Umfrage erstellen?"
                 },
                 "default": true
             }
