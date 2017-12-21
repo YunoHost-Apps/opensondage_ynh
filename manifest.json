@@ -67,7 +67,7 @@
                 "name": "is_public",
                 "type": "boolean",
                 "ask": {
-                    "en": "Can non members create a poll ?",
+                    "en": "Can non-members create a poll?",
                     "fr": "Une personne non membre peut elle créer un sondage ?",
                     "de": "Kann einen nicht eingeloggter Nutzer einen Umfrage erstellen?"
                 },
