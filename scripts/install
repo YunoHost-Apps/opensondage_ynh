@@ -86,6 +86,15 @@ ynh_setup_source "$final_path"
 # NGINX CONFIGURATION
 #=================================================
 
+if [ "$path_url" == "/" ]
+then
+	# ynh panel is only for non-root installs
+	ynh_replace_string "	include conf.d/"  "	#include conf.d/"  "../conf/nginx.conf"
+else
+	# add rewrite for alias_traversal protection
+	ynh_replace_string "^#sub_path_only" "" "../conf/nginx.conf"
+fi
+
 # Create a dedicated nginx config
 ynh_add_nginx_config
 
