@@ -34,4 +34,4 @@
 ;;; Upgrade options
 	; commit=eb508660841801995fe2c66e5bf3259cdbea5922
 		name=Remove Framasoft signature
-		manifest_arg=domain=DOMAIN&path=PATH&admin=USER&language=fr&is_public=1&
+		manifest_arg=domain=DOMAIN&path=PATH&admin=USER&language=fr_FR&is_public=1&
