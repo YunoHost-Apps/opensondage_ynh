@@ -1,98 +1,195 @@
 #!/bin/bash
 
-set -eu
+#=================================================
+# GENERIC START
+#=================================================
+# IMPORT GENERIC HELPERS
+#=================================================
+
+source _common.sh
+source /usr/share/yunohost/helpers
+
+#=================================================
+# MANAGE SCRIPT FAILURE
+#=================================================
+
+# Exit if an error occurs during the execution of the script
+ynh_abort_if_errors
+
+#=================================================
+# RETRIEVE ARGUMENTS FROM THE MANIFEST
+#=================================================
 
 app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve arguments
 domain=$YNH_APP_ARG_DOMAIN
-path=$YNH_APP_ARG_PATH
+path_url=$YNH_APP_ARG_PATH
 admin=$YNH_APP_ARG_ADMIN
 language=$YNH_APP_ARG_LANGUAGE
 is_public=$YNH_APP_ARG_IS_PUBLIC
-legal='no'
 
-# Source YunoHost helpers
-. /usr/share/yunohost/helpers
+#=================================================
+# CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
+#=================================================
 
-# Check if admin exists
-ynh_user_exists $admin \
-    || ynh_die "Wrong admin"
+final_path=/var/www/$app
+test ! -e "$final_path" || ynh_die "This path already contains a folder"
 
+# Normalize the url path syntax
+path_url=$(ynh_normalize_url_path "$path_url")
+
+# Check web path availability
+ynh_webpath_available "$domain" "$path_url"
+# Register (book) web path
+ynh_webpath_register "$app" "$domain" "$path_url"
+
+#=================================================
+# STORE SETTINGS FROM MANIFEST
+#=================================================
+
+ynh_app_setting_set "$app" domain "$domain"
+ynh_app_setting_set "$app" path_url "$path_url"
 ynh_app_setting_set "$app" admin "$admin"
 ynh_app_setting_set "$app" language "$language"
-ynh_app_setting_set "$app" legal "$legal"
 ynh_app_setting_set "$app" is_public "$is_public"
-# Deprecated
-ynh_app_setting_set "$app" public_site "$is_public"
 
-# Check domain/path availability
-sudo yunohost app checkurl "${domain}${path}" -a "$app" \
-    || ynh_die "Path not available: ${domain}${path}"
+#=================================================
+# STANDARD MODIFICATIONS
+#=================================================
+# INSTALL DEPENDENCIES
+#=================================================
 
-# Copy files to the right place
-final_path=/var/www/$app
-sudo mkdir -p $final_path
-sudo cp -a ../sources/. $final_path
-sudo cp ../conf/constants.php.template $final_path/app/inc/constants.php
+ynh_install_app_dependencies php-fpdf
+
+#=================================================
+# CREATE A MYSQL DATABASE
+#=================================================
 
 # Generate MySQL password and create database
 dbuser=$app
-dbname=$app
+db_name=$app
 dbpass=$(ynh_string_random 12)
 ynh_app_setting_set "$app" mysqlpwd "$dbpass"
-ynh_mysql_create_db "$dbname" "$dbuser" "$dbpass"
+ynh_app_setting_set "$app" db_name "$db_name"
+ynh_mysql_create_db "$db_name" "$dbuser" "$dbpass"
 
-# Load initial SQL into the new database
-ynh_mysql_connect_as "$dbuser" "$dbpass" "$dbname" \
-    < $final_path/install.mysql.sql
+#=================================================
+# DOWNLOAD, CHECK AND UNPACK SOURCE
+#=================================================
+
+ynh_app_setting_set "$app" final_path "$final_path"
+# Download, check integrity, uncompress and patch the source from app.src
+ynh_setup_source "$final_path"
+
+#=================================================
+# NGINX CONFIGURATION
+#=================================================
+
+if [ "$path_url" == "/" ]
+then
+	# ynh panel is only for non-root installs
+	ynh_replace_string "	include conf.d/"  "	#include conf.d/"  "../conf/nginx.conf"
+else
+	# add rewrite for alias_traversal protection
+	ynh_replace_string "^#sub_path_only" "" "../conf/nginx.conf"
+fi
+
+# Create a dedicated nginx config
+ynh_add_nginx_config
+
+#=================================================
+# CREATE DEDICATED USER
+#=================================================
+
+# Create a system user
+ynh_system_user_create "$app"
+
+#=================================================
+# PHP-FPM CONFIGURATION
+#=================================================
+
+# Create a dedicated php-fpm config
+ynh_add_fpm_config
+
+#=================================================
+# SPECIFIC SETUP
+#=================================================
+# Create config.php
+#=================================================
+
+config="$final_path/app/inc/config.php"
+admin_mail=$(ynh_user_get_info "$admin" mail)
+cp ../conf/config.php "$config"
 
 # Change variables in configuration
-sudo sed -i "s/yunouser/$dbuser/g" $final_path/app/inc/constants.php
-sudo sed -i "s/yunopass/$dbpass/g" $final_path/app/inc/constants.php
-sudo sed -i "s/yunobase/$dbname/g" $final_path/app/inc/constants.php
-sudo sed -i "s/yunoadmin/$admin/g" $final_path/app/inc/constants.php
-sudo sed -i "s/I18NTOCHANGE/$language/g" $final_path/app/inc/constants.php
-sudo sed -i "s@yunourl@$domain$path@g" $final_path/app/inc/constants.php
-sudo sed -i "s@yunodomain@$domain@g" $final_path/app/inc/constants.php
-sudo sed -i "s@yunoabout@$legal@g" $final_path/app/inc/constants.php
+ynh_replace_string "__DBUSER__"    "$dbuser"   "$config"
+ynh_replace_string "__DBPWD__"     "$dbpass"   "$config"
+ynh_replace_string "__DBNAME__"    "$db_name"   "$config"
+ynh_replace_string "__ADMINMAIL__" "$admin_mail" "$config"
+ynh_replace_string "__LANGUAGE__"  "$language" "$config"
+ynh_replace_string "__DOMAIN__"    "$domain"   "$config"
+ynh_replace_string "__PATH__"      "$path_url" "$config"
+
+#=================================================
+# Replace logo image (default is FramaDate)
+#=================================================
+
+cp ../img/logo.png "$final_path/images"
+
+#=================================================
+# STORE THE CHECKSUM OF THE CONFIG FILE
+#=================================================
+
+# Calculate and store the config file checksum into the app settings
+ynh_store_file_checksum "$config"
+
+#=================================================
+# Create log file
+#=================================================
 
 # Create log file
-touch $final_path/admin/logs_studs.txt
-sudo chmod 700 $final_path/admin/logs_studs.txt
-# Set permissions
-sudo chown -R www-data: $final_path
+touch "$final_path/admin/stdout.log"
 
-# Modify PHP-FPM pool configuration and copy it to the pool directory
-sed -i "s@NAMETOCHANGE@$app@g" ../conf/php-fpm.conf
-finalphpconf=/etc/php5/fpm/pool.d/$app.conf
-sudo cp ../conf/php-fpm.conf $finalphpconf
-sudo chown root: $finalphpconf
-sudo chmod 644 $finalphpconf
 
-finalphpini=/etc/php5/fpm/conf.d/20-$app.ini
-sudo cp ../conf/php-fpm.ini $finalphpini
-sudo chown root: $finalphpini
-sudo chmod 644 $finalphpini
+#=================================================
+# GENERIC FINALIZATION
+#=================================================
+# Run database initilization
+#=================================================
 
-# Reload Nginx and regenerate SSOwat conf
-sudo service php5-fpm restart
+# Set initial permissions of initilization
+chown -R "$app": "$final_path"
 
-ynh_package_install php-fpdf
-sudo yunohost app addaccess $app -u $admin
+init_composer "$app" "$final_path"
 
-# Modify Nginx configuration file and copy it to Nginx conf directory
-sed -i "s@PATHTOCHANGE@$path@g" ../conf/nginx.conf
-sed -i "s@ALIASTOCHANGE@$final_path/@g" ../conf/nginx.conf
-sed -i "s@YNH_APP_INSTANCE_NAME@$app@g" ../conf/nginx.conf
-sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$app.conf
-# Reload Nginx and regenerate SSOwat conf
-sudo service nginx reload
+sudo -u "$app" php "$final_path/admin/migration.php"
+
+#=================================================
+# SECURE FILES AND DIRECTORIES
+#=================================================
+
+chown -R root: "$final_path"
+chown -R "$app": "$final_path/tpl_c"
+
+#=================================================
+# SETUP SSOWAT
+#=================================================
+
 ynh_app_setting_set "$app" skipped_uris "/"
-if [[ $is_public -eq 0 ]];
+
+if [ $is_public -eq 0 ];
 then
-	ynh_app_setting_set "$app" protected_uris "/admin,/index.php,/choix_date.php,/choix_autre.php,/infos_sondage.php,/scripts"
+	ynh_app_setting_set "$app" protected_uris "/"
 else
-	ynh_app_setting_set "$app" protected_uris "/admin/index.php,/admin/logs_studs.txt,/scripts"
+	ynh_app_setting_set "$app" protected_uris "/admin"
+	ynh_replace_string "	include conf.d/"  "	#include conf.d/"  "$finalnginxconf"
+
+	ynh_store_file_checksum "$finalnginxconf"
 fi
-sudo yunohost app ssowatconf
+
+#=================================================
+# RELOAD NGINX
+#=================================================
+
+systemctl reload nginx

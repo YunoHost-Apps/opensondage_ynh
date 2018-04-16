@@ -1,0 +1,4 @@
+SOURCE_URL=https://git.framasoft.org/framasoft/framadate/repository/1.0.3/archive.tar.bz2
+SOURCE_SUM=aa372ac8b7f0f7b0ad4ab973a5cfb7db5aa3b95a1ea584e3c57c8929d3766169
+SOURCE_SUM_PRG=sha256sum
+SOURCE_FORMAT=tar.bz2
