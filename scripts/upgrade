@@ -148,13 +148,14 @@ ynh_backup_if_checksum_is_different "$config"
 # Create config.php
 #=================================================
 
+admin_mail=$(ynh_user_get_info "$admin" mail)
 cp ../conf/config.php "$config"
 
 # Change variables in configuration
 ynh_replace_string "__DBUSER__"    "$dbuser"   "$config"
 ynh_replace_string "__DBPWD__"     "$dbpass"   "$config"
 ynh_replace_string "__DBNAME__"    "$db_name"  "$config"
-ynh_replace_string "__ADMINMAIL__" "$admin"    "$config"
+ynh_replace_string "__ADMINMAIL__" "$admin_mail" "$config"
 ynh_replace_string "__LANGUAGE__"  "$language" "$config"
 ynh_replace_string "__DOMAIN__"    "$domain"   "$config"
 ynh_replace_string "__PATH__"      "$path_url" "$config"
