@@ -171,6 +171,7 @@ sudo -u "$app" php "$final_path/admin/migration.php"
 
 chown -R root: "$final_path"
 chown -R "$app": "$final_path/tpl_c"
+chown -R "$app": "$final_path/admin/stdout.log"
 
 #=================================================
 # SETUP SSOWAT
