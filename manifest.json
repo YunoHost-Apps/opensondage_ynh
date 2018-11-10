@@ -11,9 +11,13 @@
         "de": "OpenSondage ist ein Online-Dienst, der Ihnen bei der Absprache von Terminen oder der Entscheidungsfindung hilft."
     },
     "maintainer": {
-        "name": "ljf",
-        "email": "ljf+yunohost@grimaud.me"
+        "name": "YunoHost Contributors",
+        "email": "apps@yunohost.org"
     },
+    "previous_maintainers": [{
+        "name": "ljf",
+        "email": "ljf+opensondage_ynh@grimaud.me"
+    }],
     "requirements": {
         "yunohost": ">= 2.7"
     },
