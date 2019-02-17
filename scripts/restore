@@ -6,12 +6,7 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-if [ ! -e _common.sh ]; then
-	# Get the _common.sh file if it's not in the current directory
-	cp ../settings/scripts/_common.sh ./_common.sh
-	chmod a+rx _common.sh
-fi
-source _common.sh
+source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -29,22 +24,19 @@ ynh_abort_if_errors
 app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve old app settings
-domain=$(ynh_app_setting_get "$app" domain)
-path_url=$(ynh_app_setting_get "$app" path)
-admin=$(ynh_app_setting_get "$app" admin)
-is_public=$(ynh_app_setting_get "$app" is_public)
-db_name=$(ynh_app_setting_get "$app" db_name)
-dbuser=$app
-final_path=$(ynh_app_setting_get "$app" final_path)
+domain=$(ynh_app_setting_get $app domain)
+path_url=$(ynh_app_setting_get $app path)
+final_path=$(ynh_app_setting_get $app final_path)
+db_name=$(ynh_app_setting_get $app db_name)
 
 #=================================================
 # CHECK IF THE APP CAN BE RESTORED
 #================================================
 
-ynh_webpath_available "$domain" "$path_url" \
+ynh_webpath_available $domain $path_url \
 	|| ynh_die "Path not available: ${domain}${path_url}"
 test ! -d $final_path \
-|| ynh_die "There is already a directory: $final_path"
+	|| ynh_die "There is already a directory: $final_path "
 
 #=================================================
 # STANDARD RESTORATION STEPS
@@ -61,19 +53,18 @@ ynh_restore_file "/etc/nginx/conf.d/$domain.d/$app.conf"
 ynh_restore_file "$final_path"
 
 #=================================================
-# CREATE DEDICATED USER
+# RECREATE THE DEDICATED USER
 #=================================================
 
-# Create a system user
-ynh_system_user_create "$app"
+# Create the dedicated user (if not existing)
+ynh_system_user_create $app
 
 #=================================================
 # RESTORE USER RIGHTS
 #=================================================
 
-# Set permissions
-chown -R "$app": "$final_path/tpl_c"
-chown -R "$app": "$final_path/admin/stdout.log"
+# Restore permissions on app files
+chown -R $app: "$final_path/"{tpl_c,admin/stdout.log}
 
 #=================================================
 # RESTORE THE PHP-FPM CONFIGURATION
@@ -85,9 +76,9 @@ ynh_restore_file "/etc/php5/fpm/pool.d/$app.conf"
 # RESTORE THE MYSQL DATABASE
 #=================================================
 
-db_pwd=$(ynh_app_setting_get "$app" mysqlpwd)
-ynh_mysql_setup_db "$db_name" "$db_name" "$db_pwd"
-ynh_mysql_connect_as "$db_name" "$db_pwd" "$db_name" < ./db.sql
+db_pwd=$(ynh_app_setting_get $app mysqlpwd)
+ynh_mysql_setup_db $db_name $db_name $db_pwd
+ynh_mysql_connect_as $db_name $db_pwd $db_name < ./db.sql
 
 #=================================================
 # SPECIFIC RESTORATION
@@ -95,7 +86,7 @@ ynh_mysql_connect_as "$db_name" "$db_pwd" "$db_name" < ./db.sql
 # REINSTALL DEPENDENCIES
 #=================================================
 
-# Dependences
+# Define and install dependencies
 ynh_install_app_dependencies php-fpdf
 
 #=================================================
@@ -104,6 +95,6 @@ ynh_install_app_dependencies php-fpdf
 # RELOAD NGINX AND PHP-FPM
 #=================================================
 
-# Reload Nginx
-service php5-fpm restart
-service nginx reload
+systemctl reload php7.0-fpm
+systemctl reload nginx
+

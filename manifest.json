@@ -2,14 +2,14 @@
     "name": "OpenSondage",
     "id": "opensondage",
     "packaging_format": 1,
-    "url": "https://git.framasoft.org/framasoft/framadate",
-    "version": "1.0.3",
-    "license": "CECILL-B",
     "description": {
         "en": "OpenSondage is an online service for planning an appointment or making a decision quickly and easily. No registration is required.",
         "fr": "OpenSondage sert à faire des sondages sans authentification pour trouver une date de réunion qui convienne à toutes les personnes concernées.",
         "de": "OpenSondage ist ein Online-Dienst, der Ihnen bei der Absprache von Terminen oder der Entscheidungsfindung hilft."
     },
+    "version": "1.0.3~ynh1",
+    "url": "https://git.framasoft.org/framasoft/framadate",
+    "license": "CECILL-B",
     "maintainer": {
         "name": "ljf",
         "email": "ljf+yunohost@grimaud.me"
@@ -58,6 +58,7 @@
             },
             {
                 "name": "language",
+                "type": "string",
                 "ask": {
                     "en": "Choose the default language of this OpenSondage",
                     "fr": "Choisissez la langue par défault d'OpenSondage",
@@ -76,8 +77,6 @@
                 },
                 "default": true
             }
-
-
         ]
     }
 }
