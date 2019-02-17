@@ -70,7 +70,7 @@ chown -R $app: "$final_path/"{tpl_c,admin/stdout.log}
 # RESTORE THE PHP-FPM CONFIGURATION
 #=================================================
 
-ynh_restore_file "/etc/php5/fpm/pool.d/$app.conf"
+ynh_restore_file "/etc/php/7.0/fpm/pool.d/$app.conf"
 
 #=================================================
 # RESTORE THE MYSQL DATABASE
