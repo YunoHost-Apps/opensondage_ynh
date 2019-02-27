@@ -178,22 +178,10 @@ touch "$final_path/admin/stdout.log"
 #=================================================
 ynh_print_info "Upgrading database..."
 
-# Set permissions for initilization
-chown -R $app: "$final_path"
-
 # Install composer
-curl -sS https://getcomposer.org/installer \
-	| COMPOSER_HOME="$final_path/.composer" \
-	php -- --quiet --install-dir="$final_path" \
-	|| ynh_die "Unable to install Composer"
+ynh_install_composer
 
-# Update dependencies to create composer.lock
-exec_as $app COMPOSER_HOME="$final_path/.composer" \
-	php "$final_path/composer.phar" install --no-dev \
-	-d "$final_path" --quiet --no-interaction \
-	|| ynh_die "Unable to update core dependencies with Composer"
-
-ynh_exec_warn_less exec_as $app php "$final_path/admin/migration.php"
+ynh_exec_warn_less php "$final_path/admin/migration.php"
 
 #=================================================
 # GENERIC FINALIZATION
