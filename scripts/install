@@ -183,7 +183,15 @@ if [ $is_public -eq 0 ];
 then
 	ynh_app_setting_set "$app" protected_uris "/"
 else
-	ynh_app_setting_set "$app" protected_regex "/admin/"
+	# If the app is private, viewing images stays publicly accessible.
+	if [ "$path_url" == "/" ]; then
+	    # If the path is /, clear it to prevent any error with the regex.
+	    path_url=""
+	fi
+	# Modify the domain to be used in a regex
+	domain_regex=$(echo "$domain" | sed 's@-@.@g')
+	ynh_app_setting_set $app protected_regex "$domain_regex$path_url/admin/"
+
 	ynh_replace_string "	include conf.d/"  "	#include conf.d/"  "$finalnginxconf"
 
 	ynh_store_file_checksum "$finalnginxconf"
