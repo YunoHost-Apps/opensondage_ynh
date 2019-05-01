@@ -60,7 +60,7 @@ ynh_app_setting_set $app is_public $is_public
 #=================================================
 ynh_print_info "Installing dependencies..."
 
-ynh_install_app_dependencies php-fpdf php-cli
+ynh_install_app_dependencies php-fpdf php-cli php-xml
 
 #=================================================
 # CREATE A MYSQL DATABASE

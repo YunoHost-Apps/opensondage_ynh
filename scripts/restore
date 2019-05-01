@@ -93,7 +93,7 @@ ynh_mysql_connect_as $db_name $db_pwd $db_name < ./db.sql
 ynh_print_info "Reinstalling dependencies..."
 
 # Define and install dependencies
-ynh_install_app_dependencies php-fpdf
+ynh_install_app_dependencies php-fpdf php-xml
 
 #=================================================
 # GENERIC FINALIZATION
