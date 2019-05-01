@@ -96,7 +96,7 @@ ynh_mysql_connect_as "$db_name" "$db_pwd" "$db_name" < ./db.sql
 #=================================================
 
 # Dependences
-ynh_install_app_dependencies php-fpdf
+ynh_install_app_dependencies php-fpdf php-xml
 
 #=================================================
 # GENERIC FINALIZATION
