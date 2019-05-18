@@ -19,7 +19,7 @@
         "email": "ljf+opensondage_ynh@grimaud.me"
     }],
     "requirements": {
-        "yunohost": ">= 3.2"
+        "yunohost": ">= 3.5.0"
     },
     "multi_instance": true,
     "services": [

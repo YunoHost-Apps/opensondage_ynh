@@ -34,9 +34,9 @@ Framadate is an online service for planning an appointment or making a decision 
 
 #### Supported architectures
 
-* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/opensondage%20%28Official%29.svg)](https://ci-apps.yunohost.org/ci/apps/opensondage/)
-* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/opensondage%20%28Official%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/opensondage/)
-* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/opensondage%20%28Official%29.svg)](https://ci-stretch.nohost.me/ci/apps/opensondage/)
+* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/opensondage%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/opensondage/)
+* ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/opensondage%20%28Apps%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/opensondage/)
+* Jessie x86-64b - [![Build Status](https://ci-stretch.nohost.me/ci/logs/opensondage%20%28Apps%29.svg)](https://ci-stretch.nohost.me/ci/apps/opensondage/)
 
 ## Limitations
 
@@ -51,6 +51,7 @@ Framadate is an online service for planning an appointment or making a decision 
 
  * Report a bug: https://github.com/YunoHost-Apps/opensondage_ynh/issues
  * OpenSondage website: https://git.framasoft.org/framasoft/framadate/framadate
+ * OpenSondage repository: https://git.framasoft.org/framasoft/framadate/framadate
  * YunoHost website: https://yunohost.org/
 
 ---
