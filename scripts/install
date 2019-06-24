@@ -174,7 +174,7 @@ then
 	fi
 	# Modify the domain to be used in a regex
 	domain_regex=$(echo "$domain" | sed 's@-@.@g')
-	ynh_app_setting_set --app=$app -key=protected_regex -value="$domain_regex$path_url/admin/"
+	ynh_app_setting_set --app=$app --key=protected_regex --value="$domain_regex$path_url/admin/"
 fi
 
 #=================================================
