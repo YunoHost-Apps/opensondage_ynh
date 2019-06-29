@@ -10,70 +10,77 @@ source _common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# MANAGE SCRIPT FAILURE
+# LOAD SETTINGS
 #=================================================
-
-# Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
-
-#=================================================
-# RETRIEVE ARGUMENTS FROM THE MANIFEST
-#=================================================
+ynh_script_progression --message="Loading installation settings..." --weight=2
 
 app=$YNH_APP_INSTANCE_NAME
 
-# Retrieve arguments
-domain=$(ynh_app_setting_get "$app" domain)
-path_url=$(ynh_app_setting_get "$app" path)
-admin=$(ynh_app_setting_get "$app" admin)
-is_public=$(ynh_app_setting_get "$app" is_public)
-db_name=$(ynh_app_setting_get "$app" db_name)
-dbuser=$app
-dbpass=$(ynh_app_setting_get "$app" mysqlpwd)
-final_path=$(ynh_app_setting_get "$app" final_path)
-language=$(ynh_app_setting_get "$app" language)
+domain=$(ynh_app_setting_get --app=$app --key=domain)
+path_url=$(ynh_app_setting_get --app=$app --key=path)
+admin=$(ynh_app_setting_get --app=$app --key=admin)
+is_public=$(ynh_app_setting_get --app=$app --key=is_public)
+final_path=$(ynh_app_setting_get --app=$app --key=final_path)
+language=$(ynh_app_setting_get --app=$app --key=language)
+db_name=$(ynh_app_setting_get --app=$app --key=db_name)
+
+#=================================================
+# CHECK VERSION
+#=================================================
+
+upgrade_type=$(ynh_check_app_version_changed)
 
 #=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
+ynh_script_progression --message="Ensuring downward compatibility..."
 
-if [ -z "$is_public" ];
+if [ -z "$is_public" ]
 then
-    is_public=$(ynh_app_setting_get "$app" public_site)
-    ynh_app_setting_set "$app" is_public "$is_public"
-    ynh_app_setting_delete "$app" public_site
+	is_public=$(ynh_app_setting_get --app=$app --key=public_site)
+	ynh_app_setting_set --app=$app --key=is_public --value=$is_public
+	ynh_app_setting_delete --app=$app --key=public_site
 fi
 
 # Fix is_public as a boolean value
 if [ "$is_public" = "Yes" ]; then
-	ynh_app_setting_set "$app" is_public 1
+	ynh_app_setting_set --app=$app --key=is_public --value=1
 	is_public=1
 elif [ "$is_public" = "No" ]; then
-	ynh_app_setting_set "$app" is_public 0
+	ynh_app_setting_set --app=$app --key=is_public --value=0
 	is_public=0
 fi
 
 # If db_name doesn't exist, create it
 if [ -z "$db_name" ]; then
-	db_name=$(ynh_sanitize_dbid "$app")
-	ynh_app_setting_set "$app" db_name "$db_name"
+	db_name=$(ynh_sanitize_dbid --db_name=$app)
+	ynh_app_setting_set --app=$app --key=db_name --value=$db_name
 fi
 
 # If final_path doesn't exist, create it
 if [ -z "$final_path" ]; then
 	final_path=/var/www/$app
-	ynh_app_setting_set "$app" final_path "$final_path"
+	ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 fi
 
-# make sure default language is set
-if [ -z "$language" ];
+# Make sure default language is set
+if [ -z "$language" ]
 then
     language=$(grep LANGUE "/var/www/$app/variables.php" | grep -Po "'.*?'" | cut -d"'" -f2)
+fi
+
+# Use path instead of path_url in settings.yml...
+if [ -z "$path_url" ]
+then
+	path_url=$(ynh_app_setting_get --app=$app --key=path_url)
+	ynh_app_setting_set --app=$app --key=path --value=$path_url
+	ynh_app_setting_delete --app=$app --key=path_url
 fi
 
 #=================================================
 # BACKUP BEFORE UPGRADE THEN ACTIVE TRAP
 #=================================================
+ynh_script_progression --message="Backing up the app before upgrading (may take a while)..." --weight=3
 
 # Backup the current version of the app
 ynh_backup_before_upgrade
@@ -89,10 +96,7 @@ ynh_abort_if_errors
 #=================================================
 
 # Normalize the URL path syntax
-path_url=$(ynh_normalize_url_path "$path_url")
-
-# Check web path availability
-ynh_webpath_available "$domain" "$path_url"
+path_url=$(ynh_normalize_url_path --path_url=$path_url)
 
 #=================================================
 # STANDARD UPGRADE STEPS
@@ -100,35 +104,41 @@ ynh_webpath_available "$domain" "$path_url"
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 
-# Download, check integrity, uncompress and patch the source from app.src
-ynh_setup_source "$final_path"
+if [ "$upgrade_type" == "UPGRADE_APP" ]
+then
+	ynh_script_progression --message="Upgrading source files..." --weight=2
+
+	# Download, check integrity, uncompress and patch the source from app.src
+	ynh_setup_source --dest_dir="$final_path"
+fi
 
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
-
-if [ "$path_url" == "/" ]
-then
-	# ynh panel is only for non-root installs
-	ynh_replace_string "	include conf.d/"  "	#include conf.d/"  "../conf/nginx.conf"
-else
-	# add rewrite for alias_traversal protection
-	ynh_replace_string "^#sub_path_only" "" "../conf/nginx.conf"
-fi
+ynh_script_progression --message="Upgrading nginx web server configuration..." --weight=2
 
 # Create a dedicated nginx config
 ynh_add_nginx_config
 
 #=================================================
+# UPGRADE DEPENDENCIES
+#=================================================
+ynh_script_progression --message="Upgrading dependencies..." --weight=7
+
+ynh_install_app_dependencies php-fpdf php-cli php-xml
+
+#=================================================
 # CREATE DEDICATED USER
 #=================================================
+ynh_script_progression --message="Making sure dedicated system user exists..."
 
-# Create a system user
-ynh_system_user_create "$app"
+# Create a dedicated user (if not existing)
+ynh_system_user_create --username=$app
 
 #=================================================
 # PHP-FPM CONFIGURATION
 #=================================================
+ynh_script_progression --message="Upgrading php-fpm configuration..." --weight=3
 
 # Create a dedicated php-fpm config
 ynh_add_fpm_config
@@ -136,99 +146,100 @@ ynh_add_fpm_config
 #=================================================
 # SPECIFIC UPGRADE
 #=================================================
-
-#=================================================
-# STORE THE CHECKSUM OF THE CONFIG FILE
-#=================================================
-config="$final_path/app/inc/config.php"
-# Verify the checksum and backup the file if it's different
-ynh_backup_if_checksum_is_different "$config"
-
-#=================================================
-# Create config.php
+# UPGRADE CONFIG.PHP
 #=================================================
 
-admin_mail=$(ynh_user_get_info "$admin" mail)
-cp ../conf/config.php "$config"
+if [ "$upgrade_type" == "UPGRADE_APP" ]
+then
+    ynh_script_progression --message="Reconfiguring opensondage..." --weight=2
 
-# Change variables in configuration
-ynh_replace_string "__DBUSER__"    "$dbuser"   "$config"
-ynh_replace_string "__DBPWD__"     "$dbpass"   "$config"
-ynh_replace_string "__DBNAME__"    "$db_name"  "$config"
-ynh_replace_string "__ADMINMAIL__" "$admin_mail" "$config"
-ynh_replace_string "__LANGUAGE__"  "$language" "$config"
-ynh_replace_string "__DOMAIN__"    "$domain"   "$config"
-ynh_replace_string "__PATH__"      "$path_url" "$config"
+    config="$final_path/app/inc/config.php"
+
+    # Verify the checksum and backup the file if it's different
+    ynh_backup_if_checksum_is_different --file="$config"
+
+    admin_mail=$(ynh_user_get_info --username=$admin --key=mail)
+
+    cp ../conf/config.php "$config"
+
+    # Change variables in configuration
+    ynh_replace_string --match_string="__DBUSER__"    --replace_string=$db_name    --target_file="$config"
+    db_pwd=$(ynh_app_setting_get --app=$app --key=mysqlpwd)
+    ynh_replace_string --match_string="__DBPWD__"     --replace_string="$db_pwd"   --target_file="$config"
+    ynh_replace_string --match_string="__DBNAME__"    --replace_string=$db_name    --target_file="$config"
+    ynh_replace_string --match_string="__ADMINMAIL__" --replace_string=$admin_mail --target_file="$config"
+    ynh_replace_string --match_string="__LANGUAGE__"  --replace_string=$language   --target_file="$config"
+    ynh_replace_string --match_string="__DOMAIN__"    --replace_string=$domain     --target_file="$config"
+    ynh_replace_string --match_string="__PATH__"      --replace_string=$path_url   --target_file="$config"
+
+    # Calculate and store the config file checksum into the app settings
+    ynh_store_file_checksum --file="$config"
+fi
 
 #=================================================
-# Replace logo image (default is FramaDate)
+# REPLACE LOGO IMAGE (DEFAULT IS FRAMADATE)
 #=================================================
 
 cp ../img/logo.png "$final_path/images"
 
 #=================================================
-# STORE THE CHECKSUM OF THE CONFIG FILE
+# CREATE LOG FILE
 #=================================================
 
-# Recalculate and store the config file checksum into the app settings
-ynh_store_file_checksum "$config"
-
-#=================================================
-# Create log file
-#=================================================
-
-# Create log file
 touch "$final_path/admin/stdout.log"
 
 #=================================================
+# RUN DATABASE UPGRADE
+#=================================================
+
+if [ "$upgrade_type" == "UPGRADE_APP" ]
+then
+    ynh_script_progression --message="Upgrading database..." --weight=2
+
+    # Install composer
+    ynh_install_composer
+
+    ynh_exec_warn_less php "$final_path/admin/migration.php"
+fi
+
+#=================================================
 # GENERIC FINALIZATION
-#=================================================
-# Run database initilization
-#=================================================
-
-# Set initial permissions for initilization
-chown -R "$app": "$final_path"
-
-init_composer "$app" "$final_path"
-
-sudo -u "$app" php "$final_path/admin/migration.php"
-
 #=================================================
 # SECURE FILES AND DIRECTORIES
 #=================================================
 
 chown -R root: "$final_path"
-chown -R "$app": "$final_path/tpl_c"
-chown -R "$app": "$final_path/admin/stdout.log"
+chown -R $app: "$final_path/"{tpl_c,admin/stdout.log}
 
 #=================================================
 # SETUP SSOWAT
 #=================================================
+ynh_script_progression --message="Upgrading SSOwat configuration..."
 
-ynh_app_setting_set "$app" skipped_uris "/"
-
-if [ $is_public -eq 0 ];
+# Make app public if necessary
+if [ $is_public -eq 1 ]
 then
-	ynh_app_setting_set "$app" protected_uris "/"
-else
-	ynh_app_setting_delete "$app" protected_uris
+	ynh_app_setting_set --app=$app --key=skipped_uris --value="/"
 
-	# If the app is private, viewing images stays publicly accessible.
+	# Keep /admin private
 	if [ "$path_url" == "/" ]; then
 	    # If the path is /, clear it to prevent any error with the regex.
 	    path_url=""
 	fi
 	# Modify the domain to be used in a regex
 	domain_regex=$(echo "$domain" | sed 's@-@.@g')
-	ynh_app_setting_set $app protected_regex "$domain_regex$path_url/admin/"
-
-	ynh_replace_string "	include conf.d/"  "	#include conf.d/"  "$finalnginxconf"
-
-	ynh_store_file_checksum "$finalnginxconf"
+	ynh_app_setting_set --app=$app --key=protected_regex --value="$domain_regex$path_url/admin/"
 fi
 
 #=================================================
 # RELOAD NGINX
 #=================================================
+ynh_script_progression --message="Reloading nginx web server..."
 
-systemctl reload nginx
+ynh_systemd_action --service_name=nginx --action=reload
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression --message="Upgrade of $app completed" --last
