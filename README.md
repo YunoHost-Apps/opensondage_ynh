@@ -10,7 +10,7 @@ If you don't have YunoHost, please see [here](https://yunohost.org/#/install) to
 
 Framadate is an online service for planning an appointment or making a decision quickly and easily. It's a community free/libre software alternative to Doodle.
 
-**Shipped version:** 1.0.3
+**Shipped version:** 1.1.10
 
 ## Screenshots
 
