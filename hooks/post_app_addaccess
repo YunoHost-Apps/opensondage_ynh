@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Source app helpers
+source /usr/share/yunohost/helpers
+
+app=$1
+added_users=$2
+permission=$3
+added_groups=$4
+
+if [ "$app" == __APP__ ]; then
+    if [ "$permission" = "create poll" ]; then # The fake permission "create poll" is modifed.
+        if [ "$added_groups" = "visitors" ]; then # As is it a fake permission we can only grant/remove the "visitors" group.
+            domain=$(ynh_app_setting_get --app=$app --key=domain)
+            path_url=$(ynh_app_setting_get --app=$app --key=path)
+
+            if [ "$path_url" == "/" ]; then
+                # If the path is /, clear it to prevent any error with the regex.
+                path_url=""
+            fi
+            # Modify the domain to be used in a regex
+            domain_regex=$(echo "$domain" | sed 's@-@.@g')
+            ynh_app_setting_set --app=$app --key=unprotected_regex --value="$domain_regex$path_url/create_poll.php?.*$","$domain_regex$path_url/adminstuds.php?.*"
+
+            # Sync the is_public variable according to the permission
+            ynh_app_setting_set --app=$app --key=is_public --value=1
+
+            yunohost app ssowatconf
+        else
+            ynh_print_warn --message="This app doesn't support this authorisation, you can only add or remove visitors group."
+        fi
+    fi
+fi
