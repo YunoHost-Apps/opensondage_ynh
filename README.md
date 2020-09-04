@@ -28,7 +28,7 @@ OpenSondage is an online service for planning an appointment or making a decisio
 ## Documentation
 
  * Official documentation: https://framagit.org/framasoft/framadate/framadate/wikis/home
- * YunoHost documentation: If specific documentation is needed, feel free to contribute.
+ * YunoHost documentation: https://yunohost.org/#/app_opensondage
 
 ## YunoHost specific features
 
@@ -36,7 +36,7 @@ OpenSondage is an online service for planning an appointment or making a decisio
 
 #### Supported architectures
 
-* x86-64b - [![Build Status](https://ci-apps.yunohost.org/ci/logs/opensondage%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/opensondage/)
+* x86-64 - [![Build Status](https://ci-apps.yunohost.org/ci/logs/opensondage%20%28Apps%29.svg)](https://ci-apps.yunohost.org/ci/apps/opensondage/)
 * ARMv8-A - [![Build Status](https://ci-apps-arm.yunohost.org/ci/logs/opensondage%20%28Apps%29.svg)](https://ci-apps-arm.yunohost.org/ci/apps/opensondage/)
 
 ## Limitations

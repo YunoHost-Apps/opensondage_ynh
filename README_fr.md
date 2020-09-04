@@ -11,7 +11,7 @@ Si vous n'avez pas YunoHost, consultez [le guide](https://yunohost.org/#/install
 
 ## Vue d'ensemble
 
-OpenSondage is an online service for planning an appointment or making a decision quickly and easily. It's a community free/libre software alternative to Doodle.
+OpenSondage est un service en ligne permettant de planifier un rendez-vous ou de prendre une décision rapidement et facilement. C'est une alternative logicielle libre et communautaire à Doodle.
 
 **Version incluse :**  1.1.10
 
@@ -29,7 +29,7 @@ OpenSondage is an online service for planning an appointment or making a decisio
 ## Documentation
 
  * Documentation officielle : https://framagit.org/framasoft/framadate/framadate/wikis/home
- * Documentation YunoHost : Si une documentation spécifique est nécessaire, n'hésitez pas à contribuer.
+ * Documentation YunoHost : https://yunohost.org/#/app_opensondage_fr
 
 ## Caractéristiques spécifiques YunoHost
 
