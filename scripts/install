@@ -97,7 +97,7 @@ ynh_system_user_create --username=$app
 #=================================================
 ynh_script_progression --message="Configuring PHP-FPM..." --weight=2
 
-# Create a dedicated php-fpm config
+# Create a dedicated PHP-FPM config
 ynh_add_fpm_config
 
 #=================================================
@@ -140,7 +140,7 @@ touch "$final_path/admin/stdout.log"
 #=================================================
 # RUN DATABASE INITILIZATION
 #=================================================
-ynh_script_progression --message="Initializing database..."  --weight=2
+ynh_script_progression --message="Initializing database..." --weight=2
 
 # Install composer
 ynh_install_composer
