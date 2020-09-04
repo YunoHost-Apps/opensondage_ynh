@@ -145,7 +145,7 @@ ynh_script_progression --message="Initializing database..." --weight=2
 # Install composer
 ynh_install_composer
 
-ynh_exec_warn_less php$phpversion "$final_path/admin/migration.php"
+ynh_exec_warn_less php$YNH_PHP_VERSION "$final_path/admin/migration.php"
 
 #=================================================
 # GENERIC FINALIZATION
