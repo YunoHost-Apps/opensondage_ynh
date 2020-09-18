@@ -5,9 +5,9 @@
 #=================================================
 
 # dependencies used by the app
-pkg_dependencies="php${YNH_PHP_VERSION}-fpdf php${YNH_PHP_VERSION}-cli php${YNH_PHP_VERSION}-xml"
-
 YNH_PHP_VERSION="7.3"
+
+pkg_dependencies="php${YNH_PHP_VERSION}-fpdf php${YNH_PHP_VERSION}-cli php${YNH_PHP_VERSION}-xml"
 
 #=================================================
 # PERSONAL HELPERS
