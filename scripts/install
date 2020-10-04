@@ -54,9 +54,9 @@ ynh_app_setting_set --app=$app --key=is_public --value=$is_public
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Installing dependencies..."3
+ynh_script_progression --message="Installing dependencies..." --weight=3
 
-ynh_install_app_dependencies php-fpdf php-cli php-xml
+ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
 # CREATE A MYSQL DATABASE
@@ -79,7 +79,7 @@ ynh_setup_source --dest_dir="$final_path"
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Configuring nginx web server..." --weight=2
+ynh_script_progression --message="Configuring NGINX web server..." --weight=2
 
 # Create a dedicated nginx config
 ynh_add_nginx_config
@@ -95,9 +95,9 @@ ynh_system_user_create --username=$app
 #=================================================
 # PHP-FPM CONFIGURATION
 #=================================================
-ynh_script_progression --message="Configuring php-fpm..." --weight=2
+ynh_script_progression --message="Configuring PHP-FPM..." --weight=2
 
-# Create a dedicated php-fpm config
+# Create a dedicated PHP-FPM config
 ynh_add_fpm_config
 
 #=================================================
@@ -105,7 +105,7 @@ ynh_add_fpm_config
 #=================================================
 # CREATE CONFIG.PHP
 #=================================================
-ynh_script_progression --message="Configuring opensondage..." --weight=2
+ynh_script_progression --message="Configuring $app..." --weight=2
 
 config="$final_path/app/inc/config.php"
 
@@ -140,12 +140,12 @@ touch "$final_path/admin/stdout.log"
 #=================================================
 # RUN DATABASE INITILIZATION
 #=================================================
-ynh_script_progression --message="Initializing database..."2
+ynh_script_progression --message="Initializing database..." --weight=2
 
 # Install composer
 ynh_install_composer
 
-ynh_exec_warn_less php7.0 "$final_path/admin/migration.php"
+ynh_exec_warn_less php$YNH_PHP_VERSION "$final_path/admin/migration.php"
 
 #=================================================
 # GENERIC FINALIZATION
@@ -179,7 +179,7 @@ fi
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_script_progression --message="Reloading nginx web server..." --weight=2
+ynh_script_progression --message="Reloading NGINX web server..." --weight=2
 
 ynh_systemd_action --service_name=nginx --action=reload
 
