@@ -11,8 +11,8 @@
     "url": "https://git.framasoft.org/framasoft/framadate",
     "license": "CECILL-B",
     "maintainer": {
-        "name": "YunoHost Contributors",
-        "email": "apps@yunohost.org"
+        "name": "",
+        "email": ""
     },
     "previous_maintainers": [{
         "name": "ljf",
