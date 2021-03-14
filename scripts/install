@@ -47,7 +47,6 @@ ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=path --value=$path_url
 ynh_app_setting_set --app=$app --key=admin --value=$admin
 ynh_app_setting_set --app=$app --key=language --value=$language
-ynh_app_setting_set --app=$app --key=is_public --value=$is_public
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -161,19 +160,16 @@ chown -R $app: "$final_path/"{tpl_c,admin/stdout.log}
 #=================================================
 ynh_script_progression --message="Configuring SSOwat..."
 
-# Make app public if necessary
-if [ $is_public -eq 1 ]
-then
-	ynh_app_setting_set --app=$app --key=skipped_uris --value="/"
 
-	# Keep /admin private
-	if [ "$path_url" == "/" ]; then
-	    # If the path is /, clear it to prevent any error with the regex.
-	    path_url=""
-	fi
+
+# Make app public if necessary
+if [ "$is_public" -eq 1 ]
+then
+	ynh_permission_update --permission="main" --add="visitors"
+fi
 	# Modify the domain to be used in a regex
-	domain_regex=$(echo "$domain" | sed 's@-@.@g')
-	ynh_app_setting_set --app=$app --key=protected_regex --value="$domain_regex$path_url/admin/"
+
+
 fi
 
 #=================================================
