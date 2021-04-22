@@ -8,6 +8,7 @@
 
 source _common.sh
 source /usr/share/yunohost/helpers
+ynh_abort_if_errors
 
 #=================================================
 # RETRIEVE ARGUMENTS
@@ -52,7 +53,7 @@ fi
 #=================================================
 # MODIFY URL IN NGINX CONF
 #=================================================
-ynh_script_progression --message="Updating nginx web server configuration..." --weight=2
+ynh_script_progression --message="Updating NGINX web server configuration..." --weight=2
 
 nginx_conf_path=/etc/nginx/conf.d/$old_domain.d/$app.conf
 
@@ -83,7 +84,7 @@ fi
 #=================================================
 # UPDATE OPENSONDAGE CONFIGURATION
 #=================================================
-ynh_script_progression --message="Reconfiguring opensondage..."
+ynh_script_progression --message="Reconfiguring OpenSondage..."
 
 ynh_replace_string --match_string="const APP_URL = '$old_domain';" --replace_string="const APP_URL = '$new_domain';" --target_file="$final_path/app/inc/config.php"
 
@@ -112,7 +113,7 @@ fi
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_script_progression --message="Reloading nginx web server..."
+ynh_script_progression --message="Reloading NGINX web server..."
 
 ynh_systemd_action --service_name=nginx --action=reload
 
