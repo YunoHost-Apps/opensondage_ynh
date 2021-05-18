@@ -121,6 +121,8 @@ ynh_replace_string --match_string="__ADMINMAIL__" --replace_string=$admin_mail -
 ynh_replace_string --match_string="__LANGUAGE__"  --replace_string=$language   --target_file="$config"
 ynh_replace_string --match_string="__DOMAIN__"    --replace_string=$domain     --target_file="$config"
 ynh_replace_string --match_string="__PATH__"      --replace_string=$path_url   --target_file="$config"
+timezone="$(cat /etc/timezone)"
+ynh_replace_string --match_string="__TIMEZONE__"  --replace_string=$timezone   --target_file="$config"
 
 # Calculate and store the config file checksum into the app settings
 ynh_store_file_checksum --file="$config"
