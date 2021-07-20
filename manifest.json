@@ -9,6 +9,14 @@
     },
     "version": "1.1.16~ynh1",
     "url": "https://git.framasoft.org/framasoft/framadate",
+    "upstream": {
+        "license": "CECILL-B",
+        "website": "https://framadate.org/",
+        "demo": "https://framadate.org/",
+        "admindoc": "https://framagit.org/framasoft/framadate/framadate/wikis/home",
+        "userdoc": "https://yunohost.org/#/app_opensondage",
+        "code": "https://git.framasoft.org/framasoft/framadate"
+    },
     "license": "CECILL-B",
     "maintainer": {
         "name": "",
