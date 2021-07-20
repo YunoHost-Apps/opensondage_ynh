@@ -13,11 +13,11 @@
 		setup_private=1
 		setup_public=1
 		upgrade=1
-		upgrade=1	from_commit=eb508660841801995fe2c66e5bf3259cdbea5922
+		upgrade=1	from_commit=02f2cd7e656ebae74643e969746b23d8912c7798
 		backup_restore=1
 		multi_instance=1
 		change_url=1
 ;;; Upgrade options
-	; commit=eb508660841801995fe2c66e5bf3259cdbea5922
-		name=Remove Framasoft signature
+	; commit=02f2cd7e656ebae74643e969746b23d8912c7798
+		name=Merge pull request #70 from YunoHost-Apps/testing 
 		manifest_arg=domain=DOMAIN&path=PATH&admin=USER&language=fr_FR&is_public=1&
