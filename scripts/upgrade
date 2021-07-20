@@ -141,9 +141,9 @@ if [ "$upgrade_type" == "UPGRADE_APP" ]
 then
     ynh_script_progression --message="Reconfiguring $app..." --weight=2
 
-	ynh_add_config --template="../conf/config.php" --destination="$final_path/app/inc/config.php"
-	chmod 400 "$final_path/app/inc/config.php"
-	chown $app:$app "$final_path/app/inc/config.php"
+    ynh_add_config --template="../conf/config.php" --destination="$final_path/app/inc/config.php"
+	  chmod 400 "$final_path/app/inc/config.php"
+	  chown $app:$app "$final_path/app/inc/config.php"
 fi
 
 #=================================================
