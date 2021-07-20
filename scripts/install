@@ -123,7 +123,7 @@ ynh_script_progression --message="Initializing database..." --weight=2
 # Install composer
 ynh_install_composer
 
-ynh_exec_warn_less php$YNH_PHP_VERSION "$final_path/admin/migration.php"
+ynh_exec_warn_less php$phpversion "$final_path/admin/migration.php"
 
 #=================================================
 # GENERIC FINALIZATION
@@ -131,7 +131,6 @@ ynh_exec_warn_less php$YNH_PHP_VERSION "$final_path/admin/migration.php"
 # SECURE FILES AND DIRECTORIES
 #=================================================
 
-chown -R root: "$final_path"
 chown -R $app: "$final_path/"{tpl_c,admin/stdout.log}
 
 #=================================================
