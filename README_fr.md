@@ -17,6 +17,10 @@ Service pour planifier un rendez-vous ou prendre une décision rapidement et fac
 
 **Démo :** https://framadate.org/
 
+## Captures d'écran
+
+![](./doc/screenshots/screenshots.jpg)
+
 ## Avertissements / informations importantes
 
 ## Limitations

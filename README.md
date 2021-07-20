@@ -21,6 +21,10 @@ Service for planning an appointment or making a decision quickly and easily
 
 **Demo:** https://framadate.org/
 
+## Screenshots
+
+![](./doc/screenshots/screenshots.jpg)
+
 ## Disclaimers / important information
 
 ## Limitations
