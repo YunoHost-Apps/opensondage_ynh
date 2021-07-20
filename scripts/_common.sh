@@ -7,7 +7,7 @@
 # dependencies used by the app
 YNH_PHP_VERSION="7.3"
 
-pkg_dependencies="php${YNH_PHP_VERSION}-mbstring php${YNH_PHP_VERSION}-intl php${YNH_PHP_VERSION}-xml php${YNH_PHP_VERSION}-cli"
+extra_php_dependencies="php${YNH_PHP_VERSION}-mbstring php${YNH_PHP_VERSION}-intl php${YNH_PHP_VERSION}-xml php${YNH_PHP_VERSION}-cli"
 
 #=================================================
 # PERSONAL HELPERS
@@ -20,19 +20,6 @@ pkg_dependencies="php${YNH_PHP_VERSION}-mbstring php${YNH_PHP_VERSION}-intl php$
 #=================================================
 # EXPERIMENTAL HELPERS
 #=================================================
-
-# Execute a command as another user
-# usage: exec_as USER COMMAND [ARG ...]
-exec_as() {
-  local USER=$1
-  shift 1
-
-  if [[ $USER = $(whoami) ]]; then
-    eval "$@"
-  else
-    sudo -u "$USER" "$@"
-  fi
-}
 
 # Execute a command with Composer
 #

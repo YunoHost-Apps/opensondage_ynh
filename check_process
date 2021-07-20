@@ -1,10 +1,10 @@
 ;; Test complet
 	; Manifest
-		domain="domain.tld"	(DOMAIN)
-		path="/path"	(PATH)
-		admin="john"	(USER)
+		domain="domain.tld"
+		path="/path"
+		admin="john"
 		language="fr"
-		is_public=1	(PUBLIC|public=1|private=0)
+		is_public=1
 	; Checks
 		pkg_linter=1
 		setup_sub_dir=1
@@ -16,11 +16,7 @@
 		upgrade=1	from_commit=eb508660841801995fe2c66e5bf3259cdbea5922
 		backup_restore=1
 		multi_instance=1
-		incorrect_path=1
-		port_already_use=0
 		change_url=1
-;;; Levels
-	Level 5=auto
 ;;; Upgrade options
 	; commit=eb508660841801995fe2c66e5bf3259cdbea5922
 		name=Remove Framasoft signature

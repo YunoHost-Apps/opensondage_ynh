@@ -26,19 +26,19 @@ const APP_URL = '__DOMAIN__';
 const NOMAPPLICATION = 'OpenSondage';
 
 // Database administrator email
-const ADRESSEMAILADMIN = '__ADMINMAIL__';
+const ADRESSEMAILADMIN = '__EMAIL__';
 
 // Email for automatic responses (you should set it to "no-reply")
 const ADRESSEMAILREPONSEAUTO = '<no-reply@__DOMAIN__>';
 
 // Database user
-const DB_USER= '__DBUSER__';
+const DB_USER= '__DB_USER__';
 
 // Database password
-const DB_PASSWORD = '__DBPWD__';
+const DB_PASSWORD = '__DB_PWD__';
 
 // Database server name, leave empty to use a socket
-const DB_CONNECTION_STRING = 'mysql:host=localhost;dbname=__DBNAME__;port=3306';
+const DB_CONNECTION_STRING = 'mysql:host=localhost;dbname=__DB_NAME__;port=3306';
 
 // Name of the table that store migration script already executed
 const MIGRATION_TABLE = 'framadate_migration';
