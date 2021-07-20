@@ -61,7 +61,7 @@
                     "fr": "Choisissez la langue par défault d'OpenSondage",
                     "de": "Wählen Sie bitte die Standardsprache für OpenSondage."
                 },
-                "choices": ["fr","en", "oc", "es", "de", "nl", "it", "br"],
+                "choices": ["br", "de", "en", "es", "fr", "it", "nl", "oc"],
                 "default": "en"
             },
             {
