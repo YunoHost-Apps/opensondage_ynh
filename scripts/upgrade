@@ -65,7 +65,7 @@ fi
 
 # Make sure default language is set
 if [ -z "$language" ]; then
-    language=$(grep LANGUE "/var/www/$app/variables.php" | grep -Po "'.*?'" | cut -d"'" -f2)
+    language=en
 fi
 
 # Use path instead of path_url in settings.yml...
