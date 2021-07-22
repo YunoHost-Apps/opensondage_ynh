@@ -146,7 +146,7 @@ ynh_script_progression --message="Configuring SSOwat..." --weight=1
 # Make app public if necessary
 if [ $is_public -eq 1 ]
 then
-	ynh_app_setting_set --app=$app --key=skipped_uris --value="/"
+	ynh_permission_update --permission="main" --add="visitors"
 
 	# Keep /admin private
 	if [ "$path_url" == "/" ]; then
@@ -157,6 +157,8 @@ then
 	domain_regex=$(echo "$domain" | sed 's@-@.@g')
 	ynh_app_setting_set --app=$app --key=protected_regex --value="$domain_regex$path_url/admin/"
 fi
+
+ynh_permission_create --permission="admin" --allowed="$admin" --url="/admin"
 
 #=================================================
 # RELOAD NGINX
