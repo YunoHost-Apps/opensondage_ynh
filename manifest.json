@@ -3,12 +3,20 @@
     "id": "opensondage",
     "packaging_format": 1,
     "description": {
-        "en": "Service for planning an appointment or making a decision quickly and easily.",
-        "fr": "Service pour planifier un rendez-vous ou prendre une décision rapidement et facilement.",
-        "de": "Service zur schnellen und einfachen Planung eines Termins oder zur Entscheidungsfindung."
+        "en": "Service for planning an appointment or making a decision quickly and easily",
+        "fr": "Service pour planifier un rendez-vous ou prendre une décision rapidement et facilement",
+        "de": "Service zur schnellen und einfachen Planung eines Termins oder zur Entscheidungsfindung"
     },
-    "version": "1.1.10~ynh2",
+    "version": "1.1.16~ynh1",
     "url": "https://git.framasoft.org/framasoft/framadate",
+    "upstream": {
+        "license": "CECILL-B",
+        "website": "https://framadate.org/",
+        "demo": "https://framadate.org/",
+        "admindoc": "https://framagit.org/framasoft/framadate/framadate/wikis/home",
+        "userdoc": "https://yunohost.org/#/app_opensondage",
+        "code": "https://git.framasoft.org/framasoft/framadate"
+    },
     "license": "CECILL-B",
     "maintainer": {
         "name": "",
@@ -19,12 +27,12 @@
         "email": "ljf+opensondage_ynh@grimaud.me"
     }],
     "requirements": {
-        "yunohost": ">= 3.8.1"
+        "yunohost": ">= 4.2.0"
     },
     "multi_instance": true,
     "services": [
         "nginx",
-        "php7.0-fpm",
+        "php7.3-fpm",
         "mysql"
     ],
     "arguments": {
@@ -32,32 +40,17 @@
             {
                 "name": "domain",
                 "type": "domain",
-                "ask": {
-                    "en": "Choose a domain for OpenSondage",
-                    "fr": "Choisissez un nom de domaine pour OpenSondage",
-                    "de": "Wählen Sie bitte einen Domain für OpenSondage"
-                },
                 "example": "domain.org"
             },
             {
                 "name": "path",
                 "type": "path",
-                "ask": {
-                    "en": "Choose a path for OpenSondage",
-                    "fr": "Choisissez l'adresse pour OpenSondage",
-                    "de": "Tragen Sie bitte den Pfad für OpenSondage ein"
-                },
                 "example": "/date",
                 "default": "/date"
             },
             {
                 "name": "admin",
                 "type": "user",
-                "ask": {
-                    "en": "Choose the OpenSondage administrator (must be an existing YunoHost user)",
-                    "fr": "Choisissez l'administrateur d'OpenSondage (doit être un utilisateur YunoHost)",
-                    "de": "Wählen Sie bitte den OpenSondageadministrator (muss ein vorhandener YunoHost Nutzer sein)"
-                },
                 "example": "johndoe"
             },
             {
@@ -68,17 +61,12 @@
                     "fr": "Choisissez la langue par défault d'OpenSondage",
                     "de": "Wählen Sie bitte die Standardsprache für OpenSondage."
                 },
-                "choices": ["fr","en", "oc", "es", "de", "nl", "it", "br"],
+                "choices": ["br", "de", "en", "es", "fr", "it", "nl", "oc"],
                 "default": "en"
             },
             {
                 "name": "is_public",
                 "type": "boolean",
-                "ask": {
-                    "en": "Can non-members create a poll?",
-                    "fr": "Une personne non membre peut elle créer un sondage ?",
-                    "de": "Kann einen nicht eingeloggter Nutzer einen Umfrage erstellen?"
-                },
                 "default": true
             }
         ]
