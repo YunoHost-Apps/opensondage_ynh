@@ -158,7 +158,7 @@ then
 	ynh_app_setting_set --app=$app --key=protected_regex --value="$domain_regex$path_url/admin/"
 fi
 
-ynh_permission_create --permission="admin" --allowed="$admin" --url="/admin"
+ynh_permission_create --permission="admin" --allowed="$admin" --remove="all_users" --url="/admin"
 
 #=================================================
 # RELOAD NGINX
