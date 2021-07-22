@@ -23,6 +23,7 @@ is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 language=$(ynh_app_setting_get --app=$app --key=language)
 db_name=$(ynh_app_setting_get --app=$app --key=db_name)
+phpversion=$(ynh_app_setting_get --app="$app" --key=phpversion)
 
 #=================================================
 # CHECK VERSION
@@ -129,13 +130,6 @@ ynh_clean_setup () {
 ynh_abort_if_errors
 
 #=================================================
-# CHECK THE PATH
-#=================================================
-
-# Normalize the URL path syntax
-path_url=$(ynh_normalize_url_path --path_url=$path_url)
-
-#=================================================
 # STANDARD UPGRADE STEPS
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -152,7 +146,7 @@ fi
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Upgrading nginx web server configuration..." --weight=2
+ynh_script_progression --message="Upgrading NGINX web server configuration..." --weight=2
 
 # Create a dedicated nginx config
 ynh_add_nginx_config
@@ -162,7 +156,7 @@ ynh_add_nginx_config
 #=================================================
 ynh_script_progression --message="Upgrading dependencies..." --weight=7
 
-ynh_install_app_dependencies php-fpdf php-cli php-xml
+ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
 # CREATE DEDICATED USER
@@ -175,9 +169,9 @@ ynh_system_user_create --username=$app
 #=================================================
 # PHP-FPM CONFIGURATION
 #=================================================
-ynh_script_progression --message="Upgrading php-fpm configuration..." --weight=3
+ynh_script_progression --message="Upgrading PHP-FPM configuration..." --weight=3
 
-# Create a dedicated php-fpm config
+# Create a dedicated PHP-FPM config
 ynh_add_fpm_config
 
 #=================================================
@@ -188,7 +182,7 @@ ynh_add_fpm_config
 
 if [ "$upgrade_type" == "UPGRADE_APP" ]
 then
-    ynh_script_progression --message="Reconfiguring opensondage..." --weight=2
+    ynh_script_progression --message="Reconfiguring $app..." --weight=2
 
     config="$final_path/app/inc/config.php"
 
@@ -208,7 +202,8 @@ then
     ynh_replace_string --match_string="__LANGUAGE__"  --replace_string=$language   --target_file="$config"
     ynh_replace_string --match_string="__DOMAIN__"    --replace_string=$domain     --target_file="$config"
     ynh_replace_string --match_string="__PATH__"      --replace_string=$path_url   --target_file="$config"
-
+    timezone="$(cat /etc/timezone)"
+    ynh_replace_string --match_string="__TIMEZONE__"  --replace_string=$timezone   --target_file="$config"
     # Calculate and store the config file checksum into the app settings
     ynh_store_file_checksum --file="$config"
 fi
@@ -258,7 +253,7 @@ chown -R $app: "$final_path/"{tpl_c,admin/stdout.log}
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_script_progression --message="Reloading nginx web server..."
+ynh_script_progression --message="Reloading NGINX web server..."
 
 ynh_systemd_action --service_name=nginx --action=reload
 

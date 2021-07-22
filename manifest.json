@@ -3,23 +3,23 @@
     "id": "opensondage",
     "packaging_format": 1,
     "description": {
-        "en": "OpenSondage is an online service for planning an appointment or making a decision quickly and easily. No registration is required.",
-        "fr": "OpenSondage sert à faire des sondages sans authentification pour trouver une date de réunion qui convienne à toutes les personnes concernées.",
-        "de": "OpenSondage ist ein Online-Dienst, der Ihnen bei der Absprache von Terminen oder der Entscheidungsfindung hilft."
+        "en": "Service for planning an appointment or making a decision quickly and easily.",
+        "fr": "Service pour planifier un rendez-vous ou prendre une décision rapidement et facilement.",
+        "de": "Service zur schnellen und einfachen Planung eines Termins oder zur Entscheidungsfindung."
     },
-    "version": "1.1.10~ynh1",
+    "version": "1.1.10~ynh2",
     "url": "https://git.framasoft.org/framasoft/framadate",
     "license": "CECILL-B",
     "maintainer": {
-        "name": "YunoHost Contributors",
-        "email": "apps@yunohost.org"
+        "name": "",
+        "email": ""
     },
     "previous_maintainers": [{
         "name": "ljf",
         "email": "ljf+opensondage_ynh@grimaud.me"
     }],
     "requirements": {
-        "yunohost": ">= 3.7.0"
+        "yunohost": ">= 3.8.1"
     },
     "multi_instance": true,
     "services": [
