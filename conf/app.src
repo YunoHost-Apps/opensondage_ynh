@@ -1,6 +1,6 @@
-SOURCE_URL=https://framagit.org/framasoft/framadate/framadate/-/archive/1.1.10/framadate-1.1.10.tar.gz
-SOURCE_SUM=ea9ab8bd713da17dc7e5d6ddd782ce704184a3189888ed837ba8e59ee7b6fa5f
+SOURCE_URL=https://framagit.org/framasoft/framadate/framadate/-/archive/1.1.16/framadate-1.1.16.tar.gz
+SOURCE_SUM=89da42a915c912a91ae1ba44fd32a61ec8fa5f59c517ee3f5d74335ddee77c7d
 SOURCE_SUM_PRG=sha256sum
 SOURCE_FORMAT=tar.gz
 SOURCE_IN_SUBDIR=true
-SOURCE_FILENAME=opensondage-1-1-10.tar.gz
+SOURCE_FILENAME=opensondage-1-1-16.tar.gz

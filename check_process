@@ -1,10 +1,10 @@
 ;; Test complet
 	; Manifest
-		domain="domain.tld"	(DOMAIN)
-		path="/path"	(PATH)
-		admin="john"	(USER)
+		domain="domain.tld"
+		path="/path"
+		admin="john"
 		language="fr"
-		is_public=1	(PUBLIC|public=1|private=0)
+		is_public=1
 	; Checks
 		pkg_linter=1
 		setup_sub_dir=1
@@ -13,15 +13,11 @@
 		setup_private=1
 		setup_public=1
 		upgrade=1
-		upgrade=1	from_commit=eb508660841801995fe2c66e5bf3259cdbea5922
+		upgrade=1	from_commit=02f2cd7e656ebae74643e969746b23d8912c7798
 		backup_restore=1
 		multi_instance=1
-		incorrect_path=1
-		port_already_use=0
 		change_url=1
-;;; Levels
-	Level 5=auto
 ;;; Upgrade options
-	; commit=eb508660841801995fe2c66e5bf3259cdbea5922
-		name=Remove Framasoft signature
+	; commit=02f2cd7e656ebae74643e969746b23d8912c7798
+		name=Merge pull request #70 from YunoHost-Apps/testing 
 		manifest_arg=domain=DOMAIN&path=PATH&admin=USER&language=fr_FR&is_public=1&

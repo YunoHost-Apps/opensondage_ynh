@@ -12,23 +12,13 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
-ynh_script_progression --message="Loading installation settings..."
+ynh_script_progression --message="Loading installation settings..." --weight=1
 
 app=$YNH_APP_INSTANCE_NAME
 
 domain=$(ynh_app_setting_get --app=$app --key=domain)
 db_name=$(ynh_app_setting_get --app=$app --key=db_name)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-
-#=================================================
-# STANDARD REMOVE
-#=================================================
-# REMOVE DEPENDENCIES
-#=================================================
-ynh_script_progression --message="Removing dependencies..." --weight=3
-
-# Remove metapackage and its dependencies
-ynh_remove_app_dependencies
 
 #=================================================
 # REMOVE THE MYSQL DATABASE
@@ -67,7 +57,7 @@ ynh_remove_fpm_config
 #=================================================
 # REMOVE DEDICATED USER
 #=================================================
-ynh_script_progression --message="Removing the dedicated system user..."
+ynh_script_progression --message="Removing the dedicated system user..." --weight=1
 
 # Delete a system user
 ynh_system_user_delete --username=$app
