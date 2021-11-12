@@ -14,7 +14,6 @@
         "website": "https://framadate.org/",
         "demo": "https://framadate.org/",
         "admindoc": "https://framagit.org/framasoft/framadate/framadate/wikis/home",
-        "userdoc": "https://yunohost.org/#/app_opensondage",
         "code": "https://git.framasoft.org/framasoft/framadate"
     },
     "license": "CECILL-B",
