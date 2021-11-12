@@ -13,7 +13,7 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 
 Service pour planifier un rendez-vous ou prendre une décision rapidement et facilement
 
-**Version incluse :** 1.1.16~ynh1
+**Version incluse :** 1.1.17~ynh1
 
 **Démo :** https://framadate.org/
 
