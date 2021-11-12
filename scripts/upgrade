@@ -46,6 +46,52 @@ if [ -z "$is_public" ]; then
 	ynh_app_setting_delete --app=$app --key=public_site
 fi
 
+# Fix is_public as a boolean value
+if [ "$is_public" = "Yes" ]; then
+	ynh_app_setting_set --app=$app --key=is_public --value=1
+	is_public=1
+elif [ "$is_public" = "No" ]; then
+	ynh_app_setting_set --app=$app --key=is_public --value=0
+	is_public=0
+fi
+
+skipped_uris=$(ynh_app_setting_get --app=$app --key=skipped_uris)
+
+# Unused with the permission system
+if [ ! -z "$skipped_uris" ]; then
+	ynh_app_setting_delete --app=$app --key=skipped_uris
+fi
+
+protected_regex=$(ynh_app_setting_get --app=$app --key=protected_regex)
+
+# Unused with the permission system
+if [ ! -z "$protected_regex" ]; then
+	ynh_app_setting_delete --app=$app --key=protected_regex
+fi
+
+# Create the permission "upload images" only if it doesn't exist.
+if ! ynh_permission_exists --permission="create poll"
+then
+	# This is a fake permission without any URL.
+	# The purpose of this permission is only to trigger hooks post_app_add/removeaccess when it's modified.
+	# We can't use a real permission for now because the actual permision system doesn't support regex.
+	ynh_permission_create --permission="create poll" --allowed="visitors"
+
+	# Make app public if necessary
+	if [ $is_public -eq 1 ]
+	then
+		if [ "$path_url" == "/" ]; then
+			# If the path is /, clear it to prevent any error with the regex.
+			path_url=""
+		fi
+		# Modify the domain to be used in a regex
+		domain_regex=$(echo "$domain" | sed 's@-@.@g')
+		ynh_app_setting_set --app=$app --key=unprotected_regex --value="$domain_regex$path_url/create_poll.php?.*$","$domain_regex$path_url/adminstuds.php?.*"
+	else
+		ynh_permission_update --permission="create poll" --remove="visitors"
+	fi
+fi
+
 # If db_name doesn't exist, create it
 if [ -z "$db_name" ]; then
 	db_name=$(ynh_sanitize_dbid --db_name=$app)
@@ -147,6 +193,13 @@ then
 fi
 
 #=================================================
+# SETUP HOOKS FILE
+#=================================================
+
+ynh_replace_string --match_string="__APP__" --replace_string="$app" --target_file="../hooks/post_app_addaccess"
+ynh_replace_string --match_string="__APP__" --replace_string="$app" --target_file="../hooks/post_app_removeaccess"
+
+#=================================================
 # REPLACE LOGO IMAGE (DEFAULT IS FRAMADATE)
 #=================================================
 
@@ -179,26 +232,6 @@ fi
 #=================================================
 
 chown -R $app: "$final_path/"{tpl_c,admin/stdout.log}
-
-#=================================================
-# SETUP SSOWAT
-#=================================================
-ynh_script_progression --message="Upgrading SSOwat configuration..." --weight=1
-
-# Make app public if necessary
-if [ $is_public -eq 1 ]
-then
-	ynh_app_setting_set --app=$app --key=skipped_uris --value="/"
-
-	# Keep /admin private
-	if [ "$path_url" == "/" ]; then
-	    # If the path is /, clear it to prevent any error with the regex.
-	    path_url=""
-	fi
-	# Modify the domain to be used in a regex
-	domain_regex=$(echo "$domain" | sed 's@-@.@g')
-	ynh_app_setting_set --app=$app --key=protected_regex --value="$domain_regex$path_url/admin/"
-fi
 
 #=================================================
 # RELOAD NGINX

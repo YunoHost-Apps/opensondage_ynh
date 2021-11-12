@@ -98,16 +98,13 @@ ynh_script_progression --message="Upgrading SSOwat configuration..."
 # Make app public if necessary
 if [ $is_public -eq 1 ]
 then
-	ynh_app_setting_delete --app=$app --key=protected_regex
-
-	# Keep /admin private
 	if [ "$path_url" == "/" ]; then
 	    # If the path is /, clear it to prevent any error with the regex.
 	    path_url=""
 	fi
 	# Modify the domain to be used in a regex
 	domain_regex=$(echo "$new_domain" | sed 's@-@.@g')
-	ynh_app_setting_set --app=$app --key=protected_regex --value="$domain_regex$path_url/admin/"
+	ynh_app_setting_set --app=$app --key=unprotected_regex --value="$domain_regex$path_url/create_poll.php?.*$","$domain_regex$path_url/adminstuds.php?.*"
 fi
 
 #=================================================
