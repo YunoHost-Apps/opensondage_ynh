@@ -35,7 +35,6 @@ Service pour planifier un rendez-vous ou prendre une décision rapidement et fac
 ## Documentations et ressources
 
 * Site officiel de l'app : https://framadate.org/
-* Documentation officielle utilisateur : https://yunohost.org/#/app_opensondage
 * Documentation officielle de l'admin : https://framagit.org/framasoft/framadate/framadate/wikis/home
 * Dépôt de code officiel de l'app : https://git.framasoft.org/framasoft/framadate
 * Documentation YunoHost pour cette app : https://yunohost.org/app_opensondage
