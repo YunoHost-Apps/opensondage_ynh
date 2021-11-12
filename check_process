@@ -20,4 +20,4 @@
 ;;; Upgrade options
 	; commit=61398d8e49d4de8e7425c4ccd8098d5a4c55994b
 		name=Merge pull request #77 from YunoHost-Apps/testing
-		manifest_arg=domain=DOMAIN&path=PATH&admin=USER&language=fr_FR&is_public=1&
+		manifest_arg=domain=DOMAIN&path=PATH&admin=USER&language=fr&is_public=1&
