@@ -19,7 +19,6 @@ app=$YNH_APP_INSTANCE_NAME
 domain=$(ynh_app_setting_get --app=$app --key=domain)
 path_url=$(ynh_app_setting_get --app=$app --key=path)
 admin=$(ynh_app_setting_get --app=$app --key=admin)
-is_public=$(ynh_app_setting_get --app=$app --key=is_public)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
 language=$(ynh_app_setting_get --app=$app --key=language)
 db_name=$(ynh_app_setting_get --app=$app --key=db_name)
@@ -60,50 +59,16 @@ if [ -z "$is_public" ]; then
 	ynh_app_setting_delete --app=$app --key=public_site
 fi
 
-# Fix is_public as a boolean value
-if [ "$is_public" = "Yes" ]; then
-	ynh_app_setting_set --app=$app --key=is_public --value=1
-	is_public=1
-elif [ "$is_public" = "No" ]; then
-	ynh_app_setting_set --app=$app --key=is_public --value=0
-	is_public=0
+# Cleaning legacy permissions
+if ynh_legacy_permissions_exists; then
+	ynh_legacy_permissions_delete_all
+
+	ynh_app_setting_delete --app=$app --key=is_public
 fi
 
-skipped_uris=$(ynh_app_setting_get --app=$app --key=skipped_uris)
-
-# Unused with the permission system
-if [ ! -z "$skipped_uris" ]; then
-	ynh_app_setting_delete --app=$app --key=skipped_uris
-fi
-
-protected_regex=$(ynh_app_setting_get --app=$app --key=protected_regex)
-
-# Unused with the permission system
-if [ ! -z "$protected_regex" ]; then
-	ynh_app_setting_delete --app=$app --key=protected_regex
-fi
-
-# Create the permission "upload images" only if it doesn't exist.
-if ! ynh_permission_exists --permission="create poll"
-then
-	# This is a fake permission without any URL.
-	# The purpose of this permission is only to trigger hooks post_app_add/removeaccess when it's modified.
-	# We can't use a real permission for now because the actual permision system doesn't support regex.
-	ynh_permission_create --permission="create poll" --allowed="visitors"
-
-	# Make app public if necessary
-	if [ $is_public -eq 1 ]
-	then
-		if [ "$path_url" == "/" ]; then
-			# If the path is /, clear it to prevent any error with the regex.
-			path_url=""
-		fi
-		# Modify the domain to be used in a regex
-		domain_regex=$(echo "$domain" | sed 's@-@.@g')
-		ynh_app_setting_set --app=$app --key=unprotected_regex --value="$domain_regex$path_url/create_poll.php?.*$","$domain_regex$path_url/adminstuds.php?.*"
-	else
-		ynh_permission_update --permission="create poll" --remove="visitors"
-	fi
+if ! ynh_permission_exists --permission="admin"; then
+	# Create the required permissions
+	ynh_permission_create --permission="admin" --url="/admin" --allowed=$admin
 fi
 
 # If db_name doesn't exist, create it

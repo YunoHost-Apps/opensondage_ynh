@@ -159,30 +159,16 @@ chown -R $app: "$final_path/"{tpl_c,admin/stdout.log}
 #=================================================
 # SETUP SSOWAT
 #=================================================
-ynh_script_progression --message="Configuring Permissions..."
-
-ynh_permission_update --permission="main" --add="visitors"
-
-ynh_permission_create --permission="admin" --allowed="$admin" --url="/admin"
-
-# This is a fake permission without any URL.
-# The purpose of this permission is only to trigger hooks post_app_add/removeaccess when it's modified.
-# We can't use a real permission for now because the actual permision system doesn't support regex.
-ynh_permission_create --permission="create poll" --allowed="visitors"
+ynh_script_progression --message="Configuring permissions..." --weight=1
 
 # Make app public if necessary
 if [ $is_public -eq 1 ]
 then
-	if [ "$path_url" == "/" ]; then
-	    # If the path is /, clear it to prevent any error with the regex.
-	    path_url=""
-	fi
-	# Modify the domain to be used in a regex
-	domain_regex=$(echo "$domain" | sed 's@-@.@g')
-	ynh_app_setting_set --app=$app --key=unprotected_regex --value="$domain_regex$path_url/create_poll.php?.*$","$domain_regex$path_url/adminstuds.php?.*"
-else
-	ynh_permission_update --permission="create poll" --remove="visitors"
+	ynh_permission_update --permission="main" --add="visitors"
 fi
+
+# Only the admin can access the admin panel of the app (if the app has an admin panel)
+ynh_permission_create --permission="admin" --url="/admin" --allowed=$admin
 
 #=================================================
 # RELOAD NGINX
