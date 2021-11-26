@@ -53,24 +53,6 @@ ynh_abort_if_errors
 #=================================================
 ynh_script_progression --message="Ensuring downward compatibility..." --weight=1
 
-if [ -z "$is_public" ]; then
-	is_public=$(ynh_app_setting_get --app=$app --key=public_site)
-	ynh_app_setting_set --app=$app --key=is_public --value=$is_public
-	ynh_app_setting_delete --app=$app --key=public_site
-fi
-
-# Cleaning legacy permissions
-if ynh_legacy_permissions_exists; then
-	ynh_legacy_permissions_delete_all
-
-	ynh_app_setting_delete --app=$app --key=is_public
-fi
-
-if ! ynh_permission_exists --permission="admin"; then
-	# Create the required permissions
-	ynh_permission_create --permission="admin" --url="/admin" --allowed=$admin
-fi
-
 # If db_name doesn't exist, create it
 if [ -z "$db_name" ]; then
 	db_name=$(ynh_sanitize_dbid --db_name=$app)
@@ -98,6 +80,18 @@ if [ -z "$path_url" ]; then
 	path_url=$(ynh_app_setting_get --app=$app --key=path_url)
 	ynh_app_setting_set --app=$app --key=path --value=$path_url
 	ynh_app_setting_delete --app=$app --key=path_url
+fi
+
+# Cleaning legacy permissions
+if ynh_legacy_permissions_exists; then
+	ynh_legacy_permissions_delete_all
+
+	ynh_app_setting_delete --app=$app --key=is_public
+fi
+
+if ! ynh_permission_exists --permission="admin"; then
+	# Create the required permissions
+	ynh_permission_create --permission="admin" --url="/admin" --allowed=$admin
 fi
 
 #=================================================
@@ -160,8 +154,8 @@ then
     ynh_script_progression --message="Reconfiguring $app..." --weight=2
 
     ynh_add_config --template="../conf/config.php" --destination="$final_path/app/inc/config.php"
-	  chmod 400 "$final_path/app/inc/config.php"
-	  chown $app:$app "$final_path/app/inc/config.php"
+	chmod 400 "$final_path/app/inc/config.php"
+	chown $app:$app "$final_path/app/inc/config.php"
 fi
 
 #=================================================
