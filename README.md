@@ -15,7 +15,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 ## Overview
 
-Service for planning an appointment or making a decision quickly and easily
+Opensondage is an online service for planning an appointment or making a decision quickly and easily. No registration is required.
 
 **Shipped version:** 1.1.17~ynh1
 

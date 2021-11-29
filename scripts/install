@@ -26,6 +26,7 @@ language=$YNH_APP_ARG_LANGUAGE
 is_public=$YNH_APP_ARG_IS_PUBLIC
 email=$(ynh_user_get_info --username=$admin --key=mail)
 timezone="$(cat /etc/timezone)"
+phpversion=$YNH_PHP_VERSION
 
 app=$YNH_APP_INSTANCE_NAME
 
@@ -50,6 +51,14 @@ ynh_app_setting_set --app=$app --key=path --value=$path_url
 ynh_app_setting_set --app=$app --key=admin --value=$admin
 ynh_app_setting_set --app=$app --key=language --value=$language
 ynh_app_setting_set --app=$app --key=email --value=$email
+ynh_app_setting_set --app=$app --key=phpversion --value=$phpversion
+
+#=================================================
+# INSTALL DEPENDENCIES
+#=================================================
+ynh_script_progression --message="Installing dependencies..." --weight=1
+
+ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
 # CREATE DEDICATED USER
@@ -96,8 +105,7 @@ ynh_add_nginx_config
 ynh_script_progression --message="Configuring PHP-FPM..." --weight=2
 
 # Create a dedicated PHP-FPM config
-ynh_add_fpm_config --package="$extra_php_dependencies"
-phpversion=$(ynh_app_setting_get --app=$app --key=phpversion)
+ynh_add_fpm_config
 
 #=================================================
 # SPECIFIC SETUP
@@ -107,6 +115,9 @@ phpversion=$(ynh_app_setting_get --app=$app --key=phpversion)
 ynh_script_progression --message="Configuring $app..." --weight=2
 
 ynh_add_config --template="../conf/config.php" --destination="$final_path/app/inc/config.php"
+
+chmod 400 "$final_path/app/inc/config.php"
+chown $app:$app "$final_path/app/inc/config.php"
 
 #=================================================
 # SETUP HOOKS FILE
@@ -148,30 +159,16 @@ chown -R $app: "$final_path/"{tpl_c,admin/stdout.log}
 #=================================================
 # SETUP SSOWAT
 #=================================================
-ynh_script_progression --message="Configuring Permissions..."
-
-ynh_permission_update --permission="main" --add="visitors"
-
-ynh_permission_create --permission="admin" --allowed="$admin" --url="/admin"
-
-# This is a fake permission without any URL.
-# The purpose of this permission is only to trigger hooks post_app_add/removeaccess when it's modified.
-# We can't use a real permission for now because the actual permision system doesn't support regex.
-ynh_permission_create --permission="create poll" --allowed="visitors"
+ynh_script_progression --message="Configuring permissions..." --weight=1
 
 # Make app public if necessary
 if [ $is_public -eq 1 ]
 then
-	if [ "$path_url" == "/" ]; then
-	    # If the path is /, clear it to prevent any error with the regex.
-	    path_url=""
-	fi
-	# Modify the domain to be used in a regex
-	domain_regex=$(echo "$domain" | sed 's@-@.@g')
-	ynh_app_setting_set --app=$app --key=unprotected_regex --value="$domain_regex$path_url/create_poll.php?.*$","$domain_regex$path_url/adminstuds.php?.*"
-else
-	ynh_permission_update --permission="create poll" --remove="visitors"
+	ynh_permission_update --permission="main" --add="visitors"
 fi
+
+# Only the admin can access the admin panel of the app (if the app has an admin panel)
+ynh_permission_create --permission="admin" --url="/admin" --allowed=$admin
 
 #=================================================
 # RELOAD NGINX
