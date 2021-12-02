@@ -11,9 +11,9 @@ Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour
 
 ## Vue d'ensemble
 
-Service pour planifier un rendez-vous ou prendre une décision rapidement et facilement
+OpenSondage est un service en ligne permettant de planifier un rendez-vous ou prendre des décisions rapidement et simplement. Aucune inscription préalable n’est nécessaire.
 
-**Version incluse :** 1.1.16~ynh1
+**Version incluse :** 1.1.17~ynh1
 
 **Démo :** https://framadate.org/
 
@@ -35,7 +35,6 @@ Service pour planifier un rendez-vous ou prendre une décision rapidement et fac
 ## Documentations et ressources
 
 * Site officiel de l'app : https://framadate.org/
-* Documentation officielle utilisateur : https://yunohost.org/#/app_opensondage
 * Documentation officielle de l'admin : https://framagit.org/framasoft/framadate/framadate/wikis/home
 * Dépôt de code officiel de l'app : https://git.framasoft.org/framasoft/framadate
 * Documentation YunoHost pour cette app : https://yunohost.org/app_opensondage

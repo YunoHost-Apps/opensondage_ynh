@@ -7,14 +7,13 @@
         "fr": "Service pour planifier un rendez-vous ou prendre une décision rapidement et facilement",
         "de": "Service zur schnellen und einfachen Planung eines Termins oder zur Entscheidungsfindung"
     },
-    "version": "1.1.16~ynh1",
+    "version": "1.1.17~ynh1",
     "url": "https://git.framasoft.org/framasoft/framadate",
     "upstream": {
         "license": "CECILL-B",
         "website": "https://framadate.org/",
         "demo": "https://framadate.org/",
         "admindoc": "https://framagit.org/framasoft/framadate/framadate/wikis/home",
-        "userdoc": "https://yunohost.org/#/app_opensondage",
         "code": "https://git.framasoft.org/framasoft/framadate"
     },
     "license": "CECILL-B",
@@ -27,7 +26,7 @@
         "email": "ljf+opensondage_ynh@grimaud.me"
     }],
     "requirements": {
-        "yunohost": ">= 4.2.0"
+        "yunohost": ">= 4.3.0"
     },
     "multi_instance": true,
     "services": [
@@ -39,8 +38,7 @@
         "install" : [
             {
                 "name": "domain",
-                "type": "domain",
-                "example": "domain.org"
+                "type": "domain"
             },
             {
                 "name": "path",
@@ -50,8 +48,7 @@
             },
             {
                 "name": "admin",
-                "type": "user",
-                "example": "johndoe"
+                "type": "user"
             },
             {
                 "name": "language",
