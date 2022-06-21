@@ -18,9 +18,9 @@ app=$YNH_APP_INSTANCE_NAME
 
 domain=$(ynh_app_setting_get --app=$app --key=domain)
 path_url=$(ynh_app_setting_get --app=$app --key=path)
+language=$(ynh_app_setting_get --app=$app --key=language)
 admin=$(ynh_app_setting_get --app=$app --key=admin)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
-language=$(ynh_app_setting_get --app=$app --key=language)
 db_name=$(ynh_app_setting_get --app=$app --key=db_name)
 db_user=$db_name
 phpversion=$(ynh_app_setting_get --app="$app" --key=phpversion)
@@ -31,6 +31,7 @@ timezone="$(cat /etc/timezone)"
 #=================================================
 # CHECK VERSION
 #=================================================
+ynh_script_progression --message="Checking version..."
 
 upgrade_type=$(ynh_check_app_version_changed)
 
@@ -42,16 +43,30 @@ ynh_script_progression --message="Backing up the app before upgrading (may take 
 # Backup the current version of the app
 ynh_backup_before_upgrade
 ynh_clean_setup () {
-	# restore it if the upgrade fails
+	# Restore it if the upgrade fails
 	ynh_restore_upgradebackup
 }
 # Exit if an error occurs during the execution of the script
 ynh_abort_if_errors
 
 #=================================================
+# STANDARD UPGRADE STEPS
+#=================================================
 # ENSURE DOWNWARD COMPATIBILITY
 #=================================================
 ynh_script_progression --message="Ensuring downward compatibility..." --weight=1
+
+# Cleaning legacy permissions
+if ynh_legacy_permissions_exists; then
+	ynh_legacy_permissions_delete_all
+
+	ynh_app_setting_delete --app=$app --key=is_public
+fi
+
+if ! ynh_permission_exists --permission="admin"; then
+	# Create the required permissions
+	ynh_permission_create --permission="admin" --url="/admin" --allowed=$admin
+fi
 
 # If db_name doesn't exist, create it
 if [ -z "$db_name" ]; then
@@ -82,18 +97,6 @@ if [ -z "$path_url" ]; then
 	ynh_app_setting_delete --app=$app --key=path_url
 fi
 
-# Cleaning legacy permissions
-if ynh_legacy_permissions_exists; then
-	ynh_legacy_permissions_delete_all
-
-	ynh_app_setting_delete --app=$app --key=is_public
-fi
-
-if ! ynh_permission_exists --permission="admin"; then
-	# Create the required permissions
-	ynh_permission_create --permission="admin" --url="/admin" --allowed=$admin
-fi
-
 #=================================================
 # CREATE DEDICATED USER
 #=================================================
@@ -102,8 +105,6 @@ ynh_script_progression --message="Making sure dedicated system user exists..." -
 # Create a dedicated user (if not existing)
 ynh_system_user_create --username=$app --home_dir="$final_path"
 
-#=================================================
-# STANDARD UPGRADE STEPS
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
@@ -121,14 +122,6 @@ chmod -R o-rwx "$final_path"
 chown -R $app:www-data "$final_path"
 
 #=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression --message="Upgrading NGINX web server configuration..." --weight=2
-
-# Create a dedicated nginx config
-ynh_add_nginx_config
-
-#=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
 ynh_script_progression --message="Upgrading dependencies..." --weight=1
@@ -144,16 +137,24 @@ ynh_script_progression --message="Upgrading PHP-FPM configuration..." --weight=3
 ynh_add_fpm_config
 
 #=================================================
+# NGINX CONFIGURATION
+#=================================================
+ynh_script_progression --message="Upgrading NGINX web server configuration..." --weight=2
+
+# Create a dedicated NGINX config
+ynh_add_nginx_config
+
+#=================================================
 # SPECIFIC UPGRADE
 #=================================================
-# UPGRADE CONFIG.PHP
+# UPDATE A CONFIG FILE
 #=================================================
 
 if [ "$upgrade_type" == "UPGRADE_APP" ]
 then
-    ynh_script_progression --message="Reconfiguring $app..." --weight=2
+    ynh_script_progression --message="Updating a configuration file..." --weight=2
 
-    ynh_add_config --template="../conf/config.php" --destination="$final_path/app/inc/config.php"
+	ynh_add_config --template="../conf/config.php" --destination="$final_path/app/inc/config.php"
 	chmod 400 "$final_path/app/inc/config.php"
 	chown $app:$app "$final_path/app/inc/config.php"
 fi
@@ -191,14 +192,10 @@ then
     ynh_exec_warn_less php$phpversion "$final_path/admin/migration.php"
 fi
 
-#=================================================
-# GENERIC FINALIZATION
-#=================================================
-# SECURE FILES AND DIRECTORIES
-#=================================================
-
 chown -R $app: "$final_path/"{tpl_c,admin/stdout.log}
 
+#=================================================
+# GENERIC FINALIZATION
 #=================================================
 # RELOAD NGINX
 #=================================================
