@@ -2,9 +2,9 @@
 	; Manifest
 		domain="domain.tld"
 		path="/path"
-		admin="john"
-		language="fr"
 		is_public=1
+		language="fr"
+		admin="john"
 	; Checks
 		pkg_linter=1
 		setup_sub_dir=1
@@ -16,7 +16,11 @@
 		upgrade=1	from_commit=61398d8e49d4de8e7425c4ccd8098d5a4c55994b
 		backup_restore=1
 		multi_instance=1
+		port_already_use=0
 		change_url=1
+;;; Options
+Email=
+Notification=none
 ;;; Upgrade options
 	; commit=61398d8e49d4de8e7425c4ccd8098d5a4c55994b
 		name=Merge pull request #77 from YunoHost-Apps/testing

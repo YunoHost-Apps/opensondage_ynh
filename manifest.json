@@ -7,7 +7,7 @@
         "fr": "Service pour planifier un rendez-vous ou prendre une décision rapidement et facilement",
         "de": "Service zur schnellen und einfachen Planung eines Termins oder zur Entscheidungsfindung"
     },
-    "version": "1.1.17~ynh1",
+    "version": "1.1.17~ynh2",
     "url": "https://git.framasoft.org/framasoft/framadate",
     "upstream": {
         "license": "CECILL-B",
@@ -35,7 +35,7 @@
         "mysql"
     ],
     "arguments": {
-        "install" : [
+        "install": [
             {
                 "name": "domain",
                 "type": "domain"
@@ -47,8 +47,9 @@
                 "default": "/date"
             },
             {
-                "name": "admin",
-                "type": "user"
+                "name": "is_public",
+                "type": "boolean",
+                "default": true
             },
             {
                 "name": "language",
@@ -62,9 +63,8 @@
                 "default": "en"
             },
             {
-                "name": "is_public",
-                "type": "boolean",
-                "default": true
+                "name": "admin",
+                "type": "user"
             }
         ]
     }
