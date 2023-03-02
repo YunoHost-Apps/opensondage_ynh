@@ -5,25 +5,26 @@ It shall NOT be edited by hand.
 
 # OpenSondage pour YunoHost
 
-[![Niveau d'intégration](https://dash.yunohost.org/integration/opensondage.svg)](https://dash.yunohost.org/appci/app/opensondage) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/opensondage.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/opensondage.maintain.svg)  
+[![Niveau d’intégration](https://dash.yunohost.org/integration/opensondage.svg)](https://dash.yunohost.org/appci/app/opensondage) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/opensondage.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/opensondage.maintain.svg)
+
 [![Installer OpenSondage avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=opensondage)
 
 *[Read this readme in english.](./README.md)*
 
-> *Ce package vous permet d'installer OpenSondage rapidement et simplement sur un serveur YunoHost.
-Si vous n'avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l'installer et en profiter.*
+> *Ce package vous permet d’installer OpenSondage rapidement et simplement sur un serveur YunoHost.
+Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) pour savoir comment l’installer et en profiter.*
 
-## Vue d'ensemble
+## Vue d’ensemble
 
 OpenSondage est un service en ligne permettant de planifier un rendez-vous ou prendre des décisions rapidement et simplement. Aucune inscription préalable n’est nécessaire.
 
-**Version incluse :** 1.1.17~ynh2
+**Version incluse :** 1.1.17~ynh3
 
 **Démo :** https://framadate.org/
 
-## Captures d'écran
+## Captures d’écran
 
-![Capture d'écran de OpenSondage](./doc/screenshots/screenshots.jpg)
+![Capture d’écran de OpenSondage](./doc/screenshots/screenshots.jpg)
 
 ## Avertissements / informations importantes
 
@@ -38,9 +39,9 @@ OpenSondage est un service en ligne permettant de planifier un rendez-vous ou pr
 
 ## Documentations et ressources
 
-* Site officiel de l'app : <https://framadate.org/>
-* Documentation officielle de l'admin : <https://framagit.org/framasoft/framadate/framadate/wikis/home>
-* Dépôt de code officiel de l'app : <https://git.framasoft.org/framasoft/framadate>
+* Site officiel de l’app : <https://framadate.org/>
+* Documentation officielle de l’admin : <https://framagit.org/framasoft/framadate/framadate/wikis/home>
+* Dépôt de code officiel de l’app : <https://git.framasoft.org/framasoft/framadate>
 * Documentation YunoHost pour cette app : <https://yunohost.org/app_opensondage>
 * Signaler un bug : <https://github.com/YunoHost-Apps/opensondage_ynh/issues>
 
@@ -56,4 +57,4 @@ ou
 sudo yunohost app upgrade opensondage -u https://github.com/YunoHost-Apps/opensondage_ynh/tree/testing --debug
 ```
 
-**Plus d'infos sur le packaging d'applications :** <https://yunohost.org/packaging_apps>
+**Plus d’infos sur le packaging d’applications :** <https://yunohost.org/packaging_apps>

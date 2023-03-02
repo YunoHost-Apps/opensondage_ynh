@@ -5,7 +5,8 @@ It shall NOT be edited by hand.
 
 # OpenSondage for YunoHost
 
-[![Integration level](https://dash.yunohost.org/integration/opensondage.svg)](https://dash.yunohost.org/appci/app/opensondage) ![Working status](https://ci-apps.yunohost.org/ci/badges/opensondage.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/opensondage.maintain.svg)  
+[![Integration level](https://dash.yunohost.org/integration/opensondage.svg)](https://dash.yunohost.org/appci/app/opensondage) ![Working status](https://ci-apps.yunohost.org/ci/badges/opensondage.status.svg) ![Maintenance status](https://ci-apps.yunohost.org/ci/badges/opensondage.maintain.svg)
+
 [![Install OpenSondage with YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=opensondage)
 
 *[Lire ce readme en français.](./README_fr.md)*
@@ -17,7 +18,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 OpenSondage is an online service for planning an appointment or making a decision quickly and easily. No registration is required.
 
-**Shipped version:** 1.1.17~ynh2
+**Shipped version:** 1.1.17~ynh3
 
 **Demo:** https://framadate.org/
 
