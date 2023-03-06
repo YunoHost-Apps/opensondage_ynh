@@ -68,6 +68,9 @@ if ! ynh_permission_exists --permission="admin"; then
 	ynh_permission_create --permission="admin" --url="/admin" --allowed=$admin
 fi
 
+# Avoid /adminstuds to be caught by sso as /admin urls
+ynh_permission_url --permission="main" --add_url="/adminstuds.php"
+
 # If db_name doesn't exist, create it
 if [ -z "$db_name" ]; then
 	db_name=$(ynh_sanitize_dbid --db_name=$app)
