@@ -6,7 +6,7 @@ description.en = "Service for planning an appointment or making a decision quick
 description.fr = "Service pour planifier un rendez-vous ou prendre une décision rapidement et facilement"
 description.de = "Service zur schnellen und einfachen Planung eines Termins oder zur Entscheidungsfindung"
 
-version = "1.1.17~ynh3"
+version = "1.1.19~ynh1"
 
 maintainers = []
 
@@ -16,26 +16,22 @@ website = "https://framadate.org/"
 demo = "https://framadate.org/"
 admindoc = "https://framagit.org/framasoft/framadate/framadate/wikis/home"
 code = "https://git.framasoft.org/framasoft/framadate"
-cpe = "???" # FIXME: optional but recommended if relevant, this is meant to contain the Common Platform Enumeration, which is sort of a standard id for applications defined by the NIST. In particular, Yunohost may use this is in the future to easily track CVE (=security reports) related to apps. The CPE may be obtained by searching here: https://nvd.nist.gov/products/cpe/search. For example, for Nextcloud, the CPE is 'cpe:2.3:a:nextcloud:nextcloud' (no need to include the version number)
-fund = "???" # FIXME: optional but recommended (or remove if irrelevant / not applicable). This is meant to be an URL where people can financially support this app, especially when its development is based on volunteers and/or financed by its community. YunoHost may later advertise it in the webadmin.
 
 [integration]
-yunohost = ">= 4.3.0"
-architectures = "all" # FIXME: can be replaced by a list of supported archs using the dpkg --print-architecture nomenclature (amd64/i386/armhf/arm64), for example: ["amd64", "i386"]
+yunohost = ">= 11.1.19"
+architectures = "all"
 multi_instance = true
-ldap = "?" # FIXME: replace with true, false, or "not_relevant". Not to confuse with the "sso" key : the "ldap" key corresponds to wether or not a user *can* login on the app using its YunoHost credentials.
-sso = "?" # FIXME: replace with true, false, or "not_relevant". Not to confuse with the "ldap" key : the "sso" key corresponds to wether or not a user is *automatically logged-in* on the app when logged-in on the YunoHost portal.
-disk = "50M" # FIXME: replace with an **estimate** minimum disk requirement. e.g. 20M, 400M, 1G, ...
-ram.build = "50M" # FIXME: replace with an **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
-ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requirement. e.g. 50M, 400M, 1G, ...
+ldap = false
+sso = false
+disk = "50M"
+ram.build = "50M"
+ram.runtime = "50M"
 
 [install]
     [install.domain]
-    # this is a generic question - ask strings are automatically handled by Yunohost's core
     type = "domain"
 
     [install.path]
-    # this is a generic question - ask strings are automatically handled by Yunohost's core
     type = "path"
     default = "/date"
 
@@ -52,14 +48,12 @@ ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requiremen
     default = "en"
 
     [install.admin]
-    # this is a generic question - ask strings are automatically handled by Yunohost's core
     type = "user"
 
 [resources]
         [resources.sources.main]
-        url = "https://framagit.org/framasoft/framadate/framadate/-/archive/1.1.17/framadate-1.1.17.tar.gz"
-        sha256 = "a9b086a7274886d0d13c1c3ed8d6caa848d798315bd6006c6883a37387c390b0"
-
+        url = "https://framagit.org/framasoft/framadate/framadate/-/archive/1.1.19/framadate-1.1.19.tar.gz"
+        sha256 = "160dd2efa1aa5be8945d65778dbd2328166fafafa29c5c823053e2112224a478"
 
     [resources.system_user]
 
@@ -67,6 +61,10 @@ ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requiremen
 
     [resources.permissions]
     main.url = "/"
+    main.add_url="/adminstuds.php"
+
+    [resources.apt]
+    packages = "mariadb-server php8.0-mbstring php8.0-intl php8.0-xml php8.0-cli"
 
     [resources.database]
     type = "mysql"
