@@ -35,7 +35,7 @@ ynh_replace_string --match_string="const APP_URL = '$old_domain';" --replace_str
 ynh_script_progression --message="Upgrading SSOwat configuration..."
 
 # Make app public if necessary
-REMOVEME? if [ $is_public -eq 1 ]
+if [ $is_public -eq 1 ]
 then
 	if [ "$path" == "/" ]; then
 	    # If the path is /, clear it to prevent any error with the regex.
