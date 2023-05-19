@@ -44,11 +44,6 @@ ynh_script_progression --message="Upgrading PHP-FPM configuration..." --weight=3
 # Create a dedicated PHP-FPM config
 ynh_add_fpm_config --usage=low --footprint=low
 
-#=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression --message="Upgrading NGINX web server configuration..." --weight=2
-
 # Create a dedicated NGINX config
 ynh_add_nginx_config
 
@@ -78,7 +73,7 @@ ynh_replace_string --match_string="__APP__" --replace_string="$app" --target_fil
 # REPLACE LOGO IMAGE (DEFAULT IS FRAMADATE)
 #=================================================
 
-cp ../img/logo.png "$install_dir/images"
+cp ../conf/logo.png "$install_dir/images"
 
 #=================================================
 # CREATE LOG FILE

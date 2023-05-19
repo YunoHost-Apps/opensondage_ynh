@@ -61,7 +61,7 @@ ram.runtime = "50M"
 
     [resources.permissions]
     main.url = "/"
-    main.add_url="/adminstuds.php"
+    main.additional_urls = ["/adminstuds.php"]
 
     [resources.apt]
     packages = "mariadb-server php8.0-mbstring php8.0-intl php8.0-xml php8.0-cli"
