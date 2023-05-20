@@ -12,7 +12,7 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
-
+email=$(ynh_user_get_info --username=$admin --key=mail)
 timezone="$(cat /etc/timezone)"
 
 #=================================================
