@@ -21,7 +21,6 @@ timezone="$(cat /etc/timezone)"
 #=================================================
 ynh_script_progression --message="Storing installation settings..." --weight=2
 
-ynh_app_setting_set --app=$app --key=email --value=$email
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
