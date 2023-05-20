@@ -1,1 +1,1 @@
-OpenSondage est un service en ligne permettant de planifier un rendez-vous ou prendre des décisions rapidement et simplement. Aucune inscription préalable n’est nécessaire.
+OpenSondage est un service en ligne rapide et facile à utiliser pour choisir à plusieurs l'heure et la date d'un rendez-vous ou autre événement. Aucune inscription préalable n’est nécessaire.

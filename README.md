@@ -16,7 +16,8 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 
 ## Overview
 
-OpenSondage is an online service for planning an appointment or making a decision quickly and easily. No registration is required.
+OpenSondage is a quick and easy-to-use online service to collaboratively plan and schedule the date and time for an appointment, meeting or other event. No registration is required.
+
 
 **Shipped version:** 1.1.17~ynh3
 
