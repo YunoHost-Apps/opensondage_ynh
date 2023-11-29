@@ -18,11 +18,14 @@ admindoc = "https://framagit.org/framasoft/framadate/framadate/wikis/home"
 code = "https://git.framasoft.org/framasoft/framadate"
 
 [integration]
-yunohost = ">= 11.1.19"
+yunohost = ">= 11.2"
 architectures = "all"
 multi_instance = true
+
 ldap = false
+
 sso = false
+
 disk = "50M"
 ram.build = "150M"
 ram.runtime = "50M"
@@ -43,7 +46,7 @@ ram.runtime = "50M"
     ask.en = "Choose the default language of this OpenSondage"
     ask.fr = "Choisissez la langue par défault d'OpenSondage"
     ask.de = "Wählen Sie bitte die Standardsprache für OpenSondage."
-    type = "string"
+    type = "select"
     choices = ["br", "de", "en", "es", "fr", "it", "nl", "oc"]
     default = "en"
 
@@ -64,7 +67,7 @@ ram.runtime = "50M"
     main.additional_urls = ["/adminstuds.php"]
 
     [resources.apt]
-    packages = "mariadb-server php8.0-mbstring php8.0-intl php8.0-xml php8.0-cli"
+    packages = "mariadb-server, php8.0-mbstring, php8.0-intl, php8.0-xml, php8.0-cli"
 
     [resources.database]
     type = "mysql"
