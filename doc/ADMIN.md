@@ -1,4 +1,1 @@
-#### Known limitations
-
-* There is no way to configure mail, either with smtp or with sendmail. See https://framagit.org/framasoft/framadate/merge_requests/184
-* There is no way to use SSOWAT to identify current user. See https://framagit.org/framasoft/framadate/issues/177
+There is no way to configure mail, either with smtp or with sendmail. See https://framagit.org/framasoft/framadate/merge_requests/184
