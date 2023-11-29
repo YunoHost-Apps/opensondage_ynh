@@ -12,6 +12,7 @@ source /usr/share/yunohost/helpers
 #=================================================
 # LOAD SETTINGS
 #=================================================
+
 email=$(ynh_user_get_info --username=$admin --key=mail)
 timezone="$(cat /etc/timezone)"
 
@@ -42,7 +43,7 @@ chown -R $app:www-data "$install_dir"
 ynh_script_progression --message="Upgrading PHP-FPM configuration..." --weight=3
 
 # Create a dedicated PHP-FPM config
-ynh_add_fpm_config --usage=low --footprint=low
+ynh_add_fpm_config
 
 # Create a dedicated NGINX config
 ynh_add_nginx_config
@@ -57,7 +58,7 @@ if [ "$upgrade_type" == "UPGRADE_APP" ]
 then
     ynh_script_progression --message="Updating a configuration file..." --weight=2
 
-	ynh_add_config --template="../conf/config.php" --destination="$install_dir/app/inc/config.php"
+	ynh_add_config --template="config.php" --destination="$install_dir/app/inc/config.php"
 	chmod 400 "$install_dir/app/inc/config.php"
 	chown $app:$app "$install_dir/app/inc/config.php"
 fi
