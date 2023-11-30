@@ -31,7 +31,7 @@ then
 	ynh_script_progression --message="Upgrading source files..." --weight=2
 
 	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$install_dir"
+	ynh_setup_source --dest_dir="$install_dir" --keep="app/inc/config.php"
 fi
 
 chmod -R o-rwx "$install_dir"
@@ -62,13 +62,6 @@ then
 	chmod 400 "$install_dir/app/inc/config.php"
 	chown $app:$app "$install_dir/app/inc/config.php"
 fi
-
-#=================================================
-# SETUP HOOKS FILE
-#=================================================
-
-ynh_replace_string --match_string="__APP__" --replace_string="$app" --target_file="../hooks/post_app_addaccess"
-ynh_replace_string --match_string="__APP__" --replace_string="$app" --target_file="../hooks/post_app_removeaccess"
 
 #=================================================
 # REPLACE LOGO IMAGE (DEFAULT IS FRAMADATE)
