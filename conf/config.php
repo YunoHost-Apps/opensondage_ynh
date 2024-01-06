@@ -19,7 +19,7 @@
 
 // Fully qualified domain name of your webserver.
 // If this is unset or empty, the servername is determined automatically.
-// You *have to set this* if you are running Framedate behind a reverse proxy.
+// You *have to set this* if you are running Framadate behind a reverse proxy.
 const APP_URL = '__DOMAIN__';
 
 // Application name
@@ -31,20 +31,20 @@ const ADRESSEMAILADMIN = '__EMAIL__';
 // Email for automatic responses (you should set it to "no-reply")
 const ADRESSEMAILREPONSEAUTO = '<no-reply@__DOMAIN__>';
 
+// Database server name, leave empty to use a socket
+//const DB_CONNECTION_STRING = '{$dbConnectionString}';
+
 // Database user
 const DB_USER= '__DB_USER__';
 
 // Database password
 const DB_PASSWORD = '__DB_PWD__';
 
-// Database server name, leave empty to use a socket
-const DB_CONNECTION_STRING = 'mysql:host=localhost;dbname=__DB_NAME__;port=3306';
-
-// Name of the table that store migration script already executed
-const MIGRATION_TABLE = 'framadate_migration';
-
 // Table name prefix
 const TABLENAME_PREFIX = '';
+
+// Name of the table that stores migration script already executed
+//const MIGRATION_TABLE = '{$migrationTable}';
 
 // Default Language
 const DEFAULT_LANGUAGE = '__LANGUAGE__';
@@ -59,9 +59,10 @@ $ALLOWED_LANGUAGES = [
     'nl' => 'Dutch',
     'it' => 'Italiano',
     'br' => 'Brezhoneg',
+    'ca' => 'Català',
 ];
 
-// Nom et emplacement du fichier image contenant le titre
+// Path to image file with the title
 const IMAGE_TITRE = 'images/logo.png';
 
 // Clean URLs, boolean
@@ -73,7 +74,7 @@ const USE_REMOTE_USER =  false;
 // Path to the log file
 const LOG_FILE = 'admin/stdout.log';
 
-// Days (after expiration date) before purge a poll
+// Days (after expiration date) before purging a poll
 const PURGE_DELAY = 60;
 
 // Max slots per poll
