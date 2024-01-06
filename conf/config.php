@@ -84,14 +84,25 @@ const TIME_EDIT_LINK_EMAIL = 60;
 
 // Config
 $config = [
-	/* general config */
-	'use_smtp' => true,                     // use email for polls creation/modification/responses notification
-	/* home */
-	'show_what_is_that' => false,           // display "how to use" section
-	'show_the_software' => false,           // display technical information about the software
-	'show_cultivate_your_garden' => false,  // display "developpement and administration" information
-	/* create_classic_poll.php / create_date_poll.php */
-	'default_poll_duration' => 180,         // default values for the new poll duration (number of days).
-	/* create_classic_poll.php */
-	'user_can_add_img_or_link' => true,     // user can add link or URL when creating his poll.
+    /* general config */
+    'use_smtp' => true,                     // use email for polls creation/modification/responses notification
+    'smtp_options' => [
+        'host' => 'localhost',              // SMTP server (you could add many servers (main and backup for example) : use ";" like separator
+        'auth' => false,                    // Enable SMTP authentication
+        'username' => '__APP__',            // SMTP username
+        'password' => '__MAIL_PWD__',       // SMTP password
+        'secure' => false,                  // Enable encryption (false, tls or ssl)
+        'port' => 25,                       // TCP port to connect to
+    ],
+    /* home */
+    'show_what_is_that' => false,            // display "how to use" section
+    'show_the_software' => false,            // display technical information about the software
+    'show_cultivate_your_garden' => false,   // display "development and administration" information
+    /* create_classic_poll.php / create_date_poll.php */
+    'default_poll_duration' => 180,         // default values for the new poll duration (number of days).
+    /* create_classic_poll.php */
+    'user_can_add_img_or_link' => true,     // user can add link or URL when creating his poll.
+    'markdown_editor_by_default' => true,   // The markdown editor for the description is enabled by default
+    'provide_fork_awesome' => true,         // Whether the build-in fork-awesome should be provided
 ];
+
