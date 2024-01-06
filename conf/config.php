@@ -32,7 +32,7 @@ const ADRESSEMAILADMIN = '__EMAIL__';
 const ADRESSEMAILREPONSEAUTO = '<no-reply@__DOMAIN__>';
 
 // Database server name, leave empty to use a socket
-//const DB_CONNECTION_STRING = '{$dbConnectionString}';
+const DB_CONNECTION_STRING = '';
 
 // Database user
 const DB_USER= '__DB_USER__';
