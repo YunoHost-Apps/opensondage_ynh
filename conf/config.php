@@ -32,7 +32,7 @@ const ADRESSEMAILADMIN = '__EMAIL__';
 const ADRESSEMAILREPONSEAUTO = '<no-reply@__DOMAIN__>';
 
 // Database server name, leave empty to use a socket
-const DB_CONNECTION_STRING = '';
+const DB_CONNECTION_STRING = 'mysql:host=localhost;dbname=__DB_NAME__;port=3306';
 
 // Database user
 const DB_USER= '__DB_USER__';
@@ -44,7 +44,7 @@ const DB_PASSWORD = '__DB_PWD__';
 const TABLENAME_PREFIX = '';
 
 // Name of the table that stores migration script already executed
-//const MIGRATION_TABLE = '{$migrationTable}';
+const MIGRATION_TABLE = 'framadate_migration';
 
 // Default Language
 const DEFAULT_LANGUAGE = '__LANGUAGE__';
