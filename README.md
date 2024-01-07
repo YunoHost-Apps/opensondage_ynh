@@ -19,24 +19,13 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 OpenSondage is a quick and easy-to-use online service to collaboratively plan and schedule the date and time for an appointment, meeting or other event. No registration is required.
 
 
-**Shipped version:** 1.1.17~ynh3
+**Shipped version:** 1.1.19~ynh1
 
 **Demo:** https://framadate.org/
 
 ## Screenshots
 
 ![Screenshot of OpenSondage](./doc/screenshots/screenshots.jpg)
-
-## Disclaimers / important information
-
-## Limitations
-
-* There is no way to configure mail, either with smtp or with sendmail. See https://framagit.org/framasoft/framadate/merge_requests/184
-* There is no way to use SSOWAT to identify current user. See https://framagit.org/framasoft/framadate/issues/177
-
-## Additional information
-
-* This package contains a custom version of Framadate (fork of OpenSondage and Studs), the sources are here: https://git.framasoft.org/framasoft/framadate/.
 
 ## Documentation and resources
 
