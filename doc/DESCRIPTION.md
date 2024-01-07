@@ -1,1 +1,1 @@
-OpenSondage is an online service for planning an appointment or making a decision quickly and easily. No registration is required.
+OpenSondage is a quick and easy-to-use online service to collaboratively plan and schedule the date and time for an appointment, meeting or other event. No registration is required.

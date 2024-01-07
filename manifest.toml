@@ -1,0 +1,73 @@
+packaging_format = 2
+
+id = "opensondage"
+name = "OpenSondage"
+description.en = "Service for planning an appointment or making a decision quickly and easily"
+description.fr = "Service pour planifier un rendez-vous ou prendre une décision rapidement et facilement"
+description.de = "Service zur schnellen und einfachen Planung eines Termins oder zur Entscheidungsfindung"
+
+version = "1.1.19~ynh1"
+
+maintainers = []
+
+[upstream]
+license = "CECILL-B"
+website = "https://framadate.org/"
+demo = "https://framadate.org/"
+admindoc = "https://framagit.org/framasoft/framadate/framadate/wikis/home"
+code = "https://git.framasoft.org/framasoft/framadate"
+
+[integration]
+yunohost = ">= 11.2"
+architectures = "all"
+multi_instance = true
+
+ldap = false
+
+sso = false
+
+disk = "50M"
+ram.build = "150M"
+ram.runtime = "50M"
+
+[install]
+    [install.domain]
+    type = "domain"
+
+    [install.path]
+    type = "path"
+    default = "/date"
+
+    [install.init_main_permission]
+    type = "group"
+    default = "visitors"
+
+    [install.language]
+    ask.en = "Choose the default language of this OpenSondage"
+    ask.fr = "Choisissez la langue par défault d'OpenSondage"
+    ask.de = "Wählen Sie bitte die Standardsprache für OpenSondage."
+    type = "select"
+    choices = ["br", "de", "en", "es", "fr", "it", "nl", "oc"]
+    default = "en"
+
+    [install.admin]
+    type = "user"
+
+[resources]
+        [resources.sources.main]
+        url = "https://framagit.org/framasoft/framadate/framadate/-/archive/1.1.19/framadate-1.1.19.tar.gz"
+        sha256 = "160dd2efa1aa5be8945d65778dbd2328166fafafa29c5c823053e2112224a478"
+
+    [resources.system_user]
+    allow_email = true
+
+    [resources.install_dir]
+
+    [resources.permissions]
+    main.url = "/"
+
+    [resources.apt]
+    packages = "mariadb-server, php8.0-mbstring, php8.0-intl, php8.0-xml, php8.0-cli, php8.0-mysql"
+
+    [resources.database]
+    type = "mysql"
