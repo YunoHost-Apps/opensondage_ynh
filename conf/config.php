@@ -88,11 +88,11 @@ $config = [
     /* general config */
     'use_smtp' => true,                     // use email for polls creation/modification/responses notification
     'smtp_options' => [
-        'host' => 'localhost',              // SMTP server (you could add many servers (main and backup for example) : use ";" like separator
-        'auth' => false,                    // Enable SMTP authentication
+        'host' => '__MAIN_DOMAIN__',              // SMTP server (you could add many servers (main and backup for example) : use ";" like separator
+        'auth' => true,                    // Enable SMTP authentication
         'username' => '__APP__',            // SMTP username
         'password' => '__MAIL_PWD__',       // SMTP password
-        'secure' => false,                  // Enable encryption (false, tls or ssl)
+        'secure' => 'ssl',                  // Enable encryption (false, tls or ssl)
         'port' => 25,                       // TCP port to connect to
     ],
     /* home */

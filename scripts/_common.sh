@@ -6,6 +6,8 @@
 
 YNH_COMPOSER_VERSION="2.1.1"
 
+main_domain=$(cat /etc/yunohost/current_host)
+
 #=================================================
 # PERSONAL HELPERS
 #=================================================
