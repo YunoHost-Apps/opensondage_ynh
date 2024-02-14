@@ -31,7 +31,7 @@ OpenSondage is a quick and easy-to-use online service to collaboratively plan an
 
 * Official app website: <https://framadate.org/>
 * Official admin documentation: <https://framagit.org/framasoft/framadate/framadate/wikis/home>
-* Upstream app code repository: <https://git.framasoft.org/framasoft/framadate>
+* Upstream app code repository: <https://framagit.org/framasoft/framadate/framadate>
 * YunoHost Store: <https://apps.yunohost.org/app/opensondage>
 * Report a bug: <https://github.com/YunoHost-Apps/opensondage_ynh/issues>
 

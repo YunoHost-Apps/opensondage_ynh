@@ -15,7 +15,7 @@ license = "CECILL-B"
 website = "https://framadate.org/"
 demo = "https://framadate.org/"
 admindoc = "https://framagit.org/framasoft/framadate/framadate/wikis/home"
-code = "https://git.framasoft.org/framasoft/framadate"
+code = "https://framagit.org/framasoft/framadate/framadate"
 
 [integration]
 yunohost = ">= 11.2"
@@ -57,6 +57,7 @@ ram.runtime = "50M"
         [resources.sources.main]
         url = "https://framagit.org/framasoft/framadate/framadate/-/archive/1.1.19/framadate-1.1.19.tar.gz"
         sha256 = "160dd2efa1aa5be8945d65778dbd2328166fafafa29c5c823053e2112224a478"
+        autoupdate.strategy = "latest_gitlab_release"
 
     [resources.system_user]
     allow_email = true

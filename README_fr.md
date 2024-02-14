@@ -31,7 +31,7 @@ OpenSondage est un service en ligne rapide et facile à utiliser pour planifier 
 
 * Site officiel de l’app : <https://framadate.org/>
 * Documentation officielle de l’admin : <https://framagit.org/framasoft/framadate/framadate/wikis/home>
-* Dépôt de code officiel de l’app : <https://git.framasoft.org/framasoft/framadate>
+* Dépôt de code officiel de l’app : <https://framagit.org/framasoft/framadate/framadate>
 * YunoHost Store: <https://apps.yunohost.org/app/opensondage>
 * Signaler un bug : <https://github.com/YunoHost-Apps/opensondage_ynh/issues>
 
