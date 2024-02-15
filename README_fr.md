@@ -19,7 +19,7 @@ Si vous n’avez pas YunoHost, regardez [ici](https://yunohost.org/#/install) po
 OpenSondage est un service en ligne rapide et facile à utiliser pour planifier et programmer de manière collaborative la date et l'heure d'un rendez-vous, d'une réunion ou d'un autre événement. Aucune inscription n'est requise.
 
 
-**Version incluse :** 1.1.19~ynh1
+**Version incluse :** 1.1.19~ynh2
 
 **Démo :** https://framadate.org/
 
