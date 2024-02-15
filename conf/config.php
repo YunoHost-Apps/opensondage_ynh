@@ -92,8 +92,8 @@ $config = [
         'auth' => true,                    // Enable SMTP authentication
         'username' => '__APP__',            // SMTP username
         'password' => '__MAIL_PWD__',       // SMTP password
-        'secure' => 'ssl',                  // Enable encryption (false, tls or ssl)
-        'port' => 465,                       // TCP port to connect to
+        'secure' => false,                  // Enable encryption (false, tls or ssl)
+        'port' => 25,                       // TCP port to connect to
     ],
     /* home */
     'show_what_is_that' => false,            // display "how to use" section
