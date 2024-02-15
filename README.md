@@ -19,7 +19,7 @@ If you don't have YunoHost, please consult [the guide](https://yunohost.org/#/in
 OpenSondage is a quick and easy-to-use online service to collaboratively plan and schedule the date and time for an appointment, meeting or other event. No registration is required.
 
 
-**Shipped version:** 1.1.19~ynh1
+**Shipped version:** 1.1.19~ynh2
 
 **Demo:** https://framadate.org/
 
