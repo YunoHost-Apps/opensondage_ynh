@@ -17,12 +17,6 @@ email=$(ynh_user_get_info --username=$admin --key=mail)
 timezone="$(cat /etc/timezone)"
 
 #=================================================
-# CHECK VERSION
-#=================================================
-
-upgrade_type=$(ynh_check_app_version_changed)
-
-#=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 ynh_script_progression --message="Upgrading source files..." --weight=2
@@ -37,10 +31,8 @@ chown -R $app:www-data "$install_dir"
 #=================================================
 ynh_script_progression --message="Upgrading PHP-FPM configuration..." --weight=3
 
-# Create a dedicated PHP-FPM config
 ynh_add_fpm_config
 
-# Create a dedicated NGINX config
 ynh_add_nginx_config
 
 #=================================================
@@ -70,16 +62,11 @@ touch "$install_dir/admin/stdout.log"
 #=================================================
 # RUN DATABASE UPGRADE
 #=================================================
+ynh_script_progression --message="Upgrading database..." --weight=2
 
-if [ "$upgrade_type" == "UPGRADE_APP" ]
-then
-    ynh_script_progression --message="Upgrading database..." --weight=2
+ynh_install_composer
 
-    # Install composer
-    ynh_install_composer
-
-    ynh_exec_warn_less php$phpversion "$install_dir/admin/migration.php"
-fi
+ynh_exec_warn_less php$phpversion "$install_dir/admin/migration.php"
 
 chown -R $app: "$install_dir/"{tpl_c,admin/stdout.log}
 
