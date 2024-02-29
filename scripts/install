@@ -54,7 +54,7 @@ chown $app:$app "$install_dir/app/inc/config.php"
 # REPLACE LOGO IMAGE (DEFAULT IS FRAMADATE)
 #=================================================
 
-cp ../conf/logo.png "$install_dir/images"
+cp ../sources/logo.png "$install_dir/images"
 
 #=================================================
 # CREATE LOG FILE

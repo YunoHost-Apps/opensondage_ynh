@@ -6,7 +6,7 @@ description.en = "Service for planning an appointment or making a decision quick
 description.fr = "Service pour planifier un rendez-vous ou prendre une décision rapidement et facilement"
 description.de = "Service zur schnellen und einfachen Planung eines Termins oder zur Entscheidungsfindung"
 
-version = "1.1.19~ynh2"
+version = "1.1.19~ynh3"
 
 maintainers = []
 
@@ -68,7 +68,7 @@ ram.runtime = "50M"
     main.url = "/"
 
     [resources.apt]
-    packages = "mariadb-server, php8.0-mbstring, php8.0-intl, php8.0-xml, php8.0-cli, php8.0-mysql"
+    packages = "mariadb-server, php8.2-mbstring, php8.2-intl, php8.2-xml, php8.2-cli, php8.2-mysql"
 
     [resources.database]
     type = "mysql"

@@ -23,7 +23,7 @@ ynh_change_url_nginx_config
 #=================================================
 # UPDATE OPENSONDAGE CONFIGURATION
 #=================================================
-ynh_script_progression --message="Reconfiguring $app..."
+ynh_script_progression --message="Reconfiguring $app..." --weight=2
 
 ynh_replace_string --match_string="const APP_URL = '$old_domain';" --replace_string="const APP_URL = '$new_domain';" --target_file="$install_dir/app/inc/config.php"
 
