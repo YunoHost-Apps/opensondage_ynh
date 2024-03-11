@@ -21,7 +21,7 @@ timezone="$(cat /etc/timezone)"
 #=================================================
 ynh_script_progression --message="Upgrading source files..." --weight=2
 
-ynh_setup_source --dest_dir="$install_dir" --keep="app/inc/config.php"
+ynh_setup_source --dest_dir="$install_dir" --full_replace=1 --keep="app/inc/config.php"
 
 chmod -R o-rwx "$install_dir"
 chown -R $app:www-data "$install_dir"
