@@ -10,8 +10,6 @@
 source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
-timezone="$(cat /etc/timezone)"
-email=$(ynh_user_get_info --username=$admin --key=mail)
 
 #=================================================
 # RESTORE THE APP MAIN DIR
