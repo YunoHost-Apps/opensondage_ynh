@@ -26,7 +26,7 @@ const APP_URL = '__DOMAIN__';
 const NOMAPPLICATION = 'OpenSondage';
 
 // Database administrator email
-const ADRESSEMAILADMIN = '__ADMIN__@__DOMAIN__';
+const ADRESSEMAILADMIN = '__APP__@__DOMAIN__';
 
 // Email for automatic responses (you should set it to "no-reply")
 const ADRESSEMAILREPONSEAUTO = '<no-reply@__DOMAIN__>';
