@@ -3,7 +3,7 @@
 请勿手动编辑。
 -->
 
-# YunoHost 的 OpenSondage
+# YunoHost 上的 OpenSondage
 
 [![集成程度](https://dash.yunohost.org/integration/opensondage.svg)](https://dash.yunohost.org/appci/app/opensondage) ![工作状态](https://ci-apps.yunohost.org/ci/badges/opensondage.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/opensondage.maintain.svg)
 
