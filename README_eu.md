@@ -19,7 +19,7 @@ EZ editatu eskuz.
 OpenSondage is a quick and easy-to-use online service to collaboratively plan and schedule the date and time for an appointment, meeting or other event. No registration is required.
 
 
-**Paketatutako bertsioa:** 1.1.19~ynh3
+**Paketatutako bertsioa:** 1.1.19~ynh4
 
 **Demoa:** <https://framadate.org/>
 
