@@ -6,7 +6,7 @@ description.en = "Service for planning an appointment or making a decision quick
 description.fr = "Service pour planifier un rendez-vous ou prendre une décision rapidement et facilement"
 description.de = "Service zur schnellen und einfachen Planung eines Termins oder zur Entscheidungsfindung"
 
-version = "1.1.19~ynh3"
+version = "1.1.19~ynh4"
 
 maintainers = []
 
@@ -18,7 +18,8 @@ admindoc = "https://framagit.org/framasoft/framadate/framadate/wikis/home"
 code = "https://framagit.org/framasoft/framadate/framadate"
 
 [integration]
-yunohost = ">= 11.2"
+yunohost = ">= 11.2.30"
+helpers_version = "2.1"
 architectures = "all"
 multi_instance = true
 
@@ -63,6 +64,7 @@ ram.runtime = "50M"
     allow_email = true
 
     [resources.install_dir]
+    group = "www-data:r-x"
 
     [resources.permissions]
     main.url = "/"
