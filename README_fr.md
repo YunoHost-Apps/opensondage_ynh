@@ -5,7 +5,7 @@ Il NE doit PAS être modifié à la main.
 
 # OpenSondage pour YunoHost
 
-[![Niveau d’intégration](https://dash.yunohost.org/integration/opensondage.svg)](https://dash.yunohost.org/appci/app/opensondage) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/opensondage.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/opensondage.maintain.svg)
+[![Niveau d’intégration](https://dash.yunohost.org/integration/opensondage.svg)](https://ci-apps.yunohost.org/ci/apps/opensondage/) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/opensondage.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/opensondage.maintain.svg)
 
 [![Installer OpenSondage avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=opensondage)
 
