@@ -5,7 +5,9 @@ NON debe editarse manualmente.
 
 # OpenSondage para YunoHost
 
-[![Nivel de integración](https://dash.yunohost.org/integration/opensondage.svg)](https://ci-apps.yunohost.org/ci/apps/opensondage/) ![Estado de funcionamento](https://ci-apps.yunohost.org/ci/badges/opensondage.status.svg) ![Estado de mantemento](https://ci-apps.yunohost.org/ci/badges/opensondage.maintain.svg)
+[![Nivel de integración](https://apps.yunohost.org/badge/integration/opensondage)](https://ci-apps.yunohost.org/ci/apps/opensondage/)
+![Estado de funcionamento](https://apps.yunohost.org/badge/state/opensondage)
+![Estado de mantemento](https://apps.yunohost.org/badge/maintained/opensondage)
 
 [![Instalar OpenSondage con YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=opensondage)
 
@@ -19,7 +21,7 @@ NON debe editarse manualmente.
 OpenSondage is a quick and easy-to-use online service to collaboratively plan and schedule the date and time for an appointment, meeting or other event. No registration is required.
 
 
-**Versión proporcionada:** 1.1.19~ynh4
+**Versión proporcionada:** 1.1.19~ynh5
 
 **Demo:** <https://framadate.org/>
 
