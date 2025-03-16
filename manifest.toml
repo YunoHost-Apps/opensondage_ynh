@@ -71,6 +71,7 @@ ram.runtime = "50M"
     admin.url = "/admin/"
     admin.show_tile = false
     admin.allowed = "admins"
+    admin.protected = true
 
     [resources.apt]
     packages = "mariadb-server, php8.2-mbstring, php8.2-intl, php8.2-xml, php8.2-cli, php8.2-mysql"
