@@ -68,6 +68,7 @@ ram.runtime = "50M"
 
     [resources.permissions]
     main.url = "/"
+    main.additional_urls = ["/adminstuds.php"]
     admin.url = "/admin/"
     admin.show_tile = false
     admin.allowed = "admins"
