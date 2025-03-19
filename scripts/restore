@@ -13,6 +13,15 @@ ynh_restore "$install_dir"
 chown -R $app: "$install_dir/"{tpl_c,admin/stdout.log}
 
 #=================================================
+# Avoid PHPmailer issue
+# https://github.com/YunoHost-Apps/opensondage_ynh/issues/95
+#=================================================
+if ! grep '^::1.*\s'"$main_domain" /etc/hosts > /dev/null
+then
+    sed -i '/^::1\s/s/$/ '"$main_domain"'/' /etc/hosts
+fi
+
+#=================================================
 # RESTORE THE MYSQL DATABASE
 #=================================================
 ynh_script_progression "Restoring the MySQL database..."
