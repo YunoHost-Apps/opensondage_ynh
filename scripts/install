@@ -52,7 +52,7 @@ touch "$install_dir/admin/stdout.log"
 #=================================================
 ynh_script_progression "Initializing database..."
 
-ynh_composer_install
+#REMOVEME? ynh_composer_install
 ynh_composer_exec install --no-dev
 
 ynh_hide_warnings php$php_version "$install_dir/admin/migration.php"
