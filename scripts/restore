@@ -16,6 +16,7 @@ chown -R $app: "$install_dir/"{tpl_c,admin/stdout.log}
 # Avoid PHPmailer issue
 # https://github.com/YunoHost-Apps/opensondage_ynh/issues/95
 #=================================================
+
 if ! grep '^::1.*\s'"$main_domain" /etc/hosts > /dev/null
 then
     sed -i '/^::1\s/s/$/ '"$main_domain"'/' /etc/hosts
@@ -43,6 +44,7 @@ ynh_restore "/etc/nginx/conf.d/$domain.d/$app.conf"
 ynh_script_progression "Reloading NGINX web server and PHP-FPM..."
 
 ynh_systemctl --service=php$php_version-fpm --action=reload
+
 ynh_systemctl --service=nginx --action=reload
 
 #=================================================
