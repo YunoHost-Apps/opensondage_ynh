@@ -24,7 +24,6 @@ architectures = "all"
 multi_instance = true
 
 ldap = false
-
 sso = false
 
 disk = "50M"
@@ -81,4 +80,4 @@ ram.runtime = "50M"
     type = "mysql"
 
     [resources.composer]
-    version = "2.1.1"
+    version = "2.8.11"
