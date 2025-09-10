@@ -6,7 +6,7 @@ description.en = "Service for planning an appointment or making a decision quick
 description.fr = "Service pour planifier un rendez-vous ou prendre une décision rapidement et facilement"
 description.de = "Service zur schnellen und einfachen Planung eines Termins oder zur Entscheidungsfindung"
 
-version = "1.1.19~ynh6"
+version = "1.1.19~ynh7"
 
 maintainers = []
 
