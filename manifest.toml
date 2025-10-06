@@ -2,9 +2,8 @@ packaging_format = 2
 
 id = "opensondage"
 name = "OpenSondage"
-description.en = "Service for planning an appointment or making a decision quickly and easily"
-description.fr = "Service pour planifier un rendez-vous ou prendre une décision rapidement et facilement"
-description.de = "Service zur schnellen und einfachen Planung eines Termins oder zur Entscheidungsfindung"
+description.en = "Create polls to take decisions or plan an appointment with your team"
+description.fr = "Créez des sondages pour prendre des décisions ou choisir la date d'un rendez-vous avec votre équipe"
 
 version = "1.1.19~ynh7"
 

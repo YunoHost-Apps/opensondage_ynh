@@ -8,7 +8,7 @@ It shall NOT be edited by hand.
   OpenSondage, packaged for YunoHost
 </h1>
 
-Service for planning an appointment or making a decision quickly and easily
+Create polls to take decisions or plan an appointment with your team
 
 [![🌐 Official app website](https://img.shields.io/badge/Official_app_website-darkgreen?style=for-the-badge)](https://framadate.org/)
 [![App Demo](https://img.shields.io/badge/App_Demo-blue?style=for-the-badge)](https://framadate.org/)
