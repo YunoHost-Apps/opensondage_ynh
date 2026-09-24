@@ -17,7 +17,7 @@ admindoc = "https://framagit.org/framasoft/framadate/framadate/wikis/home"
 code = "https://framagit.org/framasoft/framadate/framadate"
 
 [integration]
-yunohost = ">= 12.1.38"
+yunohost = ">= 12.1.40"
 helpers_version = "2.1"
 architectures = "all"
 multi_instance = true
@@ -79,4 +79,4 @@ ram.runtime = "50M"
     type = "mysql"
 
     [resources.composer]
-    version = "2.8.11"
+    version = "2.10.3"
